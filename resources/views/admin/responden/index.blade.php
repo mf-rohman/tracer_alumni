@@ -117,9 +117,19 @@
                                     @endif
                                 </td>
                                 <td class="align-middle">
-                                    <a href="{{ route('admin.alumni.show', $alumnus->id) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Lihat Detail">
+                                    <a href="{{ route('admin.alumni.show', $alumnus) }}" class="text-secondary font-weight-bold text-xs me-2">
                                         Detail
                                     </a>
+                                    <a href="{{ route('admin.alumni.edit', $alumnus) }}" class="text-secondary font-weight-bold text-xs me-2">
+                                        Edit
+                                    </a>
+                                    <form action="{{ route('admin.alumni.destroy', $alumnus) }}" method="POST" class="d-inline">
+                                        @method('DELETE')
+                                        @csrf
+                                        <button type="submit" class="text-danger font-weight-bold text-xs border-0 bg-transparent" onclick="return confirm('Apakah Anda yakin ingin menghapus data alumni ini?')">
+                                            Hapus
+                                        </button>
+                                    </form>
                                 </td>
                             </tr>
                             @empty

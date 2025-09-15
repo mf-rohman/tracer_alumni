@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Str;
 
 class Alumni extends Model
 {
@@ -27,5 +28,20 @@ class Alumni extends Model
     public function kuesionerAnswer(): HasOne
     {
         return $this->hasOne(KuesionerAnswer::class, 'alumni_id');
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'uuid';
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($model) {
+            if (empty($model->uuid)) {
+                $model->uuid = (string) Str::uuid();
+            }
+        });
     }
 }
