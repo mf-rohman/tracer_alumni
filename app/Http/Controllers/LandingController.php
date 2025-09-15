@@ -14,7 +14,7 @@ class LandingController extends Controller
     }
 
     /**
-     * Memeriksa NPM dan mengarahkan ke halaman verifikasi.
+     * Memeriksa NPM dan mengarahkan ke halaman verifikasi NIK.
      */
     public function cekNpm(Request $request)
     {
@@ -23,7 +23,7 @@ class LandingController extends Controller
         $alumni = Alumni::where('npm', $request->npm)->first();
 
         if ($alumni) {
-            // Jika NPM ditemukan, arahkan ke halaman verifikasi tanggal lahir
+            // Jika NPM ditemukan, arahkan ke halaman verifikasi NIK
             return redirect()->route('alumni.login.show_verify', ['npm' => $request->npm]);
         }
 
@@ -31,7 +31,7 @@ class LandingController extends Controller
     }
 
     /**
-     * Menampilkan form verifikasi tanggal lahir.
+     * Menampilkan form verifikasi NIK.
      */
     public function showVerifyForm($npm)
     {
@@ -39,21 +39,21 @@ class LandingController extends Controller
         if (!Alumni::where('npm', $npm)->exists()) {
             return redirect()->route('landing')->with('error', 'NPM tidak valid.');
         }
-        return view('auth.verify-dob', ['npm' => $npm]);
+        return view('auth.verify-nik', ['npm' => $npm]);
     }
 
     /**
-     * Memverifikasi NPM dan Tanggal Lahir, lalu melakukan login.
+     * Memverifikasi NPM dan NIK, lalu melakukan login.
      */
     public function verifyLogin(Request $request)
     {
         $request->validate([
             'npm' => 'required|string|exists:alumni,npm',
-            'tanggal_lahir' => 'required|date',
+            'nik' => 'required|string',
         ]);
 
         $alumni = Alumni::where('npm', $request->npm)
-                        ->where('tanggal_lahir', $request->tanggal_lahir)
+                        ->where('nik', $request->nik)
                         ->first();
         
         if ($alumni) {
@@ -63,7 +63,7 @@ class LandingController extends Controller
         }
 
         // Jika tidak cocok, kembalikan ke halaman verifikasi dengan pesan error
-        return back()->with('error', 'Tanggal lahir tidak sesuai. Silakan coba lagi.');
+        return back()->with('error', 'NIK tidak sesuai. Silakan coba lagi.');
     }
 }
 
