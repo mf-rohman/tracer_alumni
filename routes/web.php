@@ -24,7 +24,9 @@ use App\Http\Controllers\Admin\RespondenController;
 
 // Halaman utama (Landing Page) dengan form cek NPM
 Route::get('/', [LandingController::class, 'index'])->name('landing');
-Route::post('/cek-npm', [LandingController::class, 'cekNpm'])->name('cek.npm');
+Route::post('/cek-npm', [LandingController::class, 'cekNpm'])->name('alumni.login.cek');
+Route::get('/verify-dob/{npm}', [LandingController::class, 'showVerifyForm'])->name('alumni.login.show_verify');
+Route::post('/login-verify', [LandingController::class, 'verifyLogin'])->name('alumni.login.verify');
 
 // Dashboard bawaan Breeze (untuk alumni setelah login)
 Route::get('/dashboard', function () {

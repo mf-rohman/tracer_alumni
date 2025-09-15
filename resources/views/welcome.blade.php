@@ -134,9 +134,9 @@
                     <div class="card-body p-4 p-md-5">
                         <h3 class="card-title text-center mb-3">Pengecekan Status Alumni</h3>
                         <p class="text-muted text-center mb-4">Silakan masukkan Nomor Pokok Mahasiswa (NPM) Anda untuk melanjutkan ke tahap pengisian kuesioner.</p>
-                        <form action="{{ route('cek.npm') }}" method="POST">
+                        <form action="{{ route('alumni.login.cek') }}" method="POST">
                             @csrf
-                            <div class="mb-3">
+                            <div class="mb-3">  
                                 <label for="npm" class="form-label visually-hidden">NPM</label>
                                 <input type="text" class="form-control form-control-lg text-center" id="npm" name="npm" placeholder="Masukkan NPM Anda" required value="{{ old('npm') }}">
                             </div>
