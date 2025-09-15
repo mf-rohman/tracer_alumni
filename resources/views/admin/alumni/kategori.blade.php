@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Kategori Alumni')
+@section('title', 'Data Alumni')
 
 @section('content')
 <div class="row">
