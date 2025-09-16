@@ -3,222 +3,237 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Tracer Study Alumni</title>
+    <title>Tracer Study Alumni - Universitas PGRI Ronggolawe</title>
 
     <link rel="icon" href="{{ asset('assets/img/logos/unirow1.png') }}" type="image/png">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
-
-    <style>
-        /* */
-        html, body {
-            height: 100%; /* Pastikan html dan body setinggi viewport */
-        }
-        body {
-            font-family: 'Poppins', sans-serif;
-            color: #495057;
-            display: flex; /* Menggunakan Flexbox untuk layout utama */
-            flex-direction: column; /* Mengatur item (main, footer) secara vertikal */
-        }
-        main {
-            flex-grow: 1; /* Membuat konten utama mengisi ruang yang tersedia */
-        }
-        /* */
-
-        #page-bg-animation {
-            position: fixed;
-            width: 100vw;
-            height: 100vh;
-            top: 0;
-            left: 0;
-            z-index: -1;
-            background-color: #E3F2FD;
-        }
-
-        .navbar {
-            background-color: #ffffff;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-        .hero-section {
-            background-image: linear-gradient(135deg, rgba(75, 73, 172, 0.9) 0%, rgba(125, 160, 250, 0.9) 100%), url('https://source.unsplash.com/random/1600x900/?university,graduation');
-            background-size: cover;
-            background-position: center;
-            color: white;
-            border-radius: 1rem;
-        }
-        .hero-section h1 {
-            font-weight: 700;
-        }
-        .form-card {
-            background-color: white;
-            border-radius: 1rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
-        }
-        .form-card:hover {
-            transform: translateY(-5px);
-        }
-        .aside-card {
-            border: none;
-            border-radius: 0.75rem;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.07);
-        }
-        .list-group-item {
-            border: none;
-            padding: 1rem 1.25rem;
-        }
-        .footer {
-            background-color: #343a40;
-            color: #adb5bd;
-            /* Tambahkan padding atas dan bawah agar lebih rapi */
-            padding-top: 3rem;
-            padding-bottom: 2rem;
-        }
-        .footer h5 {
-            color: #ffffff;
-            margin-bottom: 1rem;
-        }
-        .footer p {
-            color: #adb5bd;
-        }
-        .footer .copyright {
-            border-top: 1px solid #495057;
-            padding-top: 1.5rem;
-            margin-top: 2rem;
-        }
-    </style>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="{{ asset('css/landing.css') }}">
 </head>
-<body>
+<body data-bs-spy="scroll" data-bs-target="#mainNavbar">
 
-    <div id="page-bg-animation"></div>
+    <div class="background-animation"></div>
 
-    <nav class="navbar navbar-expand-lg fixed-top">
+    <nav id="mainNavbar" class="navbar navbar-expand-lg navbar-dark fixed-top">
         <div class="container">
-            <a class="navbar-brand fw-bold" href="/">
-                <img src="assets/img/logos/unirow1.png" alt="Tracer Study Logo" style="height: 35px; margin-right: 10px;">
-                Tracer Study
+            <a class="navbar-brand fw-bold" href="#">
+                <img src="{{ asset('assets/img/logos/unirow1.png') }}" alt="Unirow Logo" height="35" class="d-inline-block align-text-top me-2">
+                Tracer Study Unirow
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#tentang">Tentang</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#kontak">Kontak</a>
-                    </li>
-                    <li class="nav-item ms-lg-3">
-                         @if (Route::has('login'))
-                            <a href="{{ route('login') }}" class="btn btn-outline-primary btn-sm px-3">Login Admin</a>
-                         @endif
-                    </li>
+                    <li class="nav-item"><a class="nav-link" href="#hero">Beranda</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#manfaat">Manfaat</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#alur">Alur</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#kontak">Kontak</a></li>
+                    <!-- @if (Route::has('login'))
+                        <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
+                            <a href="{{ route('login') }}" class="btn btn-outline-light btn-sm px-3 rounded-pill">
+                                <i class="fas fa-sign-in-alt me-1"></i> Login Admin
+                            </a>
+                        </li>
+                    @endif -->
                 </ul>
             </div>
         </div>
     </nav>
 
-    <main class="container" style="margin-top: 100px; margin-bottom: 50px;">
-        <div class="row g-4">
-            <div class="col-lg-8">
-                <div class="hero-section p-5 mb-4 text-center">
-                    <h1 class="display-5">Selamat Datang di Portal Tracer Study Unirow</h1>
-                    <p class="lead">Kami mengajak para alumni untuk berpartisipasi dalam studi pelacakan ini guna meningkatkan kualitas pendidikan dan relevansi kurikulum almamater.</p>
-                </div>
+    <header id="hero" class="hero-section vh-100 d-flex align-items-center">
+        <div class="container">
+            <div class="row align-items-center justify-content-center">
+                <div class="col-lg-8 text-center">
+                    <div data-aos="fade-up">
+                        <h1 class="display-4 fw-bolder text-white mb-3">Portal Tracer Study Alumni Unirow</h1>
+                        <p class="lead text-white-50 mb-4">Jejaki Karir, Bangun Masa Depan. Partisipasi Anda membentuk almamater yang lebih baik.</p>
+                    </div>
 
-                <div class="card form-card">
-                    <div class="card-body p-4 p-md-5">
-                        <h3 class="card-title text-center mb-3">Pengecekan Status Alumni</h3>
-                        <p class="text-muted text-center mb-4">Silakan masukkan Nomor Pokok Mahasiswa (NPM) Anda untuk melanjutkan ke tahap pengisian kuesioner.</p>
-                        <form action="{{ route('alumni.login.cek') }}" method="POST">
-                            @csrf
-                            <div class="mb-3">  
-                                <label for="npm" class="form-label visually-hidden">NPM</label>
-                                <input type="text" class="form-control form-control-lg text-center" id="npm" name="npm" placeholder="Masukkan NPM Anda" required value="{{ old('npm') }}">
-                            </div>
-                            <button type="submit" class="btn btn-primary btn-lg w-100 fw-bold">
-                                <i class="fas fa-search me-2"></i> Cek NPM
-                            </button>
-                        </form>
-                        @if (session('success'))
-                            <div class="alert alert-success mt-4">{{ session('success') }}</div>
-                            <div class="mt-3 text-center">
-                                <a href="{{ route('login') }}" class="btn btn-success fw-bold">Lanjut ke Halaman Login</a>
-                            </div>
-                        @endif
-                        @if (session('error'))
-                            <div class="alert alert-danger mt-4">{{ session('error') }}</div>
-                        @endif
+                    <div class="card form-card shadow-lg" data-aos="fade-up" data-aos-delay="200">
+                        <div class="card-body p-4 p-md-5">
+                            <h3 class="card-title mb-3">Cek Status Alumni</h3>
+                            <p class="text-muted mb-4">Masukkan Nomor Pokok Mahasiswa (NPM) untuk memulai pengisian kuesioner.</p>
+                            
+                            <form action="{{ route('alumni.login.cek') }}" method="POST" class="d-flex flex-column align-items-center">
+                                @csrf
+                                <div class="input-group input-group-lg mb-3 w-100">
+                                    <span class="input-group-text"><i class="fas fa-id-card"></i></span>
+                                    <input type="text" class="form-control" id="npm" name="npm" placeholder="Contoh: 123456789" required value="{{ old('npm') }}">
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-lg w-100 fw-bold rounded-pill shadow">
+                                    <i class="fas fa-search me-2"></i> Lanjutkan
+                                </button>
+                            </form>
+                             @if (session('success') || session('error'))
+                                <div class="mt-4 w-100">
+                                     @if (session('success'))
+                                        <div class="alert alert-success d-flex align-items-center" role="alert">
+                                            <i class="fas fa-check-circle me-2"></i>
+                                            <div>{{ session('success') }} <a href="{{ route('login') }}" class="alert-link">Lanjut Login</a>.</div>
+                                        </div>
+                                    @endif
+                                    @if (session('error'))
+                                        <div class="alert alert-danger d-flex align-items-center" role="alert">
+                                            <i class="fas fa-exclamation-triangle me-2"></i>
+                                            <div>{{ session('error') }}</div>
+                                        </div>
+                                    @endif
+                                </div>
+                            @endif
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="card aside-card mb-4">
-                    <div class="card-header bg-primary text-white fw-bold">
-                        <i class="fas fa-stream me-2"></i> Alur Pengisian Kuesioner
-                    </div>
-                    <ol class="list-group list-group-flush list-group-numbered">
-                        <li class="list-group-item">Cek NPM Anda pada formulir di samping.</li>
-                        <li class="list-group-item">Jika data ditemukan, lakukan registrasi/login.</li>
-                        <li class="list-group-item">Isi kuesioner dengan lengkap dan benar.</li>
-                        <li class="list-group-item">Simpan dan selesaikan pengisian. Terima kasih!</li>
-                    </ol>
-                </div>
-                <div class="card aside-card">
-                     <div class="card-header bg-info text-white fw-bold">
-                        <i class="fas fa-award me-2"></i> Manfaat Tracer Study
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>Mengevaluasi relevansi kurikulum.</li>
-                        <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>Menjaga hubungan dengan alumni.</li>
-                        <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>Memberikan masukan bagi calon mahasiswa.</li>
-                        <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i>Meningkatkan peringkat akreditasi.</li>
-                    </ul>
                 </div>
             </div>
         </div>
-    </main>
+    </header>
 
-    <footer class="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6 mb-4 mb-lg-0" id="tentang">
-                    <h5>Tentang Tracer Study Alumni</h5>
-                    <p>Tracer Study ini merupakan studi pelacakan jejak lulusan/alumni yang dilakukan untuk mendapatkan feedback dari alumni. Feedback diperlukan dalam usaha perbaikan dan penjaminan kualitas sistem pendidikan serta untuk menyiapkan lulusan yang lebih kompeten di dunia kerja.</p>
+    <main>
+        <section id="manfaat" class="py-5">
+            <div class="container">
+                <div class="text-center mb-5" data-aos="fade-up">
+                    <h2 class="fw-bold">Mengapa Tracer Study Penting?</h2>
+                    <p class="lead text-muted">Kontribusi Anda membawa dampak besar bagi pengembangan universitas.</p>
                 </div>
-
-                <div class="col-lg-5 offset-lg-1" id="kontak">
-                    <h5>Kontak yang Bisa Dihubungi</h5>
-                    <p class="mb-1">
-                        <i class="fas fa-map-marker-alt me-2"></i> Jl. Manunggal No.61, Wire, Gedongombo, Kec. Semanding, Kabupaten Tuban, Jawa Timur 62391
-                    </p>
-                    <p class="mb-1">
-                        <i class="fas fa-phone me-2"></i> Telepon: 085257712828
-                    </p>
-                    <p class="mb-1">
-                        <i class="fas fa-envelope me-2"></i> Email: prospective@unirow.ac.id
-                    </p>
+                <div class="row g-4">
+                    <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="100">
+                        <div class="card-feature text-center h-100">
+                            <div class="icon-circle"><i class="fas fa-book-reader fa-2x"></i></div>
+                            <h5 class="mt-3 fw-bold">Relevansi Kurikulum</h5>
+                            <p>Mengevaluasi dan menyesuaikan kurikulum dengan kebutuhan dunia kerja.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="200">
+                        <div class="card-feature text-center h-100">
+                           <div class="icon-circle"><i class="fas fa-users fa-2x"></i></div>
+                            <h5 class="mt-3 fw-bold">Jaringan Alumni</h5>
+                            <p>Menjaga dan memperkuat tali silaturahmi antar alumni dan almamater.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="300">
+                        <div class="card-feature text-center h-100">
+                            <div class="icon-circle"><i class="fas fa-bullseye fa-2x"></i></div>
+                            <h5 class="mt-3 fw-bold">Input Calon Mahasiswa</h5>
+                            <p>Memberikan gambaran prospek karir bagi calon mahasiswa baru.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="400">
+                        <div class="card-feature text-center h-100">
+                           <div class="icon-circle"><i class="fas fa-award fa-2x"></i></div>
+                            <h5 class="mt-3 fw-bold">Peringkat Akreditasi</h5>
+                            <p>Data alumni adalah salah satu komponen penting dalam penilaian akreditasi.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </section>
 
-            <div class="row">
-                <div class="col-12 text-center copyright">
-                    <p class="mb-0">Copyright &copy; {{ date('Y') }} Universitas PGRI Ronggolawe.</p>
+        <section id="alur" class="py-5 bg-light">
+            <div class="container">
+                <div class="text-center mb-5" data-aos="fade-up">
+                    <h2 class="fw-bold">Alur Pengisian Kuesioner</h2>
+                    <p class="lead text-muted">Hanya butuh beberapa langkah mudah untuk berpartisipasi.</p>
                 </div>
+                <div class="row g-4 text-center">
+                    <div class="col-md-3" data-aos="fade-right">
+                        <div class="step-item">
+                            <div class="step-number">1</div>
+                            <h6 class="fw-bold mt-3">Cek NPM</h6>
+                            <p>Masukkan NPM Anda pada form di halaman utama.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3" data-aos="fade-right" data-aos-delay="100">
+                        <div class="step-item">
+                            <div class="step-number">2</div>
+                            <h6 class="fw-bold mt-3">Login/Registrasi</h6>
+                            <p>Jika NPM valid, Anda akan diarahkan untuk login atau registrasi.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3" data-aos="fade-right" data-aos-delay="200">
+                         <div class="step-item">
+                            <div class="step-number">3</div>
+                            <h6 class="fw-bold mt-3">Isi Kuesioner</h6>
+                            <p>Lengkapi semua pertanyaan kuesioner dengan data yang benar.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3" data-aos="fade-right" data-aos-delay="300">
+                        <div class="step-item">
+                           <div class="step-number">4</div>
+                            <h6 class="fw-bold mt-3">Selesai</h6>
+                            <p>Simpan data Anda. Terima kasih atas partisipasi Anda!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer id="kontak" class="footer bg-dark text-white pt-5 pb-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-5 mb-4 mb-lg-0">
+                    <h5 class="fw-bold text-uppercase">Tracer Study Unirow</h5>
+                    <p class="text-white-50">Studi pelacakan jejak alumni Universitas PGRI Ronggolawe untuk penjaminan kualitas sistem pendidikan dan penyiapan lulusan yang lebih kompeten di dunia kerja.</p>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+                    <h5 class="fw-bold text-uppercase">Navigasi</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#hero" class="footer-link">Beranda</a></li>
+                        <li><a href="#manfaat" class="footer-link">Manfaat</a></li>
+                        <li><a href="#alur" class="footer-link">Alur</a></li>
+                        <li><a href="{{ route('login') }}" class="footer-link">Login Admin</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <h5 class="fw-bold text-uppercase">Hubungi Kami</h5>
+                    <ul class="list-unstyled">
+                        <li class="d-flex mb-2">
+                            <i class="fas fa-map-marker-alt mt-1 me-3 text-primary"></i>
+                            <span class="text-white-50">Jl. Manunggal No.61, Semanding, Tuban, Jawa Timur 62391</span>
+                        </li>
+                         <li class="d-flex mb-2">
+                            <i class="fas fa-phone mt-1 me-3 text-primary"></i>
+                            <span class="text-white-50">0852-5771-2828</span>
+                        </li>
+                         <li class="d-flex mb-2">
+                            <i class="fas fa-envelope mt-1 me-3 text-primary"></i>
+                            <span class="text-white-50">prospective@unirow.ac.id</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="text-center">
+                <p class="mb-0 text-white-50">&copy; {{ date('Y') }} Universitas PGRI Ronggolawe. All Rights Reserved.</p>
             </div>
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        particlesJS('page-bg-animation', {
-            "particles": { "number": { "value": 100, "density": { "enable": true, "value_area": 800 } }, "color": { "value": "#2196F3" }, "shape": { "type": "circle" }, "opacity": { "value": 0.6, "random": true }, "size": { "value": 4, "random": true }, "line_linked": { "enable": true, "distance": 150, "color": "#64B5F6", "opacity": 0.4, "width": 1 }, "move": { "enable": true, "speed": 2, "direction": "none", "random": false, "straight": false, "out_mode": "out", "bounce": false } }, "interactivity": { "detect_on": "window", "events": { "onhover": { "enable": true, "mode": "repulse" }, "onclick": { "enable": true, "mode": "push" }, "resize": true }, "modes": { "repulse": { "distance": 100, "duration": 0.4 }, "push": { "particles_nb": 4 } } }, "retina_detect": true });
+        // Inisialisasi AOS (Animate on Scroll)
+        AOS.init({
+            duration: 800,
+            once: true,
+        });
+
+        // Efek navbar saat scroll
+        const navbar = document.getElementById('mainNavbar');
+        window.onscroll = function () {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        };
     </script>
 </body>
 </html>

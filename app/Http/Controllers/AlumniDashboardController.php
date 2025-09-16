@@ -34,14 +34,23 @@ class AlumniDashboardController extends Controller
 
     public function store(Request $request)
     {
-        $alumniId = Auth::user()->alumni->id;
-
+        $alumni = Auth::user()->alumni; // Kita ambil objek alumni di awal
         $data = $request->except('_token');
 
         KuesionerAnswer::updateOrCreate(
-            ['alumni_id' => $alumniId],
+            ['alumni_id' => $alumni->id],
             $data
         );
+
+        // ===================================================================
+        // BARU: UPDATE STATUS ALUMNI SETELAH KUESIONER DISIMPAN
+        // ===================================================================
+        // Cek dulu untuk efisiensi, agar tidak update database jika tidak perlu
+        if ($alumni->status_kuesioner !== 'selesai') {
+            $alumni->status_kuesioner = 'selesai';
+            $alumni->save();
+        }
+        // ===================================================================
 
         return redirect()->route('dashboard')->with('success', 'Terima kasih, kuesioner Anda berhasil disimpan!');
     }

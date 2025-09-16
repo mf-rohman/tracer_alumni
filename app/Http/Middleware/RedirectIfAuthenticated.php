@@ -17,10 +17,23 @@ class RedirectIfAuthenticated
      */
     public function handle(Request $request, Closure $next, string ...$guards): Response
     {
+        // PENGECUALIAN: Jika pengguna mencoba mengirim form login,
+        // biarkan permintaan diteruskan agar controller bisa menanganinya.
+        if ($request->routeIs('login') && $request->isMethod('post')) {
+            return $next($request);
+        }
+
         $guards = empty($guards) ? [null] : $guards;
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
+                $user = Auth::user();
+
+                // Logika pengalihan standar jika sudah login
+                if (in_array($user->role, ['superadmin', 'bak', 'admin_prodi', 'instansi'])) {
+                    return redirect()->route('admin.dashboard');
+                }
+                
                 return redirect(RouteServiceProvider::HOME);
             }
         }

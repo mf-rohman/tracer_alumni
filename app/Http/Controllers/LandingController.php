@@ -5,12 +5,56 @@ namespace App\Http\Controllers;
 use App\Models\Alumni;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 class LandingController extends Controller
 {
     public function index()
     {
         return view('welcome');
+    }
+
+    public function getPageData()
+    {
+        // Menggunakan cache untuk performa. Data akan di-refresh setiap 60 menit.
+        // Anda bisa sesuaikan durasinya.
+        $data = Cache::remember('landing_page_data', 60 * 60, function () {
+            
+            // --- Query Statistik ---
+            $totalAlumni = Alumni::count();
+            $filledQuestionnaire = Alumni::where('status_kuesioner', 'selesai')->count(); // Asumsi kolom & value
+
+            // Query untuk distribusi industri. 
+            // Mengelompokkan berdasarkan kolom 'industri' dan menghitung jumlahnya.
+            $industryDistribution = Alumni::select('industri', DB::raw('count(*) as total'))
+                ->whereNotNull('industri')
+                ->where('industri', '!=', '')
+                ->groupBy('industri')
+                ->orderBy('total', 'desc')
+                ->limit(5) // Ambil 5 industri teratas
+                ->pluck('total', 'industri'); // Hasilnya: ['IT' => 150, 'Pendidikan' => 120, ...]
+
+            // --- Query Testimoni ---
+            // Ambil 3 testimoni yang ditandai sebagai 'featured' (terpilih).
+            // Ini lebih baik daripada acak, karena Anda bisa mengontrol testimoni mana yang tampil.
+            // Anda perlu menambahkan kolom boolean 'is_featured' di tabel alumni Anda.
+            $testimonials = Alumni::whereNotNull('testimoni')
+                ->where('is_featured', true)
+                ->limit(3)
+                ->get(['nama_lengkap', 'jabatan', 'photo_path', 'testimoni']);
+
+            return [
+                'statistics' => [
+                    'total_alumni' => $totalAlumni,
+                    'filled_questionnaire' => $filledQuestionnaire,
+                    'industry_distribution' => $industryDistribution,
+                ],
+                'testimonials' => $testimonials,
+            ];
+        });
+
+        return response()->json($data);
     }
 
     /**
