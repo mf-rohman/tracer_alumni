@@ -12,7 +12,10 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\AlumniController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\AlumniCategoryController;
+use App\Http\Controllers\Admin\InstansiController;
 use App\Http\Controllers\Admin\RespondenController;
+use App\Http\Controllers\Auth\InstansiLoginController;
+use App\Http\Controllers\Instansi\InstansiDashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -69,6 +72,7 @@ Route::middleware(['auth', 'role:superadmin'])->prefix('admin')->name('admin.')-
 
     // Mengelola data user (Admin Prodi, BAK, dll)
     Route::resource('users', UserController::class);
+    Route::resource('instansi', InstansiController::class);
 
 });
 
@@ -78,6 +82,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // ... rute profile lainnya
 });
 
+
+Route::prefix('penilaian')->name('instansi.')->group(function() {
+    // Rute untuk menampilkan halaman login
+    Route::get('/login-instansi', [InstansiLoginController::class, 'showLoginForm'])->name('login.show');
+    // Rute untuk memproses data dari form login
+    Route::post('/login-instansi', [InstansiLoginController::class, 'login'])->name('login.submit');
+});
+
+// Contoh rute untuk dashboard instansi (diberi middleware agar aman)
+// Ini adalah halaman yang akan dilihat instansi setelah berhasil login
+Route::middleware(['auth', 'role:instansi'])->prefix('instansi')->name('instansi.')->group(function() {
+    Route::get('/dashboard', [InstansiDashboardController::class, 'index'])->name('dashboard');
+    Route::get('/alumni/{alumnus}/nilai', [InstansiDashboardController::class, 'showPenilaianForm'])->name('penilaian.show');
+    Route::post('/alumni/{alumnus}/nilai', [InstansiDashboardController::class, 'storePenilaian'])->name('penilaian.store');
+});
 
 // Memanggil route otentikasi dari Breeze (login, register, dll)
 require __DIR__.'/auth.php';

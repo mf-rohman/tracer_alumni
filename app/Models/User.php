@@ -23,6 +23,7 @@ class User extends Authenticatable
         'password',
         'role',
         'prodi_id',
+        'instansi_id',
     ];
 
     /**
@@ -46,5 +47,10 @@ class User extends Authenticatable
     ];
     public function alumni() {
         return $this->hasOne(Alumni::class);
+    }
+
+    public function instansi()
+    {
+        return $this->belongsTo(Instansi::class);
     }
 }

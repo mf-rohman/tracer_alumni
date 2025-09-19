@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::create('instansi', function (Blueprint $table) {
             $table->id();
+            $table->string('nama')->unique();
             $table->timestamps();
         });
+        
     }
 
     /**
