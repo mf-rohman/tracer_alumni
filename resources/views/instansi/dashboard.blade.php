@@ -56,7 +56,7 @@
                                 </td>
                                 <td class="align-middle">
                                     {{-- Link ke halaman penilaian akan kita buat nanti --}}
-                                    <a href="#" class="text-secondary font-weight-bold text-xs">
+                                    <a href="{{ route('instansi.penilaian.show', $alumnus) }}" class="text-secondary font-weight-bold text-xs">
                                         {{ $alumnus->penilaianInstansi ? 'Edit Penilaian' : 'Beri Penilaian' }}
                                     </a>
                                 </td>

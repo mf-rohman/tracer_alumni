@@ -14,6 +14,8 @@ class Alumni extends Model
     use HasFactory;
     protected $table = 'alumni';
     protected $guarded = ['id'];
+    public $incrementing = false; 
+    protected $keyType = 'string'; 
 
     public function user() {
         return $this->belongsTo(User::class);
@@ -33,6 +35,11 @@ class Alumni extends Model
     public function getRouteKeyName()
     {
         return 'uuid';
+    }
+
+    public function penilaianInstansi()
+    {
+        return $this->hasOne(PenilaianInstansi::class);
     }
 
     protected static function boot()

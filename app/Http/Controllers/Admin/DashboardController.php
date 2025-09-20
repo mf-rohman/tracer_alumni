@@ -15,9 +15,10 @@ class DashboardController extends Controller
     public function index(Request $request)
     {
         $selectedProdiId = $request->input('prodi_id');
-        $selectedTahunLulus = $request->input('tahun_lulus'); // Filter tahun lulus baru
+        $selectedTahunLulus = $request->input('tahun_lulus');
+        $selectedTahunRespon = $request->input('tahun_respon');
 
-        // Query dasar untuk alumni
+        // --- MENGHITUNG TOTAL ALUMNI (DENOMINATOR) ---
         $alumniQuery = Alumni::query();
         if ($selectedProdiId) {
             $alumniQuery->where('prodi_id', $selectedProdiId);
@@ -27,39 +28,41 @@ class DashboardController extends Controller
         }
         $totalAlumni = $alumniQuery->count();
 
-        // Query dasar untuk kuesioner yang sudah diisi
-        $kuesionerQuery = KuesionerAnswer::query();
-        if ($selectedProdiId) {
-            $kuesionerQuery->whereHas('alumni', function ($q) use ($selectedProdiId) {
-                $q->where('prodi_id', $selectedProdiId);
+        // --- MENGHITUNG RESPONDEN (NUMERATOR) ---
+        $kuesionerQuery = KuesionerAnswer::query()
+            ->whereHas('alumni', function ($q) use ($selectedProdiId, $selectedTahunLulus) {
+                if ($selectedProdiId) {
+                    $q->where('prodi_id', $selectedProdiId);
+                }
+                if ($selectedTahunLulus) {
+                    $q->where('tahun_lulus', $selectedTahunLulus);
+                }
             });
-        }
-        if ($selectedTahunLulus) {
-            $kuesionerQuery->whereHas('alumni', function ($q) use ($selectedTahunLulus) {
-                $q->where('tahun_lulus', $selectedTahunLulus);
-            });
+
+        if ($selectedTahunRespon) {
+            $kuesionerQuery->whereYear('created_at', $selectedTahunRespon);
         }
         $totalResponden = $kuesionerQuery->count();
 
-        // Pencegahan Division by Zero
-        if ($totalAlumni === 0) {
-            // ... (kode pencegahan yang sudah ada, jika diperlukan) ...
-        }
-
         // --- DATA UNTUK KARTU STATISTIK ---
         $statusMapping = [
-            'Bekerja' => 1,
-            'Wiraswasta' => 3,
-            'Studi Lanjut' => 4,
-            'Mencari Kerja' => 5,
-            'Tidak Bekerja' => 2,
+            'Bekerja' => 1, 'Wiraswasta' => 3, 'Studi Lanjut' => 4,
+            'Mencari Kerja' => 5, 'Tidak Bekerja' => 2,
         ];
         $statusCounts = [];
         foreach ($statusMapping as $label => $value) {
-            // Clone query agar tidak merusak query utama
             $countQuery = clone $kuesionerQuery;
             $statusCounts[$label] = $countQuery->where('f8', $value)->count();
         }
+
+        // Pencegahan Division by Zero
+        if ($totalAlumni === 0) {
+           $totalResponden = 0;
+           foreach ($statusCounts as $key => &$value) {
+               $value = 0;
+           }
+        }
+
 
         // --- DATA GRAFIK LULUSAN 5 TAHUN TERAKHIR ---
         $tahunSekarang = date('Y');
@@ -69,17 +72,13 @@ class DashboardController extends Controller
         $lulusanPerTahun = Alumni::query()
             ->select(DB::raw('tahun_lulus as tahun'), DB::raw('count(*) as jumlah'))
             ->where('tahun_lulus', '>=', $tahunMulai)
-            ->groupBy('tahun')
-            ->orderBy('tahun', 'asc')
-            ->get()
-            ->pluck('jumlah', 'tahun');
-        
+            ->groupBy('tahun')->orderBy('tahun', 'asc')->get()->pluck('jumlah', 'tahun');
+
         $dataLulusanChart = [];
         foreach ($tahunRange as $tahun) {
             $dataLulusanChart[] = $lulusanPerTahun->get($tahun, 0);
         }
-        
-        // --- DATA RESPONDEN PER PRODI ---
+
         $respondenPerProdi = Prodi::withCount(['alumni as responden_count' => function ($query) {
                 $query->whereHas('kuesionerAnswer');
             }])->get();
@@ -88,10 +87,10 @@ class DashboardController extends Controller
         $waktuTungguData = (clone $kuesionerQuery)->whereNotNull('f502')->pluck('f502');
         $rataRataWaktuTunggu = $waktuTungguData->avg();
         $waktuTungguChartData = [
-            $waktuTungguData->where('value', '<', 3)->count(),
-            $waktuTungguData->whereBetween('value', [3, 6])->count(),
-            $waktuTungguData->whereBetween('value', [7, 12])->count(),
-            $waktuTungguData->where('value', '>', 12)->count(),
+            $waktuTungguData->filter(fn($value) => $value < 3)->count(),
+            $waktuTungguData->filter(fn($value) => $value >= 3 && $value <= 6)->count(),
+            $waktuTungguData->filter(fn($value) => $value >= 7 && $value <= 12)->count(),
+            $waktuTungguData->filter(fn($value) => $value > 12)->count(),
         ];
 
         // --- DATA UNTUK FILTER DROPDOWN ---
@@ -103,11 +102,11 @@ class DashboardController extends Controller
         return view('admin.dashboard', compact(
             'totalAlumni', 'totalResponden', 'statusCounts',
             'prodiList', 'selectedProdiId',
-            'tahunLulusList', 'selectedTahunLulus', // Kirim data filter tahun
+            'tahunLulusList', 'selectedTahunLulus',
+            'tahunResponList', 'selectedTahunRespon', // <-- Memastikan variabel ini dikirim
             'tahunRange', 'dataLulusanChart',
             'respondenPerProdi',
-            'rataRataWaktuTunggu', 'waktuTungguChartData',
-            'tahunResponList'
+            'rataRataWaktuTunggu', 'waktuTungguChartData'
         ));
     }
 }

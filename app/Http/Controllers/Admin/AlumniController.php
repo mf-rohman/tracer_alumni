@@ -79,6 +79,7 @@ class AlumniController extends Controller
             'tahun_lulus' => $request->tahun_lulus,
             'no_hp' => $request->no_hp,
             'alamat' => $request->alamat,
+            'nik' => $request->nik,
         ]);
 
         return redirect()->route('admin.alumni.index')->with('success', 'Data alumni berhasil ditambahkan.');
