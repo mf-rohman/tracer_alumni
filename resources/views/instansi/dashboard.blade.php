@@ -1,10 +1,11 @@
-@extends('layouts.instansi') {{-- Menggunakan layout admin agar tampilan konsisten --}}
+@extends('layouts.instansi')
 
 @section('title', 'Dashboard Penilaian Alumni')
 
 @section('content')
 <div class="row">
     <div class="col-12">
+        {{-- Kartu Selamat Datang --}}
         <div class="card mb-4">
             <div class="card-header">
                 <h5 class="mb-0">Selamat Datang, {{ $instansi->nama }}</h5>
@@ -14,8 +15,9 @@
             </div>
         </div>
 
+        {{-- Tabel Daftar Alumni --}}
         <div class="card">
-             <div class="card-header pb-0">
+             <div class="card-header pb-0 d-flex justify-content-between align-items-center">
                 <h6 class="mb-0">Daftar Alumni untuk Dinilai</h6>
             </div>
             <div class="card-body px-0 pt-0 pb-2">
@@ -25,12 +27,11 @@
                             <tr>
                                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nama Alumni</th>
                                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Program Studi</th>
-                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status Penilaian</th>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Status Penilaian</th>
                                 <th class="text-secondary opacity-7"></th>
                             </tr>
                         </thead>
                         <tbody>
-                             {{-- PERBAIKAN: Menggunakan @forelse untuk looping data dari $alumniList --}}
                              @forelse($alumniList as $alumnus)
                             <tr>
                                 <td>
@@ -47,17 +48,30 @@
                                 <td>
                                     <p class="text-xs font-weight-bold mb-0">{{ $alumnus->prodi->nama_prodi ?? 'N/A' }}</p>
                                 </td>
-                                <td class="align-middle text-center text-sm">
-                                    @if($alumnus->penilaianInstansi)
-                                        <span class="badge badge-sm bg-gradient-success">Sudah Dinilai</span>
+                                {{-- KOLOM STATUS PENILAIAN BARU --}}
+                                <td class="align-middle text-sm">
+                                    @if($alumnus->penilaianInstansi->isNotEmpty())
+                                        {{-- Jika sudah ada penilaian, tampilkan daftar penilainya --}}
+                                        <ul class="list-unstyled mb-0">
+                                            @foreach($alumnus->penilaianInstansi as $penilaian)
+                                                <li class="mb-1">
+                                                    <span class="badge badge-sm bg-gradient-success">
+                                                        <i class="fas fa-check-circle me-1"></i>
+                                                        {{-- PERBAIKAN: Menampilkan nama penilai dari form --}}
+                                                        Dinilai oleh: {{ $penilaian->nama_penilai }}
+                                                    </span>
+                                                </li>
+                                            @endforeach
+                                        </ul>
                                     @else
+                                        {{-- Jika belum ada penilaian sama sekali --}}
                                         <span class="badge badge-sm bg-gradient-secondary">Belum Dinilai</span>
                                     @endif
                                 </td>
+                                {{-- TOMBOL AKSI BARU --}}
                                 <td class="align-middle">
-                                    {{-- Link ke halaman penilaian akan kita buat nanti --}}
-                                    <a href="{{ route('instansi.penilaian.show', $alumnus) }}" class="text-secondary font-weight-bold text-xs">
-                                        {{ $alumnus->penilaianInstansi ? 'Edit Penilaian' : 'Beri Penilaian' }}
+                                    <a href="{{ route('instansi.penilaian.show', $alumnus) }}" class="btn btn-sm bg-gradient-primary mb-0">
+                                        + Tambah Penilaian
                                     </a>
                                 </td>
                             </tr>

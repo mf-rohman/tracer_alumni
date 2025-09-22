@@ -96,6 +96,9 @@ Route::middleware(['auth', 'role:instansi'])->prefix('instansi')->name('instansi
     Route::get('/dashboard', [InstansiDashboardController::class, 'index'])->name('dashboard');
     Route::get('/alumni/{alumnus}/nilai', [InstansiDashboardController::class, 'showPenilaianForm'])->name('penilaian.show');
     Route::post('/alumni/{alumnus}/nilai', [InstansiDashboardController::class, 'storePenilaian'])->name('penilaian.store');
+
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
 });
 
 // Memanggil route otentikasi dari Breeze (login, register, dll)

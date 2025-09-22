@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Instansi;
 
 use App\Http\Controllers\Controller;
 use App\Models\Alumni;
-use App\Models\Instansi;
 use App\Models\PenilaianInstansi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,25 +22,28 @@ class InstansiDashboardController extends Controller
             return redirect()->route('instansi.login.show')->with('error', 'Akun Anda tidak tertaut dengan instansi manapun.');
         }
 
-        // Cari semua alumni yang mengisi nama perusahaan yang sama dengan nama instansi ini
         $alumniList = Alumni::whereHas('kuesionerAnswer', function ($query) use ($instansi) {
             $query->where('f5b', $instansi->nama);
-        })->with('penilaianInstansi')->paginate(10);
+        })
+        ->with('penilaianInstansi.penilai')
+        ->latest()->paginate(10);
 
         return view('instansi.dashboard', compact('instansi', 'alumniList'));
     }
 
     /**
-     * Menampilkan form penilaian untuk seorang alumni.
+     * Menampilkan form untuk penilaian baru.
      */
     public function showPenilaianForm(Alumni $alumnus)
     {
-        $penilaian = PenilaianInstansi::firstWhere('alumni_id', $alumnus->id);
+        // PERBAIKAN: Selalu definisikan dan kirim variabel $penilaian,
+        // meskipun nilainya null untuk form baru.
+        $penilaian = null;
         return view('instansi.penilaian', compact('alumnus', 'penilaian'));
     }
 
     /**
-     * Menyimpan data penilaian.
+     * Menyimpan data penilaian yang baru.
      */
     public function storePenilaian(Request $request, Alumni $alumnus)
     {
@@ -81,16 +83,17 @@ class InstansiDashboardController extends Controller
             'ilmu_diperlukan_belum_sesuai' => 'nullable|required_if:kesesuaian_ilmu,Belum|string',
         ]);
 
-        // Simpan data
-        PenilaianInstansi::updateOrCreate(
+        // Selalu buat data penilaian baru
+        PenilaianInstansi::create(array_merge(
+            $validatedData,
             [
                 'alumni_id' => $alumnus->id,
                 'instansi_id' => Auth::user()->instansi_id,
-            ],
-            $validatedData
-        );
+                'penilai_user_id' => Auth::id(),
+            ]
+        ));
 
-        return redirect()->route('instansi.dashboard')->with('success', 'Penilaian untuk ' . $alumnus->nama_lengkap . ' berhasil disimpan.');
+        return redirect()->route('instansi.dashboard')->with('success', 'Penilaian baru untuk ' . $alumnus->nama_lengkap . ' berhasil disimpan.');
     }
 }
 

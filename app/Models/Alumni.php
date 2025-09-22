@@ -39,7 +39,7 @@ class Alumni extends Model
 
     public function penilaianInstansi()
     {
-        return $this->hasOne(PenilaianInstansi::class);
+        return $this->hasMany(PenilaianInstansi::class);
     }
 
     protected static function boot()

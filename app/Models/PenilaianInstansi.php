@@ -38,4 +38,9 @@ class PenilaianInstansi extends Model
     {
         return $this->belongsTo(Instansi::class);
     }
+    
+    public function penilai()
+    {
+        return $this->belongsTo(User::class, 'penilai_user_id');
+    }
 }
