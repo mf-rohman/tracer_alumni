@@ -51,7 +51,7 @@ Route::middleware('auth')->group(function () {
 
 // Grup untuk semua role admin (Superadmin, BAK, Admin Prodi)
 // Menggunakan prefix 'admin' dan nama 'admin.'
-Route::middleware(['auth', 'role:superadmin,bak,admin_prodi'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'role:superadmin,bak,admin_prodi'])->prefix(env('ADMIN_PATH', 'admin'))->name('admin.')->group(function () {
 
     // Dashboard Utama Admin
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -68,7 +68,7 @@ Route::middleware(['auth', 'role:superadmin,bak,admin_prodi'])->prefix('admin')-
 
 // Grup KHUSUS untuk Super Admin
 // Middleware 'role:superadmin' memastikan hanya superadmin yang bisa akses
-Route::middleware(['auth', 'role:superadmin'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'role:superadmin'])->prefix(env('ADMIN_PATH', 'admin'))->name('admin.')->group(function () {
 
     // Mengelola data user (Admin Prodi, BAK, dll)
     Route::resource('users', UserController::class);
@@ -92,7 +92,7 @@ Route::prefix('penilaian')->name('instansi.')->group(function() {
 
 // Contoh rute untuk dashboard instansi (diberi middleware agar aman)
 // Ini adalah halaman yang akan dilihat instansi setelah berhasil login
-Route::middleware(['auth', 'role:instansi'])->prefix('instansi')->name('instansi.')->group(function() {
+Route::middleware(['auth', 'role:instansi'])->prefix(env('INSTASI_PATH', 'instansi'))->name('instansi.')->group(function() {
     Route::get('/dashboard', [InstansiDashboardController::class, 'index'])->name('dashboard');
     Route::get('/alumni/{alumnus}/nilai', [InstansiDashboardController::class, 'showPenilaianForm'])->name('penilaian.show');
     Route::post('/alumni/{alumnus}/nilai', [InstansiDashboardController::class, 'storePenilaian'])->name('penilaian.store');

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Models\Prodi; // <-- TAMBAHKAN INI
+use App\Models\Prodi; 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
@@ -19,8 +19,8 @@ class UserController extends Controller
 
     public function create()
     {
-        $prodi = Prodi::all(); // <-- TAMBAHKAN INI
-        return view('admin.users.create', compact('prodi')); // <-- KIRIM DATA PRODI
+        $prodi = Prodi::all(); 
+        return view('admin.users.create', compact('prodi')); 
     }
 
     public function store(Request $request)
@@ -46,7 +46,7 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
-        $prodi = Prodi::all(); // <-- TAMBAHKAN INI
+        $prodi = Prodi::all(); 
         return view('admin.users.edit', compact('user', 'prodi')); // <-- KIRIM DATA PRODI
     }
 

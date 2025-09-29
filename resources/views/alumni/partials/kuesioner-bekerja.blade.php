@@ -55,6 +55,12 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group mb-4">
+                                    <label for="f5c" class="form-label">Apa posisi/jabatan Anda saat ini?</label>
+                                    <input type="text" id="f5c" name="f5c" value="{{ old('f5c', $answer->f5c ?? '') }}" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-4">
                                     <label for="f14" class="form-label">Seberapa erat hubungan bidang studi dengan pekerjaan Anda?</label>
                                     <select id="f14" name="f14" class="form-control">
                                         <option value="">Pilih Hubungan</option>

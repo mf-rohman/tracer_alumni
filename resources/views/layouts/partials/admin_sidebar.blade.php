@@ -11,7 +11,7 @@
   <div class="collapse navbar-collapse w-auto" id="sidenav-collapse-main">
     <ul class="navbar-nav">
       <li class="nav-item">
-        <a class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" href="{{ route('admin.dashboard') }}">
+        <a class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active bg-gradient-primary' : '' }}" href="{{ route('admin.dashboard') }}">
           <div class="icon icon-shape bg-white text-center me-2 d-flex align-items-center justify-content-center">
             <i class="fa fa-tachometer-alt text-dark"></i>
           </div>
@@ -20,7 +20,7 @@
       </li>
 
       <li class="nav-item">
-        <a class="nav-link {{ request()->routeIs('admin.responden.index') ? 'active' : '' }}" href="{{ route('admin.responden.index') }}">
+        <a class="nav-link {{ request()->routeIs('admin.responden.index') ? 'active bg-gradient-primary' : '' }}" href="{{ route('admin.responden.index') }}">
           <div class="icon icon-shape bg-white text-center me-2 d-flex align-items-center justify-content-center">
             <i class="fa fa-users text-dark"></i>
           </div>
@@ -29,7 +29,7 @@
       </li>
 
       <li class="nav-item">
-        <a class="nav-link {{ request()->routeIs('admin.alumni.kategori') ? 'active' : '' }}" href="{{ route('admin.alumni.kategori') }}">
+        <a class="nav-link {{ request()->routeIs('admin.alumni.kategori') ? 'active bg-gradient-primary' : '' }}" href="{{ route('admin.alumni.kategori') }}">
           <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
             <i class="fa fa-filter text-dark"></i>
           </div>
@@ -39,8 +39,8 @@
 
       <li class="nav-item">
         <a class="nav-link text-white {{ request()->routeIs('admin.instansi.*') ? 'active bg-gradient-primary' : '' }}" href="{{ route('admin.instansi.index') }}">
-          <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-            <i class="fa   fa-building"></i>
+          <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="fa fa-building text-dark"></i>
           </div>
           <span class="nav-link-text ms-1">Manajemen Instansi</span>
         </a>
@@ -51,8 +51,8 @@
           <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Super Admin</h6>
         </li>
         <li class="nav-item">
-          <a class="nav-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}" href="{{ route('admin.users.index') }}">
-            <div class="icon icon-shape bg-white text-center me-2 d-flex align-items-center justify-content-center">
+          <a class="nav-link {{ request()->routeIs('admin.users.*') ? 'active bg-gradient-primary' : '' }}" href="{{ route('admin.users.index') }}">
+            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="fa fa-user-shield text-dark"></i>
             </div>
             <span class="nav-link-text ms-1">Manajemen User</span>

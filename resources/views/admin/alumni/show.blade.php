@@ -66,7 +66,7 @@
 
                         @if($answer->f8 == 3) {{-- Jika Wiraswasta --}}
                              <li class="list-group-item d-flex justify-content-between ps-0"><strong>Waktu Memulai Wiraswasta:</strong> <span>{{ $answer->f502 ?? 'N/A' }} bulan</span></li>
-                             <li class="list-group-item d-flex justify-content-between ps-0"><strong>Jabatan:</strong> <span>{{ $answer->f5c ?? 'N/A' }}</span></li>
+                             <li class="list-group-item d-flex justify-content-between ps-0"><strong>Jabatan:</strong> <span>{{ $answer->f5c_wiraswasta ?? 'N/A' }}</span></li>
                         @endif
 
                         @if($answer->f8 == 4) {{-- Jika Studi Lanjut --}}

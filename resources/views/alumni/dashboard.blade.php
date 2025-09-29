@@ -219,6 +219,12 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group mb-4">
+                                    <label for="f5c" class="form-label">Apa posisi/jabatan Anda saat ini?</label>
+                                    <input type="text" id="f5c" name="f5c" value="{{ old('f5c', $answer->f5c ?? '') }}" class="form-control">
+                                </div>
+                            </div>  
+                            <div class="col-md-6">
+                                <div class="form-group mb-4">
                                     <label for="f14" class="form-label">Seberapa erat hubungan bidang studi dengan pekerjaan Anda?</label>
                                     <select id="f14" name="f14" class="form-control">
                                         <option value="">Pilih Hubungan</option>
@@ -254,13 +260,13 @@
                         {{-- Pertanyaan 2 --}}
                         <div class="form-group mb-4">
                             <label for="f502_wiraswasta" class="form-label">Dalam berapa bulan setelah lulus Anda memulai wiraswasta?</label>
-                            <input type="number" id="f502_wiraswasta" name="f502" value="{{ old('f502', $answer->f502 ?? '') }}" class="form-control">
+                            <input type="number" id="f502_wiraswasta" name="f502_wiraswasta" value="{{ old('f502_wiraswasta', $answer->f502_wiraswasta ?? '') }}" class="form-control">
                         </div>
 
                         {{-- Pertanyaan 7 --}}
                         <div class="form-group mb-4">
-                            <label for="f5c" class="form-label">Apa posisi/jabatan Anda saat ini?</label>
-                            <input type="text" id="f5c" name="f5c" value="{{ old('f5c', $answer->f5c ?? '') }}" class="form-control">
+                            <label for="f5c_wiraswasta" class="form-label">Apa posisi/jabatan Anda saat ini?</label>
+                            <input type="text" id="f5c_wiraswasta" name="f5c_wiraswasta" value="{{ old('f5c_wiraswasta', $answer->f5c_wiraswasta ?? '') }}" class="form-control">
                         </div>
                     </div>
                     <!-- ▲▲▲ AKHIR DARI KODE WIRAUSAHA ▲▲▲ -->
@@ -293,6 +299,7 @@
                         @include('alumni.partials.kuesioner-kompetensi')
                         @include('alumni.partials.kuesioner-pembelajaran')
                         @include('alumni.partials.kuesioner-mencari-kerja')
+                        @include('alumni.partials.kuesioner-pendanaan')
                     </div>
 
                     <div class="d-flex justify-content-end align-items-center mt-5 pt-3 border-top">
@@ -365,6 +372,8 @@
 
             // State untuk form 'bekerja'
             f1101: "{{ old('f1101', $answer->f1101 ?? '') }}",
+            f1201: "{{ old('f1201', $answer->f1201 ?? '') }}",
+            ff16: "{{ old('ff16', $answer->f16 ?? '') }}",
 
             // Fungsi untuk memilih opsi dari combobox
             selectOption(option) {

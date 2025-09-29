@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('f5a2')->nullable()->comment('Kota/Kabupaten tempat kerja');
             $table->tinyInteger('f1101')->nullable()->comment('Jenis perusahaan');
             $table->string('f5b')->nullable()->comment('Nama perusahaan');
-            $table->string('f5c')->nullable()->comment('Jabatan wiraswasta');
+            $table->string('f5c')->nullable()->comment('Jabatan kerja');
             $table->string('f5d')->nullable()->comment('Tingkat tempat kerja');
 
             // Studi Lanjut
@@ -64,7 +64,7 @@ return new class extends Migration
             }
             $table->string('f416')->nullable()->comment('Cara lain mencari kerja');
 
-            $table->integer('f6')->nullable()->comment('Jumlah perusahaan dilamar');
+            $table->integer('f6')->nullable()->comment('Jumlah perusahaan dilamar');    
             $table->integer('f7')->nullable()->comment('Jumlah respons lamaran');
             $table->integer('f7a')->nullable()->comment('Jumlah undangan wawancara');
 

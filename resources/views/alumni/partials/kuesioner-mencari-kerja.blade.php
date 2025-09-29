@@ -29,7 +29,15 @@
                             </div>
 
                             {{-- Pertanyaan 16 --}}
-                            <div class="form-group mb-4">
+                            @php
+                                // Variabel ini diperlukan untuk menangani old input dari checkbox array
+                                $old_f4 = old('f4');
+                                                                
+                                // PERBAIKAN: Tentukan status awal 'Lainnya' di sini menggunakan PHP
+                                $isLainnyaChecked = (is_array($old_f4) && in_array('f415', $old_f4)) 
+                                                  || (is_null($old_f4) && optional($answer)->f415 == 1);
+                            @endphp
+                            <div class="form-group mb-4" x-data="{ showLainnya: {{ $isLainnyaChecked ? 'true' : 'false' }} }">
                                 <label class="form-label"><b>Bagaimana anda mencari pekerjaan tersebut?</b> <small class="text-muted">(Jawaban bisa lebih dari satu)</small></label>
                                 <div class="row mt-2">
                                     @php
@@ -49,11 +57,19 @@
                                         <div class="col-md-6">
                                             <div class="form-check mb-2">
                                                 <input class="form-check-input" type="checkbox" name="f4[]" value="{{ $key }}" id="{{ $key }}"
-                                                    @if(is_array($old_f4) && in_array($key, $old_f4)) checked @elseif(empty($old_f4) && optional($answer)->{$key} == 1) checked @endif>
+                                                    @if(is_array($old_f4) && in_array($key, $old_f4)) checked @elseif(empty($old_f4) && optional($answer)->{$key} == 1) checked @endif
+                                                    @if ($key === 'f415')
+                                                        @change="showLainnya =$event.target.checked"
+                                                    @endif>
                                                 <label class="form-check-label" for="{{ $key }}">{{ $label }}</label>
                                             </div>
                                         </div>
                                     @endforeach
+                                </div>
+                                {{-- Input teks "Lainnya" yang dinamis --}}
+                                <div x-show="showLainnya" x-transition class="form-group mt-3">
+                                    <label for="f416" class="form-label">Sebutkan lainnya:</label>
+                                    <input type="text" id="f416" name="f416" value="{{ old('f416', $answer->f416 ?? '') }}" class="form-control">
                                 </div>
                             </div>
 
@@ -97,7 +113,15 @@
                             </div>
 
                             {{-- Pertanyaan 21 --}}
-                            <div class="form-group mb-4">
+                            @php
+                                // Variabel ini diperlukan untuk menangani old input dari checkbox array
+                                $old_f16 = old('f16');
+
+                                // PERBAIKAN: Tentukan status awal 'Lainnya' di sini menggunakan PHP
+                                $isLainnyaChecked = (is_array($old_f16) && in_array('f1613', $old_f16)) 
+                                                  || (is_null($old_f16) && optional($answer)->f1613 == 1);
+                            @endphp
+                            <div class="form-group mb-4" x-data="{ showLainnya: {{ $isLainnyaChecked ? 'true' : 'false' }} }">
                                 <label class="form-label"><b>Jika pekerjaan tidak sesuai pendidikan, mengapa anda mengambilnya?</b> <small class="text-muted">(Jawaban bisa lebih dari satu)</small></label>
                                 <div class="row mt-2">
                                     @php
@@ -118,11 +142,19 @@
                                                 <input class="form-check-input" type="checkbox" name="f16[]" value="{{ $key }}" id="{{ $key }}"
                                                     @if(is_array($old_f16) && in_array($key, $old_f16)) checked
                                                     @elseif(empty($old_f16) && optional($answer)->{$key} == 1) checked
+                                                    @endif
+                                                    @if ($key === 'f1613')
+                                                        @change="showLainnya =$event.target.checked"
                                                     @endif>
                                                 <label class="form-check-label" for="{{ $key }}">{{ $label }}</label>
                                             </div>
                                         </div>
                                     @endforeach
+                                </div>
+                                {{-- Input teks "Lainnya" yang dinamis --}}
+                                <div x-show="showLainnya" x-transition class="form-group mt-3">
+                                    <label for="f1614" class="form-label">Sebutkan lainnya:</label>
+                                    <input type="text" id="f1614" name="f1614" value="{{ old('f1614', $answer->f1614 ?? '') }}" class="form-control">
                                 </div>
                             </div>
                         </div>
