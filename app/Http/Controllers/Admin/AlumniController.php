@@ -96,11 +96,14 @@ class AlumniController extends Controller
 
     public function show(Alumni $alumnus)
     {
-        // Eager load relasi yang dibutuhkan agar tidak ada query tambahan di view
-        $alumnus->load('user', 'prodi', 'kuesionerAnswer');
+        // Memuat relasi dasar
+        $alumnus->load('user', 'prodi');
 
-        // Arahkan ke view baru dan kirim data alumni
-        return view('admin.alumni.show', compact('alumnus'));
+        // Mengambil satu jawaban kuesioner yang paling baru berdasarkan tahun
+        $latestAnswer = $alumnus->kuesionerAnswers()->orderBy('tahun_kuesioner', 'desc')->first();
+
+        // Mengirim data alumni dan jawaban terbarunya ke view
+        return view('admin.alumni.show', compact('alumnus', 'latestAnswer'));
     }
 
     /**

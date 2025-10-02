@@ -18,7 +18,7 @@ class RespondenController extends Controller
     public function index(Request $request)
     {
         $user = Auth::user();
-        $query = Alumni::query()->with(['user', 'prodi', 'kuesionerAnswer']);
+        $query = Alumni::query()->with(['user', 'prodi', 'kuesionerAnswers']);
 
         // Menerapkan filter berdasarkan input
         if ($request->filled('prodi_id')) {
@@ -30,16 +30,16 @@ class RespondenController extends Controller
         }
 
         if ($request->filled('tahun_respon')) {
-            $query->whereHas('kuesionerAnswer', function ($q) use ($request) {
+            $query->whereHas('kuesionerAnswers', function ($q) use ($request) {
                 $q->whereYear('created_at', $request->tahun_respon);
             });
         }
 
         if ($request->filled('status_pengisian')) {
             if ($request->status_pengisian == 'sudah') {
-                $query->whereHas('kuesionerAnswer');
+                $query->whereHas('kuesionerAnswers');
             } elseif ($request->status_pengisian == 'belum') {
-                $query->whereDoesntHave('kuesionerAnswer');
+                $query->whereDoesntHave('kuesionerAnswers');
             }
         }
         

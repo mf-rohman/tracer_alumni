@@ -8,15 +8,22 @@ use App\Models\KuesionerAnswer;
 use App\Models\Prodi;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
     public function index(Request $request)
     {
+        $user = Auth::user();
         $selectedProdiId = $request->input('prodi_id');
         $selectedTahunLulus = $request->input('tahun_lulus');
         $selectedTahunRespon = $request->input('tahun_respon');
+
+        if ($user->role === 'admin_prodi') {
+            // Paksa filter untuk hanya menggunakan prodi dari admin yang login
+            $selectedProdiId = $user->prodi_id;
+        }
 
         // --- MENGHITUNG TOTAL ALUMNI (DENOMINATOR) ---
         $alumniQuery = Alumni::query();
@@ -80,7 +87,7 @@ class DashboardController extends Controller
         }
 
         $respondenPerProdi = Prodi::withCount(['alumni as responden_count' => function ($query) {
-                $query->whereHas('kuesionerAnswer');
+                $query->whereHas('kuesionerAnswers');
             }])->get();
 
         // --- DATA WAKTU TUNGGU ---

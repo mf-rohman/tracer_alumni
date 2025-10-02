@@ -37,6 +37,7 @@
         </a>
       </li>
 
+      @if(auth()->user()->role == 'superadmin')
       <li class="nav-item">
         <a class="nav-link text-white {{ request()->routeIs('admin.instansi.*') ? 'active bg-gradient-primary' : '' }}" href="{{ route('admin.instansi.index') }}">
           <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -46,7 +47,7 @@
         </a>
       </li>
 
-      @if(auth()->user()->role == 'superadmin')
+      
         <li class="nav-item mt-3">
           <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Super Admin</h6>
         </li>
@@ -56,6 +57,15 @@
               <i class="fa fa-user-shield text-dark"></i>
             </div>
             <span class="nav-link-text ms-1">Manajemen User</span>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link text-white {{ request()->routeIs('admin.pengaturan.index') ? 'active bg-gradient-primary' : '' }}" href="{{ route('admin.pengaturan.index') }}">
+            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="fa-duotone fa-solid fa-gear text-dark"></i>
+            </div>
+            <span class="nav-link-text ms-1">Pengaturan Kuesioner</span>
           </a>
         </li>
       @endif

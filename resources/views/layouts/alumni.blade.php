@@ -226,6 +226,24 @@
         </div>
     </main>
 
+    <div class="modal fade" id="kuesionerLockModal" tabindex="-1" aria-labelledby="kuesionerLockModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title font-weight-bolder" id="kuesionerLockModalLabel"><i class="fas fa-lock me-2"></i>Kuesioner Terkunci</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    {{-- Pesan notifikasi akan ditampilkan di sini oleh JavaScript --}}
+                    <p id="modalLockMessage">Pesan notifikasi akan muncul di sini.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="{{ asset('assets/js/core/popper.min.js') }}"></script>
     <script src="{{ asset('assets/js/core/bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/js/plugins/perfect-scrollbar.min.js') }}"></script>
@@ -234,6 +252,24 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
     @stack('scripts')
-    <!-- <script src="{{ asset('assets/js/soft-ui-dashboard.min.js?v=1.0.7') }}"></script> -->
+
+    <script>
+        // Pastikan kode ini berjalan setelah semua library lain dimuat
+        document.addEventListener('DOMContentLoaded', function () {
+            const kuesionerLockModalElement = document.getElementById('kuesionerLockModal');
+            if (kuesionerLockModalElement) {
+                // Membuat instance Modal Bootstrap baru agar bisa kita kontrol
+                const kuesionerLockModal = new bootstrap.Modal(kuesionerLockModalElement);
+        
+                // Fungsi global untuk menampilkan modal dengan pesan kustom
+                window.showLockWarning = function(message) {
+                    document.getElementById('modalLockMessage').innerText = message;
+                    kuesionerLockModal.show();
+                }
+            }
+        });
+    </script>
+    <script src="{{ asset('assets/js/soft-ui-dashboard.min.js?v=1.0.7') }}"></script>
+    
 </body>
 </html>

@@ -13,9 +13,12 @@ use App\Http\Controllers\Admin\AlumniController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\AlumniCategoryController;
 use App\Http\Controllers\Admin\InstansiController;
+use App\Http\Controllers\Admin\PengaturanController;
 use App\Http\Controllers\Admin\RespondenController;
 use App\Http\Controllers\Auth\InstansiLoginController;
 use App\Http\Controllers\Instansi\InstansiDashboardController;
+use App\Http\Controllers\Instansi\ProfileController as InstansiProfileController;
+use App\Models\Instansi;
 
 /*
 |--------------------------------------------------------------------------
@@ -74,11 +77,14 @@ Route::middleware(['auth', 'role:superadmin'])->prefix(env('ADMIN_PATH', 'admin'
     Route::resource('users', UserController::class);
     Route::resource('instansi', InstansiController::class);
 
+    Route::get('/pengaturan', [PengaturanController::class, 'index'])->name('pengaturan.index');
+    Route::put('/pengaturan', [PengaturanController::class, 'update'])->name('pengaturan.update');
+
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/dashboard', [AlumniDashboardController::class, 'index'])->name('dashboard');
-    Route::post('/dashboard', [AlumniDashboardController::class, 'store'])->name('dashboard.store');
+    Route::get('/dashboard/{tahun}', [AlumniDashboardController::class, 'index'])->name('dashboard');
+    Route::post('/dashboard/{tahun}', [AlumniDashboardController::class, 'store'])->name('dashboard.store');
     // ... rute profile lainnya
 });
 
@@ -93,12 +99,19 @@ Route::prefix('penilaian')->name('instansi.')->group(function() {
 // Contoh rute untuk dashboard instansi (diberi middleware agar aman)
 // Ini adalah halaman yang akan dilihat instansi setelah berhasil login
 Route::middleware(['auth', 'role:instansi'])->prefix(env('INSTASI_PATH', 'instansi'))->name('instansi.')->group(function() {
-    Route::get('/dashboard', [InstansiDashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', [InstansiDashboardController::class, 'dashboard'])->name('dashboard');
+    Route::get('/data-alumni', [InstansiDashboardController::class, 'dataAlumni'])->name('data_alumni');
+
+    // Rute untuk form penilaian
     Route::get('/alumni/{alumnus}/nilai', [InstansiDashboardController::class, 'showPenilaianForm'])->name('penilaian.show');
     Route::post('/alumni/{alumnus}/nilai', [InstansiDashboardController::class, 'storePenilaian'])->name('penilaian.store');
-
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    
+    // RUTE BARU UNTUK PENGATURAN AKUN
+    Route::get('/instansi-profile', [InstansiProfileController::class, 'edit'])->name('profile.edit');
+    // Rute untuk memperbarui profil (nama & foto)
+    Route::put('/instansi-profile', [InstansiProfileController::class, 'updateProfile'])->name('profile.update');
+    // Rute untuk memperbarui password
+    Route::put('/instansi-password', [InstansiProfileController::class, 'updatePassword'])->name('password.update');
 });
 
 // Memanggil route otentikasi dari Breeze (login, register, dll)

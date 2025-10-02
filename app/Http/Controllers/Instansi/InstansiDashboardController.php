@@ -13,22 +13,50 @@ class InstansiDashboardController extends Controller
     /**
      * Menampilkan dasbor utama untuk instansi.
      */
-    public function index()
+    public function dashboard()
     {
         $instansi = Auth::user()->instansi;
-
         if (!$instansi) {
             Auth::logout();
             return redirect()->route('instansi.login.show')->with('error', 'Akun Anda tidak tertaut dengan instansi manapun.');
         }
 
-        $alumniList = Alumni::whereHas('kuesionerAnswer', function ($query) use ($instansi) {
+        // Ambil semua penilaian yang diberikan oleh instansi ini
+        $penilaianList = PenilaianInstansi::where('instansi_id', $instansi->id)
+            ->with('alumni.prodi')
+            ->get();
+
+        // Hitung statistik untuk kartu
+        $totalAlumniDinilai = $penilaianList->unique('alumni_id')->count();
+        $totalPenilaianDiberikan = $penilaianList->count();
+        $rataRataKeahlian = $penilaianList->avg('keahlian');
+
+        // Siapkan data untuk Chart (contoh: distribusi Kinerja Keseluruhan)
+        $kinerjaCounts = $penilaianList->groupBy('kinerja_keseluruhan')->map->count();
+        $chartLabels = $kinerjaCounts->keys();
+        $chartData = $kinerjaCounts->values();
+
+        return view('instansi.dashboard', compact(
+            'instansi', 'totalAlumniDinilai', 'totalPenilaianDiberikan',
+            'rataRataKeahlian', 'chartLabels', 'chartData'
+        ));
+    }
+
+    /**
+     * BARU: Metode ini khusus untuk menampilkan halaman "Data Alumni".
+     */
+    public function dataAlumni()
+    {
+        $instansi = Auth::user()->instansi;
+        
+        // Cari alumni yang tercatat bekerja di instansi ini
+        $alumniList = Alumni::whereHas('kuesionerAnswers', function ($query) use ($instansi) {
             $query->where('f5b', $instansi->nama);
         })
         ->with('penilaianInstansi.penilai')
         ->latest()->paginate(10);
 
-        return view('instansi.dashboard', compact('instansi', 'alumniList'));
+        return view('instansi.data-alumni', compact('instansi', 'alumniList'));
     }
 
     /**

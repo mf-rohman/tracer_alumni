@@ -1,96 +1,112 @@
 @extends('layouts.instansi')
-
-@section('title', 'Dashboard Penilaian Alumni')
+@section('title', 'Dashboard Penilaian')
 
 @section('content')
 <div class="row">
+    {{-- PERUBAHAN: Kartu Selamat Datang dengan Foto Profil --}}
     <div class="col-12">
-        {{-- Kartu Selamat Datang --}}
         <div class="card mb-4">
-            <div class="card-header">
-                <h5 class="mb-0">Selamat Datang, {{ $instansi->nama }}</h5>
-                <p class="text-sm mb-0">
-                    Berikut adalah daftar alumni yang tercatat bekerja di instansi Anda. Silakan berikan penilaian kinerja untuk masing-masing alumni.
-                </p>
+            <div class="card-body p-3">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        {{-- Menampilkan foto profil instansi atau avatar default --}}
+                        <img src="{{ $instansi->photo_path ? asset('storage/' . $instansi->photo_path) : 'https://ui-avatars.com/api/?name=' . urlencode($instansi->nama) . '&background=4B49AC&color=fff&size=64' }}"
+                             alt="Logo Instansi" class="avatar avatar-xl rounded-circle shadow-sm">
+                    </div>
+                    <div class="col">
+                        <h5 class="mb-0 font-weight-bolder">Selamat Datang, {{ $instansi->nama }}</h5>
+                        <p class="text-sm mb-0">Berikut adalah ringkasan penilaian kinerja alumni yang telah Anda berikan.</p>
+                    </div>
+                </div>
             </div>
         </div>
+    </div>
+</div>
 
-        {{-- Tabel Daftar Alumni --}}
-        <div class="card">
-             <div class="card-header pb-0 d-flex justify-content-between align-items-center">
-                <h6 class="mb-0">Daftar Alumni untuk Dinilai</h6>
+<div class="row">
+    {{-- Kartu Statistik --}}
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body text-center d-flex flex-column justify-content-center">
+                <h6 class="text-uppercase text-secondary text-xxs font-weight-bolder">Total Alumni Dinilai</h6>
+                <h2 class="font-weight-bolder mt-2">{{ $totalAlumniDinilai }}</h2>
+                <span class="text-sm">Orang</span>
             </div>
-            <div class="card-body px-0 pt-0 pb-2">
-                <div class="table-responsive p-0">
-                    <table class="table align-items-center mb-0">
-                        <thead>
-                            <tr>
-                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nama Alumni</th>
-                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Program Studi</th>
-                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Status Penilaian</th>
-                                <th class="text-secondary opacity-7"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                             @forelse($alumniList as $alumnus)
-                            <tr>
-                                <td>
-                                    <div class="d-flex px-2 py-1">
-                                        <div>
-                                            <img src="{{ $alumnus->photo_path ? asset('storage/' . $alumnus->photo_path) : 'https://ui-avatars.com/api/?name=' . urlencode($alumnus->nama_lengkap) . '&background=4B49AC&color=fff' }}" class="avatar avatar-sm me-3">
-                                        </div>
-                                        <div class="d-flex flex-column justify-content-center">
-                                            <h6 class="mb-0 text-sm">{{ $alumnus->nama_lengkap }}</h6>
-                                            <p class="text-xs text-secondary mb-0">{{ $alumnus->npm }}</p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <p class="text-xs font-weight-bold mb-0">{{ $alumnus->prodi->nama_prodi ?? 'N/A' }}</p>
-                                </td>
-                                {{-- KOLOM STATUS PENILAIAN BARU --}}
-                                <td class="align-middle text-sm">
-                                    @if($alumnus->penilaianInstansi->isNotEmpty())
-                                        {{-- Jika sudah ada penilaian, tampilkan daftar penilainya --}}
-                                        <ul class="list-unstyled mb-0">
-                                            @foreach($alumnus->penilaianInstansi as $penilaian)
-                                                <li class="mb-1">
-                                                    <span class="badge badge-sm bg-gradient-success">
-                                                        <i class="fas fa-check-circle me-1"></i>
-                                                        {{-- PERBAIKAN: Menampilkan nama penilai dari form --}}
-                                                        Dinilai oleh: {{ $penilaian->nama_penilai }}
-                                                    </span>
-                                                </li>
-                                            @endforeach
-                                        </ul>
-                                    @else
-                                        {{-- Jika belum ada penilaian sama sekali --}}
-                                        <span class="badge badge-sm bg-gradient-secondary">Belum Dinilai</span>
-                                    @endif
-                                </td>
-                                {{-- TOMBOL AKSI BARU --}}
-                                <td class="align-middle">
-                                    <a href="{{ route('instansi.penilaian.show', $alumnus) }}" class="btn btn-sm bg-gradient-primary mb-0">
-                                        + Tambah Penilaian
-                                    </a>
-                                </td>
-                            </tr>
-                            @empty
-                            <tr>
-                                <td colspan="4" class="text-center py-4">
-                                    <p class="text-secondary mb-0">Belum ada data alumni yang tercatat bekerja di instansi Anda.</p>
-                                </td>
-                            </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
-                 <div class="d-flex justify-content-center mt-4">
-                    {{ $alumniList->links() }}
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body text-center d-flex flex-column justify-content-center">
+                 <h6 class="text-uppercase text-secondary text-xxs font-weight-bolder">Total Penilaian Diberikan</h6>
+                <h2 class="font-weight-bolder mt-2">{{ $totalPenilaianDiberikan }}</h2>
+                <span class="text-sm">Penilaian</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body text-center d-flex flex-column justify-content-center">
+                 <h6 class="text-uppercase text-secondary text-xxs font-weight-bolder">Rata-rata Keahlian</h6>
+                <h2 class="font-weight-bolder mt-2">{{ number_format($rataRataKeahlian, 2) }}</h2>
+                <span class="text-sm">dari 4.00</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-2">
+    {{-- Grafik --}}
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h6>Distribusi Kinerja Keseluruhan Alumni</h6>
+            </div>
+            <div class="card-body">
+                <div class="chart">
+                    <canvas id="kinerja-chart" class="chart-canvas" height="300"></canvas>
                 </div>
             </div>
         </div>
     </div>
 </div>
 @endsection
+
+@push('scripts')
+{{-- Memuat library Chart.js --}}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    var ctx = document.getElementById("kinerja-chart").getContext("2d");
+    new Chart(ctx, {
+        type: "bar",
+        data: {
+            labels: @json($chartLabels),
+            datasets: [{
+                label: "Jumlah Penilaian",
+                backgroundColor: "#4B49AC",
+                data: @json($chartData),
+                borderRadius: 5,
+                maxBarThickness: 40,
+            }],
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { 
+                legend: { 
+                    display: false // Sembunyikan legenda
+                } 
+            },
+            scales: { 
+                y: { 
+                    ticks: { 
+                        beginAtZero: true,
+                        // Pastikan hanya angka bulat yang ditampilkan di sumbu Y
+                        callback: function(value) {if (value % 1 === 0) {return value;}}
+                    } 
+                } 
+            }
+        }
+    });
+</script>
+@endpush
 

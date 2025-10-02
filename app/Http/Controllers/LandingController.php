@@ -103,7 +103,7 @@ class LandingController extends Controller
         if ($alumni) {
             Auth::login($alumni->user);
             $request->session()->regenerate();
-            return redirect()->intended(route('dashboard'));
+            return redirect()->intended(route('dashboard', ['tahun' => $alumni->tahun_lulus]));
         }
 
         // Jika tidak cocok, kembalikan ke halaman verifikasi dengan pesan error
