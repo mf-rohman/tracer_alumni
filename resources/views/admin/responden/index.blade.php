@@ -110,7 +110,7 @@
                                     <p class="text-xs text-secondary mb-0">{{ $alumnus->tahun_lulus }}</p>
                                 </td>
                                 <td class="align-middle text-center text-sm">
-                                    @if($alumnus->kuesionerAnswers)
+                                    @if($alumnus->kuesionerAnswers->isNotEmpty())
                                         <span class="badge badge-sm bg-gradient-success">Sudah Mengisi</span>
                                     @else
                                         <span class="badge badge-sm bg-gradient-secondary">Belum Mengisi</span>

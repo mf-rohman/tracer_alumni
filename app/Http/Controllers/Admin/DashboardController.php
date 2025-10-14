@@ -56,16 +56,50 @@ class DashboardController extends Controller
             'Bekerja' => 1, 'Wiraswasta' => 3, 'Studi Lanjut' => 4,
             'Mencari Kerja' => 5, 'Tidak Bekerja' => 2,
         ];
-        $statusCounts = [];
+        $statusData = [];
         foreach ($statusMapping as $label => $value) {
-            $countQuery = clone $kuesionerQuery;
-            $statusCounts[$label] = $countQuery->where('f8', $value)->count();
+            $count = (clone $kuesionerQuery)->where('f8', $value)->count();
+            $percentage = $totalResponden > 0 ? round(($count / $totalResponden) * 100) : 0;
+            $chartData = [$count, max(0, $totalResponden - $count)];
+            
+            $statusData[$label] = [
+                'count' => $count,
+                'percentage' => $percentage,
+                'chartData' => $chartData,
+            ];
         }
+
+        $persentaseResponden = $totalAlumni > 0 ? round(($totalResponden / $totalAlumni) * 100) : 0;
+        $chartDataResponden = [$totalResponden, max(0, $totalAlumni - $totalResponden)];
+
+        // --- PERBAIKAN: DATA UNTUK KARTU STATISTIK DONAT ---
+        // $statusBekerjaCount = (clone $kuesionerQuery)->where('f8', 1)->count();
+        // $statusStudiLanjutCount = (clone $kuesionerQuery)->where('f8', 4)->count();
+        // $statusWiraswastaCount = (clone $kuesionerQuery)->where('f8', 3)->count();
+        // // Anda bisa menambahkan count untuk status lain di sini jika perlu
+
+        // // Data untuk Chart 1: Responden
+        // $persentaseResponden = $totalAlumni > 0 ? round(($totalResponden / $totalAlumni) * 100) : 0;
+        // $chartDataResponden = [$totalResponden, max(0, $totalAlumni - $totalResponden)];
+        
+        // // Data untuk Chart 2: Bekerja
+        // $persentaseBekerja = $totalResponden > 0 ? round(($statusBekerjaCount / $totalResponden) * 100) : 0;
+        // $chartDataBekerja = [$statusBekerjaCount, max(0, $totalResponden - $statusBekerjaCount)];
+        
+        // // Data untuk Chart 3: Studi Lanjut
+        // $persentaseStudiLanjut = $totalResponden > 0 ? round(($statusStudiLanjutCount / $totalResponden) * 100) : 0;
+        // $chartDataStudiLanjut = [$statusStudiLanjutCount, max(0, $totalResponden - $statusStudiLanjutCount)];
+        
+        // // Data untuk Chart 3: Wiraswasta
+        // $persentaseWiraswasta = $totalResponden > 0 ? round(($statusWiraswastaCount / $totalResponden) * 100) : 0;
+        // $chartDataWiraswasta  = [$statusWiraswastaCount, max(0, $totalResponden - $statusWiraswastaCount)];
+        // // --- SELESAI ---
+        
 
         // Pencegahan Division by Zero
         if ($totalAlumni === 0) {
            $totalResponden = 0;
-           foreach ($statusCounts as $key => &$value) {
+           foreach ($statusData as $key => &$value) {
                $value = 0;
            }
         }
@@ -107,13 +141,13 @@ class DashboardController extends Controller
             ->distinct()->orderBy('tahun_respon', 'desc')->get();
 
         return view('admin.dashboard', compact(
-            'totalAlumni', 'totalResponden', 'statusCounts',
+            'totalAlumni', 'totalResponden', 
             'prodiList', 'selectedProdiId',
             'tahunLulusList', 'selectedTahunLulus',
             'tahunResponList', 'selectedTahunRespon', // <-- Memastikan variabel ini dikirim
             'tahunRange', 'dataLulusanChart',
             'respondenPerProdi',
-            'rataRataWaktuTunggu', 'waktuTungguChartData'
+            'rataRataWaktuTunggu', 'waktuTungguChartData', 'persentaseResponden', 'chartDataResponden','statusData',
         ));
     }
 }

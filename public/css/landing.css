@@ -1,21 +1,22 @@
-/*
-====================================
-Custom Stylesheet for Landing Page
-====================================
-*/
 
-/* 1. General & Variables
------------------------------*/
 :root {
-    --primary-color: #4A90E2; /* Biru yang lebih modern */
-    --secondary-color: #50E3C2; /* Aksen hijau/tosca */
+    --primary-color: #4A90E2; 
+    --secondary-color: #50E3C2; 
     --dark-color: #2c3e50;
     --light-color: #ffffff;
     --body-font: 'Plus Jakarta Sans', sans-serif;
+    --bs-primary: #4B49AC;
+    --bs-primary-rgb: 75, 73, 172;
+    --bs-secondary: #7DA0FA;
 }
 
 html {
     scroll-behavior: smooth;
+    scrollbar-width: none;
+    --webkit-scrollbar {
+      display: none;
+    }
+    -ms-overflow-style: none;
 }
 
 body {
@@ -23,7 +24,7 @@ body {
     background-color: #f8f9fa;
     color: #495057;
     line-height: 1.7;
-    padding-top: 5rem; /* TAMBAHKAN INI (80px, sesuaikan jika perlu) */
+    padding-top: 5rem;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -48,8 +49,6 @@ section {
     padding: 80px 0;
 }
 
-/* 2. Animated Background
------------------------------*/
 .background-animation {
     position: fixed;
     top: 0;
@@ -57,8 +56,8 @@ section {
     width: 100%;
     height: 100%;
     z-index: -1;
-    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-    background-size: 400% 400%;
+    background: linear-gradient(132deg, #000000,#00ff00, #0000ff,#e60073,#ff0000,#ffffff);background-size: 400% 400%; 
+    animation: BackgroundGradient 15s ease infinite;
     animation: gradientBG 15s ease infinite;
 }
 
@@ -69,32 +68,30 @@ section {
 }
 
 
-/* 3. Navbar
------------------------------*/
 .navbar {
-    transition: background-color 0.4s ease, padding 0.4s ease;
+    transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
     padding: 1rem 0;
-    z-index: 1000; /* Tambahkan baris ini */
+    z-index: 1000; 
 }
 
 .navbar.scrolled {
     background-color: rgba(30, 41, 59, 0.9);
-    padding: 0.25rem 0; /* Padding setelah scroll (lebih kecil) */
+    padding: 0.25rem 0;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     backdrop-filter: blur(10px);
 }
 
 .navbar-brand img {
-    height: 35px; /* Ukuran logo awal */
-    transition: height 0.4s ease; /* Tambahkan transisi */
+    height: 35px; 
+    transition: height 0.4s ease; 
 }
 
 .navbar.scrolled .navbar-brand img {
-    height: 30px; /* Ukuran logo setelah scroll (mengecil) */
+    height: 30px; 
 }
 
 .navbar.scrolled .nav-link {
-    padding: 0.5rem 1rem !important; /* Padding link setelah scroll (mengecil) */
+    padding: 0.5rem 1rem !important; 
 }
 
 .nav-link {
@@ -102,8 +99,8 @@ section {
     color: rgba(255,255,255,0.8);
     position: relative;
     padding: 0.5rem 1rem !important;
-    padding: 0.8rem 1rem !important; /* Padding link awal */
-    transition: padding 0.4s ease; /* Tambahkan transisi */
+    padding: 0.8rem 1rem !important; 
+    transition: padding 0.4s ease; 
 }
 
 .nav-link:hover, .nav-link.active {
@@ -127,8 +124,6 @@ section {
 }
 
 
-/* 4. Hero Section
------------------------------*/
 .hero-section {
     position: relative;
     color: var(--light-color);
@@ -141,7 +136,7 @@ section {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5); /* Overlay gelap agar teks terbaca */
+    background: rgba(0, 0, 0, 0.5); 
     z-index: 1;
 }
 
@@ -179,8 +174,6 @@ section {
 }
 
 
-/* 5. Manfaat Section
------------------------------*/
 .card-feature {
     background: var(--light-color);
     border-radius: 1rem;
@@ -211,14 +204,12 @@ section {
     transform: scale(1.1) rotate(25deg);
 }
 
-/* Efek Stagger/Berurutan untuk Kartu Manfaat */
 .manfaat-card:nth-child(1) .card-feature { animation-delay: 0.2s; }
 .manfaat-card:nth-child(2) .card-feature { animation-delay: 0.4s; }
 .manfaat-card:nth-child(3) .card-feature { animation-delay: 0.6s; }
 .manfaat-card:nth-child(4) .card-feature { animation-delay: 0.8s; }
 
-/* 6. Alur Section
------------------------------*/
+
 .step-item {
     position: relative;
 }
@@ -255,24 +246,22 @@ section {
     width: 100%;
     height: 2px;
     background-color: var(--primary-color);
-    transform: translateX(30px) scaleX(0); /* Awalnya garis tidak ada */
+    transform: translateX(30px) scaleX(0); 
     transform-origin: left;
     transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
     z-index: -1;
 }   
 
 .step-item.animated:not(:last-child)::after {
-    transform: translateX(30px) scaleX(1); /* Garis "menggambar" dirinya */
+    transform: translateX(30px) scaleX(1); 
 }
 
-/* Efek Stagger/Berurutan untuk Item Alur */
+
 .alur-item:nth-child(1) { animation-delay: 0.2s; }
 .alur-item:nth-child(2) { animation-delay: 0.4s; }
 .alur-item:nth-child(3) { animation-delay: 0.6s; }
 .alur-item:nth-child(4) { animation-delay: 0.8s; }
 
-/* 7. Footer
------------------------------*/
 .footer {
     background-color: var(--dark-color);
 }
@@ -287,8 +276,40 @@ section {
     color: var(--secondary-color);
 }
 
-/* 8. Responsive
------------------------------*/
+.hidden a {
+    position: relative;
+  }
+  
+  .hidden a::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #F1C40F, #E74C3C);
+    border-radius: 0;
+    transition: all 0.5s ease-in-out;
+  }
+  
+  .hidden a:hover::before {
+    width: 100%;
+    border-radius: 50%;
+  } 
+  
+  @keyframes gradient-89 {
+    0% { background-position: 100% 0%; }
+    50% { background-position: 0% 0%; }
+    100% { background-position: 100% 0%; }
+  }
+
+@keyframes BackgroundGradient {
+    0% {background-position: 0% 50%;}
+    50% {background-position: 100% 50%;}
+    100% {background-position: 0% 50%;}
+}
+
+
 @media (max-width: 991.98px) {
     .navbar {
         background-color: rgba(30, 41, 59, 0.95);
@@ -311,4 +332,6 @@ section {
     .step-item:not(:last-child)::after {
         display: none;
     }
+
+    
 }

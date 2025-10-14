@@ -6,25 +6,22 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('prodi', function (Blueprint $table) {
-            $table->id();
+            // Kunci utama sekarang adalah string 'kode_prodi'
+            $table->string('kode_prodi')->primary();
+            
             $table->foreignId('fakultas_id')->constrained('fakultas')->onDelete('cascade');
-            $table->string('kode_prodi')->unique();
             $table->string('nama_prodi');
+            $table->string('singkatan')->nullable();
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('prodi');
     }
 };
+

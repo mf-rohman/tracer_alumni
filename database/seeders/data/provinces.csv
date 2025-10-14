@@ -1,0 +1,36 @@
+id_wil,nm_wil
+10000,jakarta
+20000,jawa barat
+30000,jawa tengah
+40000,yogyakarta
+50000,jawa timur
+60000,aceh
+70000,sumatera utara
+80000,sumatera barat
+90000,riau
+100000,jambi
+110000,sumatera selatan
+120000,lampung
+130000,kalimantan barat
+140000,kalimantan tengah
+150000,kalimantan selatan
+160000,kalimantan timur
+170000,Sulawesi Utara
+180000,Sulawesi Tengah
+190000,Sulawesi Selatan
+200000,Sulawesi Tenggara
+210000,Maluku
+220000,Bali
+230000,Nusa Tenggara Barat
+240000,Prov. Nusa Tenggara Timur
+250000,Papua
+260000,Bengkulu
+270000,Maluku Utara
+280000,Banten
+290000,Bangka Belitung
+300000,Gorontalo
+310000,Kepulauan Riau
+320000,Papua Barat
+330000,Sulawesi Barat
+340000,Kalimantan Utara
+999999,Luar Negeri

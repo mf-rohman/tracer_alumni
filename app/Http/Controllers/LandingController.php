@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Alumni;
+use App\Models\KuesionerAnswer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
@@ -12,7 +13,17 @@ class LandingController extends Controller
 {
     public function index()
     {
-        return view('welcome');
+        // Ambil data statistik untuk ditampilkan
+        $totalAlumni = Alumni::count();
+        $totalResponden = KuesionerAnswer::count();
+        
+        // Menghitung jumlah alumni yang sudah bekerja dari kuesioner yang terisi
+        $totalBekerja = KuesionerAnswer::where('f8', 1) // Asumsi '1' adalah status 'Bekerja'
+                                     ->orWhere('f8', 3) // Asumsi '3' adalah status 'Wiraswasta'
+                                     ->count();
+
+        // Kirim data statistik ke view
+        return view('welcome', compact('totalAlumni', 'totalResponden', 'totalBekerja'));
     }
 
     public function getPageData()

@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\Fakultas;
 use App\Models\Prodi;
+use Illuminate\Support\Facades\Schema;
 
 class FakultasProdiSeeder extends Seeder
 {
@@ -13,60 +14,63 @@ class FakultasProdiSeeder extends Seeder
      */
     public function run(): void
     {
-        // Data Fakultas dan Prodi yang sudah lengkap
+        // Baris ini akan mengosongkan tabel terlebih dahulu untuk menghindari error duplikasi
+        Schema::disableForeignKeyConstraints();
+        Prodi::truncate();
+        Fakultas::truncate();
+        Schema::enableForeignKeyConstraints();
+
         $data = [
             [
                 'kode_fakultas' => 'FKIP',
                 'nama_fakultas' => 'Fakultas Keguruan dan Ilmu Pendidikan',
                 'prodi' => [
-                    ['kode_prodi' => 'PPKN', 'nama_prodi' => 'S1 Pendidikan Pancasila dan Kewarganegaraan'],
-                    ['kode_prodi' => 'PE', 'nama_prodi' => 'S1 Pendidikan Ekonomi'],
-                    ['kode_prodi' => 'PBIO', 'nama_prodi' => 'S1 Pendidikan Biologi'],
-                    ['kode_prodi' => 'PMAT', 'nama_prodi' => 'S1 Pendidikan Matematika'],
-                    ['kode_prodi' => 'PBSI', 'nama_prodi' => 'S1 Pendidikan Bahasa & Sastra Indonesia'],
-                    ['kode_prodi' => 'PBI', 'nama_prodi' => 'S1 Pendidikan Bahasa Inggris'],
-                    ['kode_prodi' => 'PGPAUD', 'nama_prodi' => 'S1 Pendidikan Guru PAUD (PG-PAUD)'],
-                    ['kode_prodi' => 'PGSD', 'nama_prodi' => 'S1 Pendidikan Guru SD (PGSD)'],
+                    ['kode_prodi' => '87205', 'nama_prodi' => 'S1 P. PKN', 'singkatan' => 'P. PKN'],
+                    ['kode_prodi' => '87203', 'nama_prodi' => 'S1 P. Ekonomi', 'singkatan' => 'PE'],
+                    ['kode_prodi' => '84105', 'nama_prodi' => 'S1 P. Biologi', 'singkatan' => 'P.BIO'],
+                    ['kode_prodi' => '84202', 'nama_prodi' => 'S1 P. Matematika', 'singkatan' => 'P.MATH'],
+                    ['kode_prodi' => '88201', 'nama_prodi' => 'S1 P. B. Indonesia', 'singkatan' => 'PBSI'],
+                    ['kode_prodi' => '88203', 'nama_prodi' => 'S1 P. B. Inggris', 'singkatan' => 'P. BING'],
+                    ['kode_prodi' => '86207', 'nama_prodi' => 'S1 PGPAUD', 'singkatan' => 'PGPAUD'],
+                    ['kode_prodi' => '86206', 'nama_prodi' => 'S1 PGSD', 'singkatan' => 'PGSD'],
                 ]
             ],
             [
                 'kode_fakultas' => 'FISIP',
                 'nama_fakultas' => 'Fakultas Ilmu Sosial dan Ilmu Politik',
                 'prodi' => [
-                    ['kode_prodi' => 'IPOL', 'nama_prodi' => 'S1 Ilmu Politik'],
-                    ['kode_prodi' => 'IKOM', 'nama_prodi' => 'S1 Ilmu Komunikasi'],
+                    ['kode_prodi' => '67201', 'nama_prodi' => 'S1 Ilmu Politik', 'singkatan' => 'IPOL'],
+                    ['kode_prodi' => '70201', 'nama_prodi' => 'S1 Ilmu Komunikasi', 'singkatan' => 'ILKOM'],
                 ]
             ],
             [
                 'kode_fakultas' => 'FT',
                 'nama_fakultas' => 'Fakultas Teknik',
                 'prodi' => [
-                    ['kode_prodi' => 'TI', 'nama_prodi' => 'S1 Teknik Industri'],
-                    ['kode_prodi' => 'TIF', 'nama_prodi' => 'S1 Teknik Informatika'],
+                    ['kode_prodi' => '26201', 'nama_prodi' => 'S1 Teknik Industri', 'singkatan' => 'TI'],
+                    ['kode_prodi' => '55201', 'nama_prodi' => 'S1 Teknik Informatika', 'singkatan' => 'TIF'],
                 ]
             ],
             [
                 'kode_fakultas' => 'FMIPA',
                 'nama_fakultas' => 'Fakultas MIPA dan Kelautan',
                 'prodi' => [
-                    ['kode_prodi' => 'MAT', 'nama_prodi' => 'S1 Matematika'],
-                    ['kode_prodi' => 'BIO', 'nama_prodi' => 'S1 Biologi'],
-                    ['kode_prodi' => 'IK', 'nama_prodi' => 'S1 Ilmu Perikanan'],
-                    ['kode_prodi' => 'IKL', 'nama_prodi' => 'S1 Ilmu Kelautan'],
+                    ['kode_prodi' => '44201', 'nama_prodi' => 'S1 Matematika', 'singkatan' => 'MATH'],
+                    ['kode_prodi' => '46201', 'nama_prodi' => 'S1 Biologi', 'singkatan' => 'BIO'],
+                    ['kode_prodi' => '54242', 'nama_prodi' => 'S1 Ilmu Perikanan', 'singkatan' => 'IPER'],
+                    ['kode_prodi' => '54241', 'nama_prodi' => 'S1 Ilmu Kelautan', 'singkatan' => 'IKEL'],
                 ]
             ],
-            // PENAMBAHAN FAKULTAS PASCASARJANA UNTUK S2
             [
-                'kode_fakultas' => 'PASC',
+                'kode_fakultas' => 'PASCASARJANA',
                 'nama_fakultas' => 'Pascasarjana',
                 'prodi' => [
-                    ['kode_prodi' => 'S2DIKDAS', 'nama_prodi' => 'S2 Pendidikan Dasar'],
-                    ['kode_prodi' => 'S2PBIO', 'nama_prodi' => 'S2 Pendidikan Biologi'],
+                    ['kode_prodi' => '86122', 'nama_prodi' => 'S2 Pendidikan Dasar', 'singkatan' => 'S2DIKDAS'],
+                    ['kode_prodi' => '84205', 'nama_prodi' => 'S2 Pendidikan Biologi', 'singkatan' => 'S2PBIO'],
                 ]
             ],
         ];
 
-        // Looping untuk memasukkan data
         foreach ($data as $fakultasData) {
             $fakultas = Fakultas::create([
                 'kode_fakultas' => $fakultasData['kode_fakultas'],
@@ -74,10 +78,12 @@ class FakultasProdiSeeder extends Seeder
             ]);
 
             foreach ($fakultasData['prodi'] as $prodiData) {
+                // PERUBAHAN: Menambahkan 'singkatan' saat membuat data prodi
                 Prodi::create([
                     'fakultas_id' => $fakultas->id,
                     'kode_prodi' => $prodiData['kode_prodi'],
                     'nama_prodi' => $prodiData['nama_prodi'],
+                    'singkatan' => $prodiData['singkatan'],
                 ]);
             }
         }

@@ -1,8 +1,8 @@
-<div
+<!-- <div
     x-show="status === '4'"
     x-transition.duration.300ms
     class="border rounded-3 p-3 mt-4 bg-light"
->
+> -->
     {{-- ▼▼▼ KODE PARTIAL STUDI-LANJUT YANG SUDAH DIPERBARUI ▼▼▼ --}}
     <h5 class="font-weight-bolder mb-4">
         <i class="fas fa-graduation-cap me-2 text-primary"></i>

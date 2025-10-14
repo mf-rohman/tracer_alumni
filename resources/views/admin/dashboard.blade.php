@@ -3,47 +3,87 @@
 @section('title', 'Dashboard Admin')
 
 @section('content')
-<div class="container-fluid py-4">
+<div class="container-fluid py-4 px-0">
     <!-- KARTU STATISTIK ATAS -->
     <div class="row">
-        {{-- Kartu Statistik --}}
-        <div class="col-xl-2 col-sm-6 mb-xl-0 mb-4">
-            <div class="card text-center">
+        {{-- Chart 1: Responden --}}
+        <div class="col-xl-2 col-md-4 col-sm-6 mb-4">
+            <div class="card h-100">
                 <div class="card-body p-3">
-                    <h6 class="text-sm mb-0 text-capitalize font-weight-bold">Responden</h6>
-                    <h5 class="font-weight-bolder mb-0">{{ $totalResponden }} / {{ $totalAlumni }}</h5>
-                    <span class="badge bg-light text-dark">{{ $totalAlumni > 0 ? round(($totalResponden / $totalAlumni) * 100) : 0 }}% Lulusan</span>
+                    <div class="row">
+                        <div class="col-8 pe-0">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-capitalize font-weight-bold">Responden</p>
+                                <h6 class="font-normal-bolder mb-0">{{ $totalResponden }} / {{ $totalAlumni }}</h5>
+                            </div>
+                        </div>
+                        <div class="col-4 text-end">
+                            <div class="position-relative" style="height: 50px; width: 50px; margin-left:-15px;" >
+                                <canvas id="chart-responden"></canvas>
+                                <small class="position-absolute top-50 start-50 translate-middle font-weight-bolder" style="display: block;">{{ $persentaseResponden }}%</small>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        @foreach($statusCounts as $status => $count)
-        <div class="col-xl-2 col-sm-6 mb-xl-0 mb-4">
-            <div class="card text-center">
+
+        {{-- Looping untuk 5 status lainnya --}}
+        @php
+            // Definisikan warna untuk setiap status
+            $statusColors = [
+                'Bekerja' => '#2dce89',       // Hijau
+                'Wiraswasta' => '#11cdef',    // Biru muda
+                'Studi Lanjut' => '#fb6340', // Oranye
+                'Mencari Kerja' => '#f5365c', // Merah
+                'Tidak Bekerja' => '#8898aa', // Abu-abu
+            ];
+        @endphp
+        @foreach($statusData as $status => $data)
+        <div class="col-xl-2 col-md-4 col-sm-6 mb-4">
+            <div class="card h-100">
                 <div class="card-body p-3">
-                    <h6 class="text-sm mb-0 text-capitalize font-weight-bold">{{ $status }}</h6>
-                    <h5 class="font-weight-bolder mb-0">{{ $count }} / {{ $totalResponden }}</h5>
-                    <span class="badge bg-light text-dark">{{ $totalResponden > 0 ? round(($count / $totalResponden) * 100) : 0 }}% Responden</span>
+                    <div class="row">
+                        <div class="col-8 pe-0">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-capitalize font-weight-bold">{{ $status }}</p>
+                                <h5 class="font-weight-bolder mb-0">{{ $data['count'] }} / {{ $totalResponden }}</h5>
+                            </div>
+                        </div>
+                        <div class="col-4 text-end">
+                            <div class="position-relative" style="height: 50px; width: 50px; margin-left:-15px;">
+                                <canvas id="chart-{{ Str::slug($status) }}"></canvas>
+                                <small class="position-absolute top-50 start-50 translate-middle font-weight-bolder" style="display: block;">{{ $data['percentage'] }}%</small>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         @endforeach
     </div>
 
-    <!-- FILTER PRODI (TOMBOL) -->
+    {{-- PERBAIKAN: Filter Prodi dibuat scrollable horizontal --}}
+    @if(auth()->user()->role !== 'admin_prodi')
     <div class="row mt-4">
         <div class="col-12">
             <div class="card">
-                <div class="card-body d-flex flex-wrap gap-2">
-                    <a href="{{ route('admin.dashboard', ['tahun_lulus' => request('tahun_lulus'), 'tahun_respon' => request('tahun_respon')]) }}" 
-                       class="btn {{ empty($selectedProdiId) ? 'bg-gradient-primary' : 'btn-outline-primary' }} btn-sm mb-0">Semua</a>
-                    @foreach($prodiList as $prodi)
-                        <a href="{{ route('admin.dashboard', ['prodi_id' => $prodi->id, 'tahun_lulus' => request('tahun_lulus'), 'tahun_respon' => request('tahun_respon')]) }}" 
-                           class="btn {{ $selectedProdiId == $prodi->id ? 'bg-gradient-primary' : 'btn-outline-primary' }} btn-sm mb-0">{{ $prodi->kode_prodi }}</a>
-                    @endforeach
+                <div class="card-body p-2">
+                    <div class="d-flex overflow-auto pb-2" style="white-space: nowrap;">
+                        <a href="{{ route('admin.dashboard', array_merge(request()->except('prodi_id'))) }}"
+                           class="btn {{ empty($selectedProdiId) ? 'bg-gradient-primary' : 'btn-outline-primary' }} btn-sm mb-0 me-2">Semua</a>
+                        @foreach($prodiList as $prodi)
+                            <a href="{{ route('admin.dashboard', array_merge(request()->all(), ['prodi_id' => $prodi->kode_prodi])) }}"
+                               class="btn {{ $selectedProdiId == $prodi->kode_prodi ? 'bg-gradient-primary' : 'btn-outline-primary' }} btn-sm mb-0 me-2">
+                               {{ $prodi->singkatan }}
+                            </a>
+                        @endforeach
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+    @endif
 
     <!-- FILTER TAHUN (DROPDOWN) -->
     <div class="row mt-4">
@@ -87,7 +127,7 @@
     <!-- GRAFIK BARIS PERTAMA -->
     <div class="row mt-4">
         <div class="col-lg-7 mb-lg-0 mb-4">
-            <div class="card z-index-2">
+            <div class="card z-index-2 h-100">
                 <div class="card-header pb-0">
                     <h6>Data Lulusan (5 Tahun Terakhir)</h6>
                 </div>
@@ -99,14 +139,14 @@
             </div>
         </div>
         <div class="col-lg-5">
-            <div class="card">
+            <div class="card h-100">
                 <div class="card-header pb-0">
                     <h6>Waktu Tunggu Mendapat Pekerjaan</h6>
                 </div>
                 <div class="card-body p-3">
                     <div class="row">
                         <div class="col-7 text-center d-flex flex-column justify-content-center">
-                            <div class="chart mx-auto">
+                            <div class="chart">
                                 <canvas id="waktu-tunggu-chart" class="chart-canvas" height="180"></canvas>
                             </div>
                             <h4 class="font-weight-bold mt-n8">
@@ -161,56 +201,104 @@
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    // Grafik Data Lulusan
+
+    function createDoughnutChart(elementId, data, color) {
+        var ctx = document.getElementById(elementId);
+        if (!ctx) return; // Penjaga jika elemen tidak ditemukan
+        new Chart(ctx.getContext("2d"), {
+            type: "doughnut",
+            data: {
+                datasets: [{
+                    data: data,
+                    backgroundColor: [color, '#e9ecef'],
+                    borderWidth: 0,
+                }],
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { display: false }, tooltip: { enabled: false } },
+                cutout: '80%',
+            }
+        });
+    }
+
+    // Inisialisasi semua chart statistik
+    createDoughnutChart('chart-responden', @json($chartDataResponden), '#5e72e4');
+    
+    @foreach($statusData as $status => $data)
+        createDoughnutChart('chart-{{ Str::slug($status) }}', @json($data['chartData']), '{{ $statusColors[$status] }}');
+    @endforeach
+
+    // Inisialisasi chart lulusan (donat besar)
     var ctxLulusan = document.getElementById("lulusan-chart").getContext("2d");
     new Chart(ctxLulusan, {
-        type: "line",
+        type: "doughnut",
         data: {
             labels: @json($tahunRange),
             datasets: [{
                 label: "Jumlah Lulusan",
-                tension: 0.4,
-                borderWidth: 3,
-                borderColor: "#5e72e4",
-                backgroundColor: 'transparent',
                 data: @json($dataLulusanChart),
-                maxBarThickness: 6
+                backgroundColor: ['#f5365c', '#fb6340', '#ffd600', '#2dce89', '#5e72e4'].reverse(),
+                borderWidth: 0,
             }],
         },
         options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    display: false,
-                }
-            },
-            interaction: {
-                intersect: false,
-                mode: 'index',
-            },
-            scales: {
-                y: {
-                    grid: {
-                        drawBorder: false,
-                        display: true,
-                        drawOnChartArea: true,
-                        drawTicks: false,
-                        borderDash: [5, 5]
-                    },
-                },
-                x: {
-                    grid: {
-                        drawBorder: false,
-                        display: false,
-                        drawOnChartArea: false,
-                        drawTicks: false,
-                        borderDash: [5, 5]
-                    },
-                },
-            },
-        },
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { display: true, position: 'bottom' } },
+            cutout: '75%',
+        }
     });
+
+    // Grafik Data Lulusan
+    // var ctxLulusan = document.getElementById("lulusan-chart").getContext("2d");
+    // new Chart(ctxLulusan, {
+    //     type: "line",
+    //     data: {
+    //         labels: @json($tahunRange),
+    //         datasets: [{
+    //             label: "Jumlah Lulusan",
+    //             tension: 0.4,
+    //             borderWidth: 3,
+    //             borderColor: "#5e72e4",
+    //             backgroundColor: 'transparent',
+    //             data: @json($dataLulusanChart),
+    //             maxBarThickness: 6
+    //         }],
+    //     },
+    //     options: {
+    //         responsive: true,
+    //         maintainAspectRatio: false,
+    //         plugins: {
+    //             legend: {
+    //                 display: false,
+    //             }
+    //         },
+    //         interaction: {
+    //             intersect: false,
+    //             mode: 'index',
+    //         },
+    //         scales: {
+    //             y: {
+    //                 grid: {
+    //                     drawBorder: false,
+    //                     display: true,
+    //                     drawOnChartArea: true,
+    //                     drawTicks: false,
+    //                     borderDash: [5, 5]
+    //                 },
+    //             },
+    //             x: {
+    //                 grid: {
+    //                     drawBorder: false,
+    //                     display: false,
+    //                     drawOnChartArea: false,
+    //                     drawTicks: false,
+    //                     borderDash: [5, 5]
+    //                 },
+    //             },
+    //         },
+    //     },
+    // });
 
     // Grafik Waktu Tunggu
     var ctxWaktuTunggu = document.getElementById("waktu-tunggu-chart").getContext("2d");
@@ -241,7 +329,7 @@
     new Chart(ctxRespondenProdi, {
         type: "bar",
         data: {
-            labels: @json($respondenPerProdi->pluck('kode_prodi')),
+            labels: @json($respondenPerProdi->pluck('singkatan')),
             datasets: [{
                 label: "Jumlah Responden",
                 backgroundColor: "#5e72e4",

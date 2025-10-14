@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('alumni_id')->constrained('alumni')->onDelete('cascade');
 
+            $table->year('tahun_kuesioner');
+
             // Kuesioner Wajib
             $table->tinyInteger('f8')->nullable()->comment('Status saat ini');
             $table->integer('f502')->nullable()->comment('Bulan dapat kerja/wiraswasta');
@@ -58,7 +60,7 @@ return new class extends Migration
             $table->integer('f302')->nullable()->comment('Bulan sebelum lulus');
             $table->integer('f303')->nullable()->comment('Bulan sesudah lulus');
 
-            // Cara Mencari Pekerjaan (f4) - Menggunakan boolean (0/1)
+            // Cara Mencari Pekerjaan (f4)
             for ($i = 1; $i <= 15; $i++) {
                 $table->boolean('f4' . str_pad($i, 2, '0', STR_PAD_LEFT))->default(false);
             }

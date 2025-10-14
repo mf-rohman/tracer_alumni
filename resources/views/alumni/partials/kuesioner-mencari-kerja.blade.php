@@ -6,7 +6,7 @@
                             </h5>
 
                             {{-- Pertanyaan 15 --}}
-                            <div class="form-group mb-4" x-data="{ f301: '{{ old('f301', $answer->f301 ?? '') }}' }">
+                            <!-- <div class="form-group mb-4" x-data="{ f301: '{{ old('f301', $answer->f301 ?? '') }}' }">
                                 <label class="form-label"><b>Kapan anda mulai mencari pekerjaan?</b></label>
                                 <div class="mt-2 custom-radio-group">
                                     <div class="form-check d-flex align-items-center mb-2">
@@ -26,7 +26,7 @@
                                         <label class="form-check-label" for="f301_3">Saya tidak mencari kerja</label>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
 
                             {{-- Pertanyaan 16 --}}
                             @php

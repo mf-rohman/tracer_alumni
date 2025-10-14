@@ -26,25 +26,23 @@ class AlumniImport implements ToModel, WithHeadingRow
         // 1. Cari prodi berdasarkan kode_prodi dari file Excel.
         $prodi = Prodi::where('kode_prodi', $row['kode_prodi'])->first();
 
-        // Jika prodi tidak ditemukan atau email kosong, lewati baris ini dan catat di log
         if (!$prodi || empty($row['email'])) {
             Log::warning('Melewati baris karena prodi tidak ditemukan atau email kosong.', $row);
             return null;
         }
 
-        // 2. Buat atau temukan User baru untuk alumni.
         $user = User::updateOrCreate(
             ['email' => $row['email']],
             [
                 'name'     => $row['nama'],
-                'password' => Hash::make(Str::random(10)), // Password dibuat acak
+                'password' => Hash::make(Str::random(10)),
                 'role'     => 'alumni',
             ]
         );
 
-        // 3. Buat atau perbarui data Alumni yang terhubung dengan User.
+ 
         return Alumni::updateOrCreate(
-            ['npm' => $row['nomor_mahasiswa']], // Kunci unik untuk mencari alumni
+            ['npm' => $row['nomor_mahasiswa']],
             [
                 'user_id'       => $user->id,
                 'prodi_id'      => $prodi->id,

@@ -51,7 +51,7 @@
                         <select class="form-control" id="prodi_id" name="prodi_id" required>
                             <option value="">-- Pilih Prodi --</option>
                             @foreach($prodi as $p)
-                                <option value="{{ $p->id }}" {{ old('prodi_id') == $p->id ? 'selected' : '' }}>{{ $p->nama_prodi }}</option>
+                                <option value="{{ $p->kode_prodi }}" {{ old('prodi_id') == $p->kode_prodi ? 'selected' : '' }}>{{ $p->nama_prodi }}</option>
                             @endforeach
                         </select>
                     </div>

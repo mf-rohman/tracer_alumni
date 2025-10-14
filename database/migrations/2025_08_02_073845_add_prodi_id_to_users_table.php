@@ -12,13 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            // Menambahkan kolom prodi_id setelah kolom 'role'
-            // Kolom ini bisa null (kosong) karena hanya admin prodi yang akan punya nilai
-            $table->foreignId('prodi_id')
-                  ->nullable()
-                  ->after('role')
-                  ->constrained('prodi')
-                  ->onDelete('set null');
+            // PERBAIKAN: Mengubah prodi_id menjadi string dan merujuk ke 'kode_prodi'
+            $table->string('prodi_id')->nullable()->after('role'); // Buat kolom string
+
+            // Definisikan hubungan foreign key secara manual
+            $table->foreign('prodi_id')
+                  ->references('kode_prodi')->on('prodi')
+                  ->onDelete('set null'); // Jika prodi dihapus, user tidak ikut terhapus
         });
     }
 
@@ -28,7 +28,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            // Ini adalah perintah untuk membatalkan perubahan jika diperlukan
+            // Hapus foreign key sebelum menghapus kolom
             $table->dropForeign(['prodi_id']);
             $table->dropColumn('prodi_id');
         });

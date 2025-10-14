@@ -85,6 +85,7 @@ Route::middleware(['auth', 'role:superadmin'])->prefix(env('ADMIN_PATH', 'admin'
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard/{tahun}', [AlumniDashboardController::class, 'index'])->name('dashboard');
     Route::post('/dashboard/{tahun}', [AlumniDashboardController::class, 'store'])->name('dashboard.store');
+    Route::post('/dashboard/copy', [AlumniDashboardController::class, 'copyAnswers'])->name('dashboard.copy');
     // ... rute profile lainnya
 });
 

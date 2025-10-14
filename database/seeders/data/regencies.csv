@@ -1,0 +1,521 @@
+id_wil,nm_wil
+10100,Kab. Kepulauan Seribu
+16000,Kota Jakarta Pusat
+16100,Kota Jakarta Utara
+16200,Kota Jakarta Barat
+16300,Kota Jakarta Selatan
+16400,Kota Jakarta Timur
+20500,Kab. Bogor
+20600,Kab. Sukabumi
+20700,Kab. Cianjur
+20800,Bandung
+21000,Kab. Sumedang
+21100,Kab. Garut
+21200,Kab. Tasikmalaya
+21400,Kab. Ciamis
+21500,Kab. Kuningan
+21600,Kab. Majalengka
+21700,Kab. Cirebon
+21800,Kab. Indramayu
+21900,Kab. Subang
+22000,Kab. Purwakarta
+22100,Kab. Karawang
+22200,Kab. Bekasi
+22300,Kab. Bandung Barat
+22500,Kab. Pangandaran
+26000,Kota Bandung
+26100,Kota Bogor
+26200,Kota Sukabumi
+26300,Kota Cirebon
+26500,Kota Bekasi
+26600,Kota Depok
+26700,Kota Cimahi
+26800,Kota Tasikmalaya
+26900,Kota Banjar
+30100,Kab. Cilacap
+30200,Kab. Banyumas
+30300,Kab. Purbalingga
+30400,Kab. Banjarnegara
+30500,Kab. Kebumen
+30600,Kab. Purworejo
+30700,Kab. Wonosobo
+30800,Kab. Magelang
+30900,Kab. Boyolali
+31000,Kab. Klaten
+31100,Kab. Sukoharjo
+31200,Kab. Wonogiri
+31300,Kab. Karanganyar
+31400,Kab. Sragen
+31500,Kab. Grobogan
+31600,blora
+31700,rembang
+31800,pati
+31900,kudus
+32000,jepara
+32100,Kab. Demak
+32200,semarang
+32300,temanggung
+32400,kendal
+32500,batang
+32600,Kab. Pekalongan
+32700,pemalang
+32800,Kab. Tegal
+32900,Kab. Brebes
+36000,Kota Magelang
+36100,Kota Surakarta
+36200,Kota Salatiga
+36300,Kota Semarang
+36400,Kota Pekalongan
+36500,Kota Tegal
+40100,Kab. Bantul
+40200,Kab. Sleman
+40300,Kab. Gunung Kidul
+40400,Kab. Kulon Progo
+46000,Yogyakarta
+50100,gresik
+50200,Sidoarjo
+50300,Mojokerto
+50400,Jombang
+50500,Bojonegoro
+50600,Tuban
+50700,Lamongan
+50800,Madiun
+50900,Ngawi
+51000,Magetan
+51100,Ponorogo
+51200,Pacitan
+51300,Kediri
+51400,Nganjuk
+51500,Blitar
+51600,Tulungagung
+51700,Trenggalek
+51800,Malang
+51900,Pasuruan
+52000,Probolinggo
+52100,Lumajang
+52200,Bondowoso
+52300,Situbondo
+52400,Jember
+52500,Banyuwangi
+52600,Pamekasan
+52700,Sampang
+52800,Sumenep
+52900,Bangkalan
+56000,surabaya
+56100,Malang
+56200,Madiun
+56300,Kediri
+56400,Mojokerto
+56500,Blitar
+56600,Pasuruan
+56700,Probolinggo
+56800,Batu
+60100,Kab. Aceh Besar
+60200,Kab. Pidie
+60300,Kab. Aceh Utara
+60400,Kab. Aceh Timur
+60500,Kab. Aceh Tengah
+60600,Kab. Aceh Barat
+60700,Kab. Aceh Selatan
+60800,Kab. Aceh Tenggara
+61100,Kab. Simeulue
+61200,Kab. Bireuen
+61300,Kab. Aceh Singkil
+61400,Kab. Aceh Tamiang
+61500,Kab. Nagan Raya
+61600,Kab. Aceh Jaya
+61700,Kab. Aceh Barat Daya
+61800,Kab. Gayo Lues
+61900,Kab. Bener Meriah
+62000,Kab. Pidie Jaya
+66000,Kota Sabang
+66100,Kota Banda Aceh
+66200,Kota Lhokseumawe
+66300,Kota Langsa
+66400,Kab. Sabussalam
+70100,Kab. Deli Serdang
+70200,Kab. Langkat
+70300,Kab. Karo
+70400,Kab. Simalungun
+70500,Kab. Dairi
+70600,Kab. Asahan
+70700,Kab. Labuhan Batu
+70800,Kab. Tapanuli Utara
+70900,Kab. Tapanuli Tengah
+71000,Kab. Tapanuli Selatan
+71100,Kab. Nias
+71500,Kab. Mandailing Natal
+71600,Kab. Toba Samosir
+71700,Kab. Nias Selatan
+71800,Kab. Pak pak Bharat
+71900,Kab. Humbang Hasudutan
+72000,Kab. Samosir
+72100,Kab. Serdang Bedagai
+72200,Kab. Batubara
+72300,Kab. Padang Lawas utara
+72400,Kab. Padang Lawas
+72500,Kab. Labuhan Batu Utara
+72600,Kab. Labuhan Batu Selatan
+72700,Kab. Nias Barat
+72800,Kab. Nias Utara
+76000,Kota Medan
+76100,Kota Binjai
+76200,Kota Tebing Tinggi
+76300,Kota Pematang Siantar
+76400,Kota Tanjung Balai
+76500,Kota Sibolga
+76600,Kota Padang Sidempuan
+76700,Kota Gunung Sitoli
+80100,Kab. Agam
+80200,Kab. Pasaman
+80300,Kab. Lima Puluh Koto
+80400,Kab. Solok
+80500,Kab. Padang Pariaman
+80600,Kab. Pesisir Selatan
+80700,Kab. Tanah Datar
+80800,Kab. Sawahlunto/ Sijunjung
+81000,Kab. Kepulauan Mentawai
+81100,Kab. Solok Selatan
+81200,Kab. Dharmas Raya
+81300,Kab. Pasaman Barat
+86000,Kota Bukittinggi
+86100,Kota Padang
+86200,Kota Padang Panjang
+86300,Kota Sawah Lunto
+86400,Kota Solok
+86500,Kota Payakumbuh
+86600,Kota Pariaman
+90100,Kab. Kampar
+90200,Kab. Bengkalis
+90400,Kab. Indragiri Hulu
+90500,Kab. Indragiri Hilir
+90800,Kab. Pelalawan
+90900,Kab. Rokan Hilir
+91000,Kab. Siak
+91100,Kab. Kuantan Singingi
+91400,Kab. Rokan Hulu
+91500,Kab. Kepulauan Meranti
+96000,Kota Pekanbaru
+96200,Kota Dumai
+100100,Kab. Batang Hari
+100200,Kab. Bungo
+100300,Kab. Sarolangun
+100400,Kab. Tanjung Jabung Barat
+100500,Kab. Kerinci
+100600,Kab. Tebo
+100700,Kab. Muaro Jambi
+100800,Kab. Tanjung Jabung Timur
+100900,Kab. Merangin
+106000,Kota Jambi
+106100,Kab. Sungai Penuh
+110100,Kab. Musi Banyu Asin
+110200,Kab. Ogan Komering Ilir
+110300,Kab. Ogan Komering Ulu
+110400,Kab. Muara Enim
+110500,Kab. Lahat
+110600,Kab. Musi Rawas
+110700,Kab. Banyuasin
+110800,Kab. Ogan Komering Ulu Timur
+110900,Kab. Ogan Komering Ulu Selatan
+111000,Kab. Ogan Ilir
+111100,Kab. Empat Lawang
+111200,Kab. Penukal Abab Lematang Ilir
+111300,Kab. Musi Rawas Utara
+116000,Kota Palembang
+116100,Kota Prabumulih
+116200,Kota Lubuk Linggau
+116300,Kota Pagar Alam
+120100,Kab. Lampung Selatan
+120200,Kab. Lampung Tengah
+120300,Kab. Lampung Utara
+120400,Kab. Lampung Barat
+120500,Kab. Tulang Bawang
+120600,Kab. Tenggamus
+120700,Kab. Lampung Timur
+120800,Kab. Way Kanan
+120900,Kab. Pasawaran
+121000,Kab. Tulang Bawang Barat
+121100,Kab. Mesuji
+121200,Kab. Pringsewu
+121300,Kab. Pesisir Barat
+126000,Kota Bandar Lampung
+126100,Kota Metro
+130100,Kab. Sambas
+130200,Kab. Pontianak
+130300,Kab. Sanggau
+130400,Kab. Sintang
+130500,Kapuas Hulu
+130600,Kab. Ketapang
+130800,Kab. Bengkayang
+130900,Kab. Landak
+131000,Kab. Sekadau
+131100,Kab. Melawi
+131200,Kab. Kayong Utara
+131300,Kab. Kuburaya
+136000,Kota Pontianak
+136100,Kota Singkawang
+140100,Kab. Kapuas
+140200,Kab. Barito Selatan
+140300,Kab. Barito Utara
+140400,Kab. Kotawaringin Timur
+140500,Kab. Kotawaringin Barat
+140600,Kab. Katingan
+140700,Kab. Seruyan
+140800,Kab. Sukamara
+140900,Kab. Lamandau
+141000,Kab. Gunung Mas
+141100,Kab. Pulang Pisau
+141200,Kab. Murung Raya
+141300,Kab. Barito Timur
+146000,Kota Palangka Raya
+150100,Kab. Banjar
+150200,Kab. Tanah Laut
+150300,Kab. Barito Kuala
+150400,Kab. Tapin
+150500,Kab. Hulu Sungai Selatan
+150600,Kab. Hulu Sungai Tengah
+150700,Kab. Hulu Sungai Utara
+150800,Kab. Tabalong
+150900,Kab. Kota Baru
+151000,Kab. Balangan
+151100,Kab. Tanah Bumbu
+156000,Kota Banjarmasin
+156100,Kota Banjarbaru
+160100,Kab. Pasir
+160200,Kab. Kutai Kartanegara
+160300,Kab. Berau
+160400,Kab. Bulongan
+160700,Kab. Malinau
+160800,Kab. Nunukan
+160900,Kab. Kutai Barat
+161000,Kab. Kutai Timur
+161100,Kab. Penajam Paser Utara
+161200,Kab. Mahakam Ulu
+165400,Kab. Tanah Tidung
+166000,Kota Samarinda
+166100,Kota Balikpapan
+166200,Kota Tarakan
+166300,Kota Bontang
+170100,Kab. Bolaang Mongondaw
+170200,Kab. Minahasa
+170300,Kab. Kep. Sangihe
+170400,Kab. Kepulauan Talaud
+170500,Kab. Minahasa Selatan
+170600,Kab. Minahasa Utara
+170800,Kab. Bolaang Mongondow Utara
+170900,Kab. Kepulauan Sitaro
+171000,Kab. Minahasa Tenggara
+171100,Kab. Bolaang Mongondaw Timur
+171200,Kab. Bolaang Mongondaw Selatan
+176000,Kota Manado
+176100,Kota Bitung
+176200,Kota Tomohon
+176300,Kota. Kotamobagu
+180100,Kab. Banggai Kepulauan
+180200,Kab. Donggala
+180300,Kab. Parigi Mautong
+180400,Kab. Banggai
+180500,Kab. Buol
+180600,Kab. Toli-Toli
+180700,Kab. Marowali
+180800,Kab. Poso
+180900,Kab. Tojo Una-Una
+181000,Kab. Sigi
+181100,Kab. Banggai Laut
+181200,Kab. Morowali Utara
+186000,Palu
+190100,Kab. Maros
+190200,Kab. Pangkajene Kepulauan
+190300,Kab. Gowa
+190400,Kab. Takalar
+190500,Kab. Jeneponto
+190600,Kab. Barru
+190700,Kab. Bone
+190800,Kab. Wajo
+190900,Kab. Soppeng
+191000,Kab. Bantaeng
+191100,Kab. Bulukumba
+191200,Kab. Sinjai
+191300,Kab. Selayar
+191400,Kab. Pinrang
+191500,Kab. Sidenreng Rappang
+191600,Kab. Enrekang
+191700,Kab. Luwu
+191800,Kab. Tana Toraja
+192400,Kab. Luwu Utara
+192600,Kab. Luwu Timur
+192700,Kab. Toraja Utara
+196000,Kota Makassar
+196100,Kota Pare-Pare
+196200,Kota Palopo
+200100,Kab. Konawe
+200200,Kab. Muna
+200300,Kab. Buton
+200400,Kab. Kolaka
+200500,Kab. Konawe Selatan
+200600,Kab. Wakatobi
+200700,Kab. Bombana
+200800,Kab. Kolaka Utara
+200900,Kab. Konawe Utara
+201000,Kab. Buton Utara
+201100,Kab. Kolaka Timur
+201200,Kab. Konawe Kepulauan
+201300,Kab. Muna Barat
+201400,Kab. Buton Selatan
+201600,Kab. Buton Tengah
+206000,Kota Kendari
+206100,Kota Baubau
+210100,Kab. Maluku Tengah
+210200,Kab. Maluku Tenggara
+210300,Kab. Buru
+210400,Kab. Maluku Tenggara Barat
+210500,Kab. Seram Bagian Barat
+210600,Kab. Seram Bagian Timur
+210700,Kab. Kepulauan Aru
+210800,Kab. Maluku Barat Daya
+210900,Kab. Buru Selatan
+216000,Kota Ambon
+216100,Kota. Tual
+220100,Kab. Buleleng
+220200,Kab. Jembrana
+220300,Kab. Tabanan
+220400,Kab. Badung
+220500,Kab. Gianyar
+220600,Kab. Klungkung
+220700,Kab. Bangli
+220800,Kab. Karang Asem
+226000,Kota Denpasar
+230100,Kab. Lombok Barat
+230200,Kab. Lombok Tengah
+230300,Kab. Lombok Timur
+230400,Kab. Sumbawa
+230500,Kab. Dompu
+230600,Kab. Bima
+230700,Kab. Sumbawa Barat
+230800,Kab. Lombok Utara
+236000,Kota Mataram
+236100,Kota Bima
+240100,Kab. Kupang
+240300,Kab. Timor Tengah Selatan
+240400,Kab. Timor Tengah Utara
+240500,Kab. Belu
+240600,Kab. Alor
+240700,Kab. Flores Timur
+240800,Kab. Sikka
+240900,Kab. Ende
+241000,Kab. Ngada
+241100,Kab. Manggarai
+241200,Kab. Sumba Timur
+241300,Kab. Sumba Barat
+241400,Kab. Lembata
+241500,Kab. Rote-Ndao
+241600,Kab. Manggarai Barat
+241700,Kab. Nagakeo
+241800,Kab. Sumba Tengah
+241900,Kab. Sumba Barat Daya
+242000,Kab. Manggarai Timur
+242100,Kab. Sabu Raijua
+242200,Kab. Malaka
+246000,Kota Kupang
+250100,Kab. Jayapura
+250200,Kab. Biak Numfor
+250300,Kab. Yapen Waropen
+250700,Kab. Merauke
+250800,Kab. Jayawijaya
+250900,Kab. Nabire
+251000,Kab. Paniai
+251100,Kab. Puncak Jaya
+251200,Kab. Mimika
+251300,Kab. Boven Digoel
+251400,Kab. Mappi
+251500,Kab. Asmat
+251600,Kab. Yahukimo
+251700,Kab. Pegunungan Bintang
+251800,Kab. Tolikara
+251900,Kab. Sarmi
+252000,Kab. Keerom
+252600,Kab. Waropen
+252700,Kab. Supiori
+252800,Kab. Memberamo Raya
+252900,Kab. Nduga
+253000,Kab. Lanny Jaya
+253100,Kab. Membramo Tengah
+253200,Kab. Yalimo
+253300,kab. Puncak
+253400,Kab. Dogiyai
+253500,Kab. Deiyai
+253600,Kab. Intan Jaya
+256000,Kota Jayapura
+260100,Kab. Bengkulu Utara
+260200,Kab. Rejang Lebong
+260300,Kab. Bengkulu Selatan
+260400,Kab. Muko-muko
+260500,Kab. Kepahiang
+260600,Kab. Lebong
+260700,Kab. Kaur
+260800,Kab. Seluma
+260900,Kab. Bengkulu Tengah
+266000,Kota Bengkulu
+270100,Kab. Pulau Taliabu
+270200,Kab. Halmahera Tengah
+270300,Kab. Halmahera Barat
+270400,Kab. halmahera Utara
+270500,Kab. Halmahera Selatan
+270600,Kab. Halmahera Timur
+270700,Kab. Kepulauan Sula
+270800,Kab. Kepulauan Morotai
+276000,Kota Ternate
+276100,Kota Tidore Kepulauan
+280100,Kab. Pandeglang
+280200,Kab. Lebak
+280300,Kab. Tangerang
+280400,Kab. Serang
+286000,Kota Cilegon
+286100,Kota Tangerang
+286200,Kota Serang
+286300,Kota tangerang Selatan
+290100,Kab. Bangka
+290200,Kab. Belitung
+290300,Kab. Bangka Tengah
+290400,Kab. Bangka Barat
+290500,Kab. Bangka Selatan
+290600,Kab. Belitung Timur
+296000,Kota Pangkalpinang
+300100,Kab. Boalemo
+300200,Kab. Gorontalo
+300300,Kab. Pohuwato
+300400,Kab. Bone Bolango
+300500,Kab. Gorontalo Utara
+306000,Kota Gorontalo
+310100,Kab. Bintan
+310200,Kab. Karimun
+310300,Kab. Natuna
+310400,Kab. Lingga
+310500,Kab. Kepulauan Anambas
+316000,Kota Batam
+316100,Kota Tanjungpinang
+320100,Kab. Fak-Fak
+320200,Kab. Kaimana
+320300,Kab. Teluk Wondama
+320400,Kab. Teluk Bintuni
+320500,Kab. Manokwari
+320600,Kab. Sorong Selatan
+320700,Kab. Sorong
+320800,Kab. Raja Ampat
+320900,Kab. Tambrauw
+321000,Kab. Maybrat
+321100,Kab. Pegunungan Arfak
+321200,Kab. Manokwari Selatan
+326000,Kota Sorong
+330100,Kab. Mamuju
+330200,Kab. Mamuju Utara
+330300,Kab. Polewali Mamasa
+330400,Kab. Mamasa
+330500,Kab. Majene
+330600,Kab. Mamuju Tengah
+340100,Kab. Malinau
+340200,Kab. Bulungan
+340300,Kab. Tana Tidung
+340500,Kab. Nunukan
+346000,Kota Tarakan
+999999,Luar Negeri

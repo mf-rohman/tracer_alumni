@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\WilayahController;
 use App\Http\Controllers\LandingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -20,3 +21,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/landing-page-data', [LandingController::class, 'getPageData']);
+
+Route::get('/regencies', [WilayahController::class, 'getRegencies']);

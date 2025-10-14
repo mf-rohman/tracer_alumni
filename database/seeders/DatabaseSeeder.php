@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             SuperAdminSeeder::class,
             FakultasProdiSeeder::class,
+            WilayahSeeder::class,
         ]);
         // \App\Models\User::factory(10)->create();
 

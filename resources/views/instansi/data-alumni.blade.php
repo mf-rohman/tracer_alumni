@@ -50,11 +50,13 @@
                                 <span class="badge badge-sm bg-gradient-secondary">Belum Dinilai</span>
                             @endif
                         </td>
-                        <td class="align-middle">
+                        @if($alumnus->penilaianInstansi->isNotEmpty())
+                        <td class="align-middle" style="display: none;">
                             <a href="{{ route('instansi.penilaian.show', $alumnus) }}" class="btn btn-sm bg-gradient-primary mb-0">
                                 + Tambah Penilaian
                             </a>
                         </td>
+                        @endif
                     </tr>
                     @empty
                     <tr>
