@@ -47,13 +47,13 @@
                         <div class="col-8 pe-0">
                             <div class="numbers">
                                 <p class="text-sm mb-0 text-capitalize font-weight-bold">{{ $status }}</p>
-                                <h5 class="font-weight-bolder mb-0">{{ $data['count'] }} / {{ $totalResponden }}</h5>
+                                <h5 class="font-weight-bolder mb-0">{{ $data['count'] ?? 0 }} / {{ $totalResponden ?? 0 }}</h5>
                             </div>
                         </div>
                         <div class="col-4 text-end">
                             <div class="position-relative" style="height: 50px; width: 50px; margin-left:-15px;">
                                 <canvas id="chart-{{ Str::slug($status) }}"></canvas>
-                                <small class="position-absolute top-50 start-50 translate-middle font-weight-bolder" style="display: block;">{{ $data['percentage'] }}%</small>
+                                <small class="position-absolute top-50 start-50 translate-middle font-weight-bolder" style="display: block;">{{ $data['percentage'] ?? 0 }}%</small>
                             </div>
                         </div>
                     </div>

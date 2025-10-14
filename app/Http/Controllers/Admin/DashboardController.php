@@ -144,7 +144,7 @@ class DashboardController extends Controller
             'totalAlumni', 'totalResponden', 
             'prodiList', 'selectedProdiId',
             'tahunLulusList', 'selectedTahunLulus',
-            'tahunResponList', 'selectedTahunRespon', // <-- Memastikan variabel ini dikirim
+            'tahunResponList', 'selectedTahunRespon',
             'tahunRange', 'dataLulusanChart',
             'respondenPerProdi',
             'rataRataWaktuTunggu', 'waktuTungguChartData', 'persentaseResponden', 'chartDataResponden','statusData',
