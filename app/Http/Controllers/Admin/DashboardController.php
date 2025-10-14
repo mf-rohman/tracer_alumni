@@ -58,14 +58,24 @@ class DashboardController extends Controller
         ];
         $statusData = [];
         foreach ($statusMapping as $label => $value) {
-            $count = (clone $kuesionerQuery)->where('f8', $value)->count();
+            $count = (clone $kuesionerQuery)->where('f8', $value)->count() ?? 0;
             $percentage = $totalResponden > 0 ? round(($count / $totalResponden) * 100) : 0;
             $chartData = [$count, max(0, $totalResponden - $count)];
             
             $statusData[$label] = [
-                'count' => $count,
-                'percentage' => $percentage,
+                'count' => (int) $count,
+                'percentage' => (int) $percentage,
                 'chartData' => $chartData,
+            ];
+        }
+
+        if (empty($statusData)) {
+            $statusData = [
+                'Bekerja' => ['count' => 0, 'percentage' => 0, 'chartData' => [0,0]],
+                'Wiraswasta' => ['count' => 0, 'percentage' => 0, 'chartData' => [0,0]],
+                'Studi Lanjut' => ['count' => 0, 'percentage' => 0, 'chartData' => [0,0]],
+                'Mencari Kerja' => ['count' => 0, 'percentage' => 0, 'chartData' => [0,0]],
+                'Tidak Bekerja' => ['count' => 0, 'percentage' => 0, 'chartData' => [0,0]],
             ];
         }
 

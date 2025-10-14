@@ -226,7 +226,11 @@
     createDoughnutChart('chart-responden', @json($chartDataResponden), '#5e72e4');
     
     @foreach($statusData as $status => $data)
-        createDoughnutChart('chart-{{ Str::slug($status) }}', @json($data['chartData']), '{{ $statusColors[$status] }}');
+        @php
+            $chartData = $data ['chartData'] ?? [0,0];
+            $color = $statusColors [$status] ?? '#5e72e4'
+        @endphp
+        createDoughnutChart('chart-{{ Str::slug($status) }}', @json(['chartData']), '{{ $color }}');
     @endforeach
 
     // Inisialisasi chart lulusan (donat besar)
