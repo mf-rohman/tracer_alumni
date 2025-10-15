@@ -22,7 +22,7 @@
             name="url_linkedin"
             id="url_linkedin"
             class="form-control"
-            placeholder="www.linkedin.com/in/[your_username]"
+            placeholder="https://www.linkedin.com/in/[your_username]"
             value="{{ old('url_linkedin', $answer->url_linkedin ?? '') }}"
         >
     </div>

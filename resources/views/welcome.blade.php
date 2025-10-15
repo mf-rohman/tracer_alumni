@@ -170,8 +170,8 @@
             <a href="#alur" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100">Alur</a>
             <a href="#faq" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100">FAQ</a>
             <hr class="my-2">
-            <a href="{{ route('login') }}" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100">Login Admin / BAAK</a>
-            <a href="{{ route('instansi.login.show') }}" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100">Login Instansi</a>
+            <!-- <a href="{{ route('login') }}" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100">Login Admin / BAAK</a>
+            <a href="{{ route('instansi.login.show') }}" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100">Login Instansi</a> -->
         </div>
     </nav>
 
@@ -185,10 +185,10 @@
         </div>
         <div class="container mx-auto px-4 relative z-10">
             <div class="max-w-3xl mx-auto text-center">
-            <h1 id="typing-animation" class="text-4xl md:text-6xl font-extrabold leading-tight mb-5 h-32 md:h-24"></h1>
-                <p class="text-lg md:text-xl text-gray-300 mb-8">
+                <h1 id="typing-animation" class="text-4xl md:text-6xl font-extrabold leading-tight mb-5 h-32 md:h-24"></h1>
+                <!-- <p class="text-lg md:text-xl text-gray-300 mb-8">
                     Partisipasi Anda dalam Tracer Study membentuk almamater yang lebih baik dan relevan dengan dunia kerja.
-                </p>
+                </p> -->
             </div>
             
             <div class="max-w-2xl mx-auto">
@@ -428,6 +428,48 @@
         </div>
     </section>
 
+    <section class="bg-zinc-50 overflow-hidden">
+        <div class="flex justify-start mx-auto my-1 ">
+            <div class="relative group w-1/2 mx-10" data-aos="zoom-in-right" >
+                <a href="#_"> 
+                    <img src="https://images.unsplash.com/photo-1530035415911-95194de4ebcc?    q=80&amp;w=2670&amp;auto=format&amp;fit=crop&amp;ixlib=rb-4.0.3&amp;      ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="rounded-xl rotate-6 group-hover:rotate-0 transition-all duration-700 ease-out hover:-translate-y-12 object-cover transform origin-bottom" alt="#_" > 
+                </a>
+
+                <p class=" top-1/2 left-full transform -translate-y-1/2 -translate-x-[200%] group-hover:translate-x-28 group-hover:opacity-100 transition-all duration-700 ease-out text-lg font-semibold text-white max-w-md bg-blue-900 p-4 rounded-xl ">temporarily using Google images, because we are still waiting for documentation from former student</p > 
+            </div>
+        </div>
+
+        <div class="flex justify-end mx-auto my-1">
+            <div class="relative group w-1/2 mx-10" data-aos="zoom-in-left">
+                <a href="#_"> 
+                    <img src="https://images.unsplash.com/photo-1487180144351-b8472da7d491?q=80&amp;w=2672&amp;   auto=format&amp;fit=crop&amp;ixlib=rb-4.0.3&amp;ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="rounded-xl -rotate-6 group-hover:rotate-0 transition-all duration-700 ease-out hover:-translate-y-12 object-cover transform origin-bottom" alt="#_"> 
+                </a>
+
+                <p class=" top-1/2 left-full transform -translate-y-1/2 translate-x-[200%] group-hover:translate-x-28 group-hover:opacity-100 transition-all duration-700 ease-out text-lg font-semibold text-white max-w-md bg-blue-900 backdrop-blur-md p-4 rounded-xl ">temporarily using Google images, because we are still waiting for documentation from former student</p > 
+            </div>
+        </div>
+
+        <div class="flex justify-start mx-auto my-1">
+            <div class="reltive group w-1/2 mx-10" data-aos="zoom-in-right">
+                <a href="#_"> 
+                    <img src="https://images.unsplash.com/photo-1586996292898-71f4036c4e07?    q=80&amp;w=2670&amp;auto=format&amp;fit=crop&amp;ixlib=rb-4.0.3&amp;     ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"  class="rounded-xl rotate-6 group-hover:rotate-0 transition-all duration-700 ease-out hover:-translate-y-12     object-cover transform origin-bottom" alt="#_"> 
+                </a>
+
+                <p class=" top-1/2 left-full transform -translate-y-1/2 -translate-x-[200%] group-hover:translate-x-28 group-hover:opacity-100 transition-all duration-700 ease-out text-lg font-semibold text-white max-w-md bg-blue-900 backdrop-blur-md p-4 rounded-xl ">temporarily using Google images, because we are still waiting for documentation from former student</p > 
+            </div>
+        </div>
+
+        <div class="flex justify-end mx-auto my-1">
+            <div class="relative group w-1/2 mx-10" data-aos="zoom-in-left">
+                <a href="#_"> 
+                    <img src="https://images.unsplash.com/photo-1522775417749-29284fb89f43?q=80&amp;w=2574&amp;auto=format&  amp;fit=crop&amp;ixlib=rb-4.0.3&amp;ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"  class="rounded-xl -rotate-6 group-hover:rotate-0 transition-all duration-700 ease-out hover:-translate-y-12     object-cover transform origin-bottom" alt="#_"> 
+                </a>
+                
+                <p class=" top-1/2 left-full transform -translate-y-1/2 translate-x-[200%] group-hover:translate-x-28 group-hover:opacity-100 transition-all duration-700 ease-out text-lg font-semibold text-white max-w-md bg-blue-900 backdrop-blur-md p-4 rounded-xl ">temporarily using Google images, because we are still waiting for documentation from former student</p > 
+            </div>
+        </div>
+    </section>
+
 
     <section id="faq" class="py-20 bg-white">
         <div class="container mx-auto px-4">
@@ -467,46 +509,96 @@
         </div>
     </section>
 
-    <footer id="kontak" class="footer bg-dark text-white pt-5 pb-4 border-r-amber-50  bg-blue-500 p-4">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-5 mb-4 mb-lg-0">
-                    <h5 class="fw-bold text-uppercase">Tracer Study Unirow</h5>
-                    <p class="text-white-50">Tracking alumni Universitas PGRI Ronggolawe untuk bahan penjaminan kualitas sistem pendidikan dan penyiapan lulusan yang lebih kompeten di bidangnya.</p>
-                </div>
-                <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
-                    <h5 class="fw-bold text-uppercase">Navigasi</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="#hero" class="footer-link">Beranda</a></li>
-                        <li><a href="#manfaat" class="footer-link">Manfaat</a></li>
-                        <li><a href="#alur" class="footer-link">Alur</a></li>
-                        <!-- <li><a href="{{ route('login') }}" class="footer-link">Login Admin</a></li> -->
-                    </ul>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <h5 class="fw-bold text-uppercase">Hubungi Kami</h5>
-                    <ul class="list-unstyled">
-                        <li class="d-flex mb-2">
-                            <i class="fas fa-map-marker-alt mt-1 me-3 text-primary"></i>
-                            <span class="text-white-50">Jl. Manunggal No.61, Semanding, Tuban, Jawa Timur 62391</span>
-                        </li>
-                         <li class="d-flex mb-2">
-                            <i class="fas fa-phone mt-1 me-3 text-primary"></i>
-                            <span class="text-white-50">0852-5771-2828</span>
-                        </li>
-                         <li class="d-flex mb-2">
-                            <i class="fas fa-envelope mt-1 me-3 text-primary"></i>
-                            <span class="text-white-50">prospective@unirow.ac.id</span>
-                        </li>
-                    </ul>
-                </div>
+    <div class="relative mt-16 bg-blue-900 text-white">
+        <svg class="absolute top-0 w-full h-6 -mt-5 sm:-mt-10 sm:h-16 text-blue-900" preserveAspectRatio="none" viewBox="0 0    1440 54">
+          <path fill="currentColor" d="M0 22L120 16.7C240 11 480 1.00001 720 0.700012C960 1.00001 1200 11 1320 16.7L1440    22V54H1320C1200 54 960 54 720 54C480 54 240 54 120 54H0V22Z"></path>
+        </svg>
+        <div class="px-4 pt-12 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8">
+          <div class="grid gap-16 row-gap-10 mb-8 lg:grid-cols-6">
+            <div class="md:max-w-md lg:col-span-2">
+              <a href="/" aria-label="Go home" title="Company" class="inline-flex items-center">
+                <img src="{{ asset('assets/img/logos/unirow1.png') }}" class="h-12 " alt="Unirow Logo">
+                <span class="ml-2 text-xl font-bold tracking-wide text-gray-100 uppercase">Tracer Study</span>
+              </a>
+              <div class="mt-4 lg:max-w-sm bg">
+                <p class="text-sm text-deep-purple-50">
+                    Tracking alumni Universitas PGRI Ronggolawe untuk bahan penjaminan kualitas sistem pendidikan dan penyiapan lulusan yang lebih kompeten di bidangnya.
+                </p> <br>
+                <i class="mt-4 text-sm text-deep-purple-50">
+                  "Education is not learning of facts, but traning of the mind to think".
+                </i>
+              </div>
             </div>
-            <hr class="my-4">
-            <div class="text-center">
-                <p class="mb-0 text-white-50">&copy; {{ date('Y') }} Universitas PGRI Ronggolawe. All Rights Reserved.</p>
+            <div class="grid grid-cols-2 gap-5 row-gap-8 lg:col-span-4 md:grid-cols-3">
+              <div>
+                <p class="font-extrabold tracking-wide text-blue-500 text-lg">
+                  Navigasi
+                </p>
+                <ul class="mt-2 space-y-2">
+                  <li>
+                    <a href="/" class="transition-colors duration-300 text-deep-purple-50 hover:text-teal-accent-400">Home</a>
+                  </li>
+                  <li>
+                    <a href="/" class="transition-colors duration-300 text-deep-purple-50 hover:text-teal-accent-400">Manfaat</a>
+                  </li>
+                  <li>
+                    <a href="/" class="transition-colors duration-300 text-deep-purple-50 hover:text-teal-accent-400">Alur</a>
+                  </li>
+                  <li>
+                    <a href="/" class="transition-colors duration-300 text-deep-purple-50       hover:text-teal-accent-400">Testimoni</a>
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <p class="font-extrabold tracking-wide text-blue-500 text-lg">Unit Penunjang</p>
+                <ul class="mt-2 space-y-2">
+                  <li>
+                    <a href="https://kpm.unirow.ac.id" class="transition-colors duration-300 text-deep-purple-50 hover:text-teal-accent-400">Komisi Penjamin Mutu</a>
+                  </li>
+                  <li>
+                    <a href="https://lemlit.unirow.ac.id" class="transition-colors duration-300 text-deep-purple-50 hover:text-teal-accent-400">Lembaga Penelitian</a>
+                  </li>
+                  <li>
+                    <a href="https://lpm.unirow.ac.id" class="transition-colors duration-300 text-deep-purple-50 hover:text-teal-accent-400">LPM</a>
+                  </li>
+                  <li>
+                    <a href="http://lp3.unirow.ac.id" class="transition-colors duration-300 text-deep-purple-50       hover:text-teal-accent-400">LP3</a>
+                  </li>
+                </ul>
+              </div>              
+              <div>
+                <p class="font-extrabold tracking-wide text-blue-500 text-lg">Hubungi Kami</p>
+                <ul class="mt-2 space-y-2">
+                    <li><i class="fas fa-phone-alt mr-0"></i>&ensp; +6285257712828</li>
+                    <li><i class="fas fa-envelope mr-0"></i>&ensp; prospective@unirow.ac.id</li>
+                    <li><i class="fas fa-map-marker-alt mr-0"></i>&ensp; Jl. Manunggal No.61, Tuban</li>
+                </ul>
+              </div>
             </div>
+
+
+          </div>
+          <div class="flex flex-col justify-between pt-5 pb-10 border-t border-deep-purple-accent-200 sm:flex-row">
+            <p class="text-sm text-gray-100">
+              © Copyright 2025 PGRI Ronggolawe University. All rights reserved.
+            </p>
+            <div class="flex items-center mt-4 space-x-4 sm:mt-0">
+              <a href="mailto:prospective@unirow.ac.id" class="transition-colors duration-300 text-deep-purple-100 hover:text-teal-accent-400">
+                <i class="fa-solid fa-envelope text-3xl"></i>
+              </a>
+              <a href="https://www.instagram.com/officialunirow" class="transition-colors duration-300 text-deep-purple-100 hover:text-teal-accent-400">
+                <i class="fa-brands fa-instagram text-3xl"></i>
+              </a>
+              <a href="https://wa.link/4mg3f4" class="transition-colors duration-300 text-deep-purple-100 hover:text-teal-accent-400">
+                <i class="fa-brands fa-whatsapp text-3xl"></i>
+              </a>
+              <a href="https://unirow.ac.id" class="transition-colors duration-300 text-deep-purple-100 hover:text-teal-accent-400">
+                <i class="fa-solid fa-globe text-3xl"></i>
+              </a>
+            </div>
+          </div>
         </div>
-    </footer>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
@@ -578,7 +670,7 @@
             }));
         });
 
-        AOS.init({ duration: 800, once: true });
+        AOS.init({ duration: 800, once: false, mirror:true });
 
         const navbar = document.getElementById('navbar');
         window.addEventListener('scroll', () => {
