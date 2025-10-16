@@ -35,10 +35,8 @@ Route::get('/verify/{npm}', [LandingController::class, 'showVerifyForm'])->name(
 Route::post('/login-verify', [LandingController::class, 'verifyLogin'])->name('alumni.login.verify');
 
 // Dashboard bawaan Breeze (untuk alumni setelah login)
-Route::get('/dashboard', function () {
-    // Di sini nanti bisa diarahkan ke controller khusus dashboard alumni
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard',[AlumniDashboardController::class, 'index'] 
+)->middleware(['auth', 'verified'])->name('dashboard');
 
 // Route Profile bawaan Breeze
 Route::middleware('auth')->group(function () {
