@@ -284,6 +284,8 @@
 
             isScrolled: false,
 
+            instansiTidakDitemukan: false,
+
             handleScroll() {
                 const el = document.querySelector('#card-body');
                 this.isScrolled = el && el.scrollTop > 50;
@@ -364,6 +366,34 @@
                 if (this.selectedProvince) {
                     this.fetchRegencies();
                 }
+
+                tomSelectInstance = new TomSelect('#f5b', {
+                    valueField: 'id',
+                    labelField: 'text',
+                    searchField: 'text',
+                    create: false, // Tidak izinkan alumni membuat opsi baru langsung dari sini
+                    load: function(query, callback) {
+                        fetch(`/api/instansi/search?q=${encodeURIComponent(query)}`)
+                            .then(response => response.json())
+                            .then(json => {
+                                callback(json.results);
+                            }).catch(()=>{
+                                callback();
+                            });
+                    },
+                    // Mengisi nilai awal jika ada (penting untuk edit)
+                    items: ['{{ old('f5b', $answer->f5b ?? '') }}'],
+                });
+                
+                // Menonaktifkan/mengaktifkan select saat checkbox dicentang
+                this.$watch('instansiTidakDitemukan', (value) => {
+                    if (value) {
+                        tomSelectInstance.disable();
+                        tomSelectInstance.clear(); // Hapus pilihan yang ada
+                    } else {
+                        tomSelectInstance.enable();
+                    }
+                });
             },
         
             async confirmCopy() {

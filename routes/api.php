@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\InstansiSearchController;
 use App\Http\Controllers\Api\WilayahController;
 use App\Http\Controllers\LandingController;
 use Illuminate\Http\Request;
@@ -23,3 +24,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('/landing-page-data', [LandingController::class, 'getPageData']);
 
 Route::get('/regencies', [WilayahController::class, 'getRegencies']);
+
+Route::get('/instansi/search', [InstansiSearchController::class, 'search']);

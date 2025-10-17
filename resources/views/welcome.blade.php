@@ -107,6 +107,19 @@
             /* transition: transform 0.7s; */
         }
 
+        #manfaat {
+            scroll-margin-top: 80px; 
+        }
+        #testimonials {
+            scroll-margin-top: 80px; 
+        }
+        #alur {
+            scroll-margin-top: 80px; 
+        }
+        #faq {
+            scroll-margin-top: 80px; 
+        }
+
         @keyframes fadeSlider {
             0% { opacity: 0; }
             8.33% { opacity: 1; } 
@@ -132,8 +145,8 @@
                 <div class="hidden md:flex items-center space-x-8">
                     <a href="#hero" class="text-gray-600 hover:text-indigo-600 transition">Beranda</a>
                     <a href="#manfaat" class="text-gray-600 hover:text-indigo-600 transition">Manfaat</a>
-                    <a href="#testimonials" class="text-gray-600 hover:text-indigo-600 transition">Testimoni</a>
                     <a href="#alur" class="text-gray-600 hover:text-indigo-600 transition">Alur</a>
+                    <a href="#testimonials" class="text-gray-600 hover:text-indigo-600 transition">Testimoni</a>
                     <a href="#faq" class="text-gray-600 hover:text-indigo-600 transition">FAQ</a>
                 </div>
 
