@@ -62,11 +62,8 @@
     <div class="col-md-6 mb-2">
         <label for="f5b" class="form-label">Apa nama perusahaan/kantor tempat Anda bekerja?</label>
         
-        {{-- 1. Dropdown Pencarian Utama --}}
-        {{-- Library Tom Select akan mengubah <select> ini menjadi input pencarian --}}
         <select id="f5b" name="f5b" placeholder="Ketik untuk mencari nama perusahaan..." :disabled="instansiTidakDitemukan"></select>
         
-        {{-- 2. Checkbox untuk Fallback --}}
         <div class="form-check mt-2">
             <input class="form-check-input" type="checkbox" id="instansi-not-found" x-model="instansiTidakDitemukan">
             <label class="form-check-label" for="instansi-not-found">

@@ -13,6 +13,7 @@
     use Illuminate\Support\Facades\Hash;
     use Illuminate\Support\Str;
     use Maatwebsite\Excel\Facades\Excel;
+    use Maatwebsite\Excel\Validators\ValidationException;
 
     class AlumniController extends Controller
     {
@@ -182,13 +183,34 @@
          */
         public function handleImport(Request $request)
         {
-            set_time_limit(300);
-            $request->validate(['file' => 'required|mimes:xlsx,xls,csv']);
+            // 1. Validasi awal: Pastikan file yang di-upload adalah file Excel
+            $request->validate([
+                'file' => 'required|mimes:xlsx,xls,csv'
+            ]);
+        
             try {
-                Excel::import(new AlumniImport, $request->file('file'));
+                // 2. PERINTAH KUNCI: Gunakan Excel::queueImport
+                // Alih-alih memprosesnya langsung, perintah ini akan membaca file
+                // dan mengirimkan pekerjaan ke dalam antrian di database.
+                // Proses ini sangat cepat dan tidak akan menyebabkan timeout.
+                Excel::queueImport(new AlumniImport, $request->file('file'));
+                
             } catch (\Exception $e) {
-                return back()->with('error', 'Terjadi kesalahan saat mengimpor data: ' . $e->getMessage());
+                // 3. TANGKAP ERROR UMUM: Untuk masalah lain (misal: format file rusak)
+                return back()->with('error', 'Terjadi kesalahan saat memulai proses impor: ' . $e->getMessage());
             }
-            return redirect()->route('admin.alumni.index')->with('success', 'Data alumni berhasil diimpor.');
+        
+            // 4. Jika berhasil, kembalikan dengan pesan sukses instan
+            return redirect()->route('admin.alumni.index')->with('success', 'Proses impor telah dimulai. Data alumni akan ditambahkan di latar belakang.');
+        }
+
+        public function downloadTemplate () {
+            $filePath = public_path('template/template_import_alumni.xlsx');
+
+            if (!file_exists($filePath)) {
+                abort(404, 'File Template Not Found');
+            }
+
+            return response()->download($filePath);
         }
     }

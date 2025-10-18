@@ -64,6 +64,8 @@ Route::middleware(['auth', 'role:superadmin,bak,admin_prodi'])->prefix(env('ADMI
     // Route khusus untuk fitur upload Excel
     Route::get('alumni-import', [AlumniController::class, 'showImportForm'])->name('alumni.import.show');
     Route::post('alumni-import', [AlumniController::class, 'handleImport'])->name('alumni.import.handle');
+    Route::get('alumni-template-download', [AlumniController::class, 'downloadTemplate'])->name('alumni.template.download');
+
     Route::get('kategori-alumni', [AlumniCategoryController::class, 'index'])->name('alumni.kategori');
 });
 

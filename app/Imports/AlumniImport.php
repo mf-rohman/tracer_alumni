@@ -2,60 +2,35 @@
 
 namespace App\Imports;
 
-use App\Models\Alumni;
-use App\Models\User;
-use App\Models\Prodi;
-use Illuminate\Support\Facades\Hash;
-use Maatwebsite\Excel\Concerns\ToModel;
+use App\Jobs\ProcessAlumniImport; // <-- 1. Mengimpor "Pekerja" kita
+use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Maatwebsite\Excel\Concerns\WithChunkReading; // <-- 2. Mengimpor fitur pembacaan per bagian
 
-class AlumniImport implements ToModel, WithHeadingRow
+class AlumniImport implements ToCollection, WithHeadingRow, WithChunkReading, ShouldQueue
 {
     /**
-    * @param array $row
-    *
-    * @return \Illuminate\Database\Eloquent\Model|null
-    */
-    public function model(array $row)
+     * Metode ini akan dipanggil untuk setiap "potongan" (chunk) baris dari file Excel.
+     * Tugasnya hanya mendelegasikan pekerjaan, bukan memprosesnya.
+     */
+    public function collection(Collection $rows)
     {
-        // Pastikan nama kolom header di file Excel Anda menggunakan format snake_case dan lowercase
-        // Contoh: nomor_mahasiswa, kode_pt, tahun_angkatan, tahun_lulus, kode_prodi, nama, email, nomor_telepon_hp, nik, npwp, ipk
-
-        // 1. Cari prodi berdasarkan kode_prodi dari file Excel.
-        $prodi = Prodi::where('kode_prodi', $row['kode_prodi'])->first();
-
-        if (!$prodi || empty($row['email'])) {
-            Log::warning('Melewati baris karena prodi tidak ditemukan atau email kosong.', $row);
-            return null;
+        foreach ($rows as $row) 
+        {
+            // 3. Logika Kunci: Mengirim setiap baris sebagai pekerjaan baru ke antrian
+            ProcessAlumniImport::dispatch($row->toArray());
         }
+    }
 
-        $user = User::updateOrCreate(
-            ['email' => $row['email']],
-            [
-                'name'     => $row['nama'],
-                'password' => Hash::make(Str::random(10)),
-                'role'     => 'alumni',
-            ]
-        );
-
- 
-        return Alumni::updateOrCreate(
-            ['npm' => $row['nomor_mahasiswa']],
-            [
-                'user_id'       => $user->id,
-                'prodi_id'      => $prodi->id,
-                'kode_pt'       => $row['kode_pt'] ?? null,
-                'tahun_masuk'   => $row['tahun_angkatan'] ?? null,
-                'tahun_lulus'   => $row['tahun_lulus'],
-                'nama_lengkap'  => $row['nama'],
-                'no_hp'         => $row['nomor_telepon_hp'] ?? null,
-                'nik'           => $row['nik'] ?? null,
-                'npwp'          => $row['npwp'] ?? null,
-                'ipk'           => $row['ipk'] ?? null,
-                'alamat'        => $row['alamat'] ?? null,
-            ]
-        );
+    /**
+     * 4. Menentukan ukuran setiap "potongan" saat membaca file.
+     * Ini penting untuk efisiensi memori saat mengimpor file besar.
+     */
+    public function chunkSize(): int
+    {
+        return 100; // Proses 100 baris per "potongan"
     }
 }
+

@@ -73,13 +73,14 @@ class InstansiController extends Controller
     public function update(Request $request, Instansi $instansi)
     {
         // Pastikan user ada sebelum validasi
-        if (!$instansi->user) {
-            return redirect()->route('admin.instansi.index')->with('error', 'Akun login untuk instansi ini tidak ditemukan.');
-        }
+        // if (!$instansi->user) {
+        //     return redirect()->route('admin.instansi.index')->with('error', 'Akun login untuk instansi ini tidak ditemukan.');
+        // }
+        $userId = $instansi->user->id ?? null;
 
         $request->validate([
             'nama' => 'required|string|max:255|unique:instansi,nama,' . $instansi->id,
-            'email' => 'required|string|email|max:255|unique:users,email,' . $instansi->user->id,
+            'email' => 'required|string|email|max:255|unique:users,email,' . ($userId ?? 'NULL'),
             'password' => ['nullable', 'confirmed', Rules\Password::defaults()],
         ]);
 
@@ -87,18 +88,30 @@ class InstansiController extends Controller
             // 1. Update nama instansi
             $instansi->update(['nama' => $request->nama]);
 
-            // 2. Update data user
-            $instansi->user->update([
-                'name' => $request->nama,
-                'email' => $request->email,
-            ]);
-
-            // 3. Jika password baru diisi, update password
-            if ($request->filled('password')) {
+            if ($instansi->user) {
+                
                 $instansi->user->update([
-                    'password' => Hash::make($request->password),
+                    'name' => $request->nama,
+                    'email' => $request->email,
+                ]);
+
+                if ($request->filled('password')) {
+                    $instansi->user->update([
+                        'password' => Hash::make($request->password)
+                    ]);
+                }
+            } else {
+                User::create([
+                    'name' => $request->nama,
+                    'email' => $request->email,
+                    'password' => $request->filled('password')
+                        ? Hash::make($request->password)
+                        : Hash::make('password123'),
+                    'role' => 'instansi',
+                    'instansi_id' =>$instansi->id,
                 ]);
             }
+
         });
 
         return redirect()->route('admin.instansi.index')->with('success', 'Data instansi berhasil diperbarui.');
