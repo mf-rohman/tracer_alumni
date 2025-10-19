@@ -91,6 +91,8 @@
                     'prodi_id' => $request->prodi_id, // Menyimpan kode prodi
                     'npm' => $request->npm,
                     'nama_lengkap' => $request->nama_lengkap,
+                    'tempat_lahir' => $request->tempat_lahir,
+                    'tanggal_lahir' => $request->tanggal_lahir,
                     'tahun_lulus' => $request->tahun_lulus,
                     'nik' => $request->nik,
                     'no_hp' => $request->no_hp,
@@ -187,19 +189,19 @@
             $request->validate([
                 'file' => 'required|mimes:xlsx,xls,csv'
             ]);
-        
+
             try {
                 // 2. PERINTAH KUNCI: Gunakan Excel::queueImport
                 // Alih-alih memprosesnya langsung, perintah ini akan membaca file
                 // dan mengirimkan pekerjaan ke dalam antrian di database.
                 // Proses ini sangat cepat dan tidak akan menyebabkan timeout.
                 Excel::queueImport(new AlumniImport, $request->file('file'));
-                
+
             } catch (\Exception $e) {
                 // 3. TANGKAP ERROR UMUM: Untuk masalah lain (misal: format file rusak)
                 return back()->with('error', 'Terjadi kesalahan saat memulai proses impor: ' . $e->getMessage());
             }
-        
+
             // 4. Jika berhasil, kembalikan dengan pesan sukses instan
             return redirect()->route('admin.alumni.index')->with('success', 'Proses impor telah dimulai. Data alumni akan ditambahkan di latar belakang.');
         }

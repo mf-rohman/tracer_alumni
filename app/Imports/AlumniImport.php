@@ -2,12 +2,12 @@
 
 namespace App\Imports;
 
-use App\Jobs\ProcessAlumniImport; // <-- 1. Mengimpor "Pekerja" kita
+use App\Jobs\ProcessAlumniImport; 
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Maatwebsite\Excel\Concerns\WithChunkReading; // <-- 2. Mengimpor fitur pembacaan per bagian
+use Maatwebsite\Excel\Concerns\WithChunkReading; 
 
 class AlumniImport implements ToCollection, WithHeadingRow, WithChunkReading, ShouldQueue
 {

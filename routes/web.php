@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\RespondenController;
 use App\Http\Controllers\Auth\InstansiLoginController;
 use App\Http\Controllers\Instansi\InstansiDashboardController;
 use App\Http\Controllers\Instansi\ProfileController as InstansiProfileController;
+use Illuminate\Support\Facades\Log;
 use App\Models\Instansi;
 
 /*
@@ -114,6 +115,11 @@ Route::middleware(['auth', 'role:instansi'])->prefix(env('INSTASI_PATH', 'instan
     // Rute untuk memperbarui password
     Route::put('/instansi-password', [InstansiProfileController::class, 'updatePassword'])->name('password.update');
 });
+
+// Route::get('/test-log', function() {
+//     Log::info('Log test berjalan!');
+//     return 'cek storage/logs/laravel.log';
+// });
 
 // Memanggil route otentikasi dari Breeze (login, register, dll)
 require __DIR__.'/auth.php';

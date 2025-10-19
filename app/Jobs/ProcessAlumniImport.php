@@ -12,6 +12,9 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
+use PhpOffice\PhpSpreadsheet\Shared\Date as ExcelDate;
+use Illuminate\Support\Facades\Log;
+
 
 class ProcessAlumniImport implements ShouldQueue
 {
@@ -33,6 +36,9 @@ class ProcessAlumniImport implements ShouldQueue
     public function handle(): void
     {
         $row = $this->row;
+        Log::info('Import Row Data', ['data' => $row]);
+
+
 
         // 1. Buat atau update User
         $user = User::updateOrCreate(
@@ -40,18 +46,24 @@ class ProcessAlumniImport implements ShouldQueue
             [
                 'name' => $row['nama_lengkap'],
                 'password' => Hash::make((string)$row['npm']),
+                'prodi_id' => $row['kode_prodi'],
                 'role' => 'alumni',
             ]
         );
 
-        // 2. Konversi tanggal lahir
         $tanggalLahir = null;
-        if (!empty($row['tgl_lahir'])) {
+        if (!empty($row['tanggal_lahir'])) {
             try {
-                $datePart = Str::after($row['tgl_lahir'], ',');
-                $datePart = trim($datePart);
-                $tanggalLahir = Carbon::parse($datePart)->format('Y-m-d');
+                // Cek jika nilainya adalah angka (format tanggal default Excel)
+                if (is_numeric($row['tanggal_lahir'])) {
+                    // Gunakan konverter khusus Excel untuk mengubah angka menjadi objek tanggal
+                    $tanggalLahir = Carbon::instance(ExcelDate::excelToDateTimeObject($row['tanggal_lahir']))->format('Y-m-d');
+                } else {
+                    // Jika bukan angka, coba parse sebagai string tanggal biasa (misal: "1998-11-11")
+                    $tanggalLahir = Carbon::parse($row['tanggal_lahir'])->format('Y-m-d');
+                }
             } catch (\Exception $e) {
+                // Jika masih gagal karena format lain yang tidak terduga, biarkan null agar tidak error
                 $tanggalLahir = null;
             }
         }
@@ -64,6 +76,7 @@ class ProcessAlumniImport implements ShouldQueue
                 'prodi_id' => $row['kode_prodi'],
                 'nama_lengkap' => $row['nama_lengkap'],
                 'nik' => $row['nik'],
+                'tempat_lahir' => $row['tempat_lahir'] ?? null, 
                 'tanggal_lahir' => $tanggalLahir,
                 'no_hp' => $row['no_hp'],
                 'alamat' => $row['alamat'],
