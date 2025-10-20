@@ -14,6 +14,11 @@
                 </div>
             </div>
             <div class="card-body px-0 pt-0 pb-2">
+                @if (session('import_batch_id'))
+                    <div id="import-progress" class="alert alert-info mx-3 mt-3" role="alert">
+                        ⏳Proses impor sedang berjalan... <strong id="progress-value">0%</strong>
+                    </div>
+                @endif
                 <div class="table-responsive p-0">
                     <table class="table align-items-center mb-0">
                         <thead>
@@ -75,10 +80,42 @@
     </div>
 </div>
 
-
 @endsection
 
+
 @push('scripts')
+
+@if (session('import_batch_id'))
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const progressBox = document.getElementById('import-progress');
+    const progressValue = document.getElementById('progress-value');
+
+    async function checkProgress() {
+        try {
+            const response = await fetch('/admin/alumni/import/progress');
+            const data = await response.json();
+
+            if (data.progress !== undefined) {
+                progressValue.textContent = data.progress + '%';
+
+                if (data.progress >= 100) {
+                    progressBox.classList.remove('alert-info');
+                    progressBox.classList.add('alert-success');
+                    progressBox.textContent = '✅ Import selesai 100%! Silakan reload halaman untuk melihat data terbaru.';
+                    clearInterval(interval);
+                }
+            }
+        } catch (error) {
+            console.error('Error checking import progress:', error);
+        }
+    }
+
+    const interval = setInterval(checkProgress, 2000); // periksa setiap 2 detik
+});
+</script>
+@endif
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         var alumniDetailModal = document.getElementById('alumniDetailModal');

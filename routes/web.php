@@ -20,6 +20,7 @@ use App\Http\Controllers\Instansi\InstansiDashboardController;
 use App\Http\Controllers\Instansi\ProfileController as InstansiProfileController;
 use Illuminate\Support\Facades\Log;
 use App\Models\Instansi;
+use Illuminate\Support\Facades\Bus;
 
 /*
 |--------------------------------------------------------------------------
@@ -114,6 +115,27 @@ Route::middleware(['auth', 'role:instansi'])->prefix(env('INSTASI_PATH', 'instan
     Route::put('/instansi-profile', [InstansiProfileController::class, 'updateProfile'])->name('profile.update');
     // Rute untuk memperbarui password
     Route::put('/instansi-password', [InstansiProfileController::class, 'updatePassword'])->name('password.update');
+});
+
+Route::get('/admin/alumni/import/progress', function () {
+    $batchId = session('import_batch_id');
+    if (!$batchId) {
+        return response()->json(['error' => 'No batch ID found'], 404);
+    }
+
+    $batch = Bus::findBatch($batchId);
+
+    if (!$batch) {
+        return response()->json(['error' => 'Batch not found'], 404);
+    }
+
+    return response()->json([
+        'total_jobs' => $batch->totalJobs,
+        'pending_jobs' => $batch->pendingJobs,
+        'failed_jobs' => $batch->failedJobs,
+        'processed_jobs' => $batch->processedJobs(),
+        'progress' => $batch->progress(), // dalam persen (0–100)
+    ]);
 });
 
 // Route::get('/test-log', function() {

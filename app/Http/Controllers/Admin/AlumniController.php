@@ -9,12 +9,16 @@
     use Illuminate\Http\Request;
     use Illuminate\Http\JsonResponse;
     use App\Imports\AlumniImport;
-    use Illuminate\Support\Facades\DB;
+use Illuminate\Bus\Batch;
+use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\DB;
     use Illuminate\Support\Facades\Hash;
-    use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
     use Illuminate\Validation\Rule;
     use Maatwebsite\Excel\Facades\Excel;
     use Maatwebsite\Excel\Validators\ValidationException;
+use Throwable;
 
     class AlumniController extends Controller
     {
@@ -197,25 +201,53 @@
          */
         public function handleImport(Request $request)
         {
-            // 1. Validasi awal: Pastikan file yang di-upload adalah file Excel
+            // 1️⃣ Validasi awal
             $request->validate([
                 'file' => 'required|mimes:xlsx,xls,csv'
             ]);
-
+        
             try {
-                // 2. PERINTAH KUNCI: Gunakan Excel::queueImport
-                // Alih-alih memprosesnya langsung, perintah ini akan membaca file
-                // dan mengirimkan pekerjaan ke dalam antrian di database.
-                // Proses ini sangat cepat dan tidak akan menyebabkan timeout.
-                Excel::queueImport(new AlumniImport, $request->file('file'));
-
+                // 2️⃣ Ambil semua data dari Excel (sheet pertama)
+                $collection = \Maatwebsite\Excel\Facades\Excel::toCollection(
+                    new \App\Imports\AlumniImport,
+                    $request->file('file')
+                )[0];
+                
+                // 3️⃣ Buat kumpulan job
+                $jobs = [];
+                foreach ($collection as $row) {
+                    $jobs[] = new \App\Jobs\ProcessAlumniImport($row->toArray());
+                }
+            
+                // 4️⃣ Buat batch job untuk tracking progress
+                $batch = Bus::batch($jobs)
+                    ->name('alumni_import_' . now()->format('Ymd_His'))
+                    ->then(function (Batch $batch) {
+                        Log::info('✅ Batch selesai!', ['batch_id' => $batch->id]);
+                    })
+                    ->catch(function (Batch $batch, Throwable $e) {
+                        Log::error('❌ Batch error!', [
+                            'batch_id' => $batch->id,
+                            'error' => $e->getMessage()
+                        ]);
+                    })
+                    ->finally(function (Batch $batch) {
+                        Log::info('🏁 Batch selesai diproses', ['batch_id' => $batch->id]);
+                    })
+                    ->dispatch();
+                
+                // 5️⃣ Simpan batch_id di session (buat progress bar nanti)
+                session(['import_batch_id' => $batch->id]);
+                
+                // 6️⃣ Redirect ke halaman index alumni
+                return redirect()
+                    ->route('admin.alumni.index')
+                    ->with('success', 'Proses impor dimulai. Batch ID: ' . $batch->id);
+                
             } catch (\Exception $e) {
-                // 3. TANGKAP ERROR UMUM: Untuk masalah lain (misal: format file rusak)
+                Log::error('🚨 Gagal memulai import', ['error' => $e->getMessage()]);
                 return back()->with('error', 'Terjadi kesalahan saat memulai proses impor: ' . $e->getMessage());
             }
-
-            // 4. Jika berhasil, kembalikan dengan pesan sukses instan
-            return redirect()->route('admin.alumni.index')->with('success', 'Proses impor telah dimulai. Data alumni akan ditambahkan di latar belakang.');
         }
 
         public function downloadTemplate () {
