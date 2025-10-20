@@ -12,6 +12,7 @@
     use Illuminate\Support\Facades\DB;
     use Illuminate\Support\Facades\Hash;
     use Illuminate\Support\Str;
+    use Illuminate\Validation\Rule;
     use Maatwebsite\Excel\Facades\Excel;
     use Maatwebsite\Excel\Validators\ValidationException;
 
@@ -110,19 +111,21 @@
          */
         public function edit(Alumni $alumnus)
         {
-            $prodi = Prodi::all();
-            return view('admin.alumni.edit', compact('alumnus', 'prodi'));
+            $prodiList = Prodi::orderBy('nama_prodi')->get();
+            $alumnus->load('user');
+
+            return view('admin.alumni.edit', compact('alumnus', 'prodiList'));
         }
 
         public function show(Alumni $alumnus)
         {
-            // Memuat relasi dasar
+
             $alumnus->load('user', 'prodi');
 
-            // Mengambil satu jawaban kuesioner yang paling baru berdasarkan tahun
+
             $latestAnswer = $alumnus->kuesionerAnswers()->orderBy('tahun_kuesioner', 'desc')->first();
 
-            // Mengirim data alumni dan jawaban terbarunya ke view
+
             return view('admin.alumni.show', compact('alumnus', 'latestAnswer'));
         }
 
@@ -131,32 +134,41 @@
          */
         public function update(Request $request, Alumni $alumnus)
         {
-            // Ambil user yang terhubung dengan data alumni
-            $user = $alumnus->user;
 
             $request->validate([
-                'nama_lengkap' => 'required|string|max:255',
-                'npm' => 'required|string|max:20|unique:alumni,npm,' . $alumnus->id,
-                // Validasi email unik, abaikan email user saat ini
-                'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
-                'prodi_id' => 'required|exists:prodi,id',
-                'tahun_masuk' => 'nullable|numeric|digits:4',
-                'tahun_lulus' => 'required|numeric|digits:4',
-                'nik' => 'nullable|string|digits:16',
-                'npwp' => 'nullable|string|max:25',
-                'ipk' => 'nullable|numeric|between:0,4.00',
+                'nama_lengkap' => ['required', 'string', 'max:255'],
+                // Pastikan email unik, kecuali untuk user ini sendiri
+                'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($alumnus->user_id)],
+                // Pastikan NPM unik, kecuali untuk alumni ini sendiri
+                'npm' => ['required', 'string', 'max:255', Rule::unique('alumni')->ignore($alumnus->id)],
+                'prodi_id' => ['required', 'string', 'exists:prodi,kode_prodi'],
+                'tahun_lulus' => ['required', 'integer', 'digits:4'],
+                'nik' => ['required', 'string', 'digits:16', Rule::unique('alumni')->ignore($alumnus->id)],
             ]);
-
-            // Update data di tabel alumni
-            $alumnus->update($request->all());
-
-            // Update juga nama dan email di tabel user jika berubah
-            $user->update([
-                'name' => $request->nama_lengkap,
-                'email' => $request->email,
-            ]);
-
-            return redirect()->route('admin.alumni.index')->with('success', 'Data alumni berhasil diperbarui.');
+    
+            // Menggunakan transaksi database untuk memastikan kedua tabel berhasil diupdate
+            DB::transaction(function () use ($request, $alumnus) {
+                // 2. Update data di tabel 'users'
+                $alumnus->user->update([
+                    'name' => $request->nama_lengkap,
+                    'email' => $request->email,
+                ]);
+    
+                // 3. Update data di tabel 'alumni'
+                $alumnus->update([
+                    'prodi_id' => $request->prodi_id,
+                    'npm' => $request->npm,
+                    'nama_lengkap' => $request->nama_lengkap,
+                    'tahun_lulus' => $request->tahun_lulus,
+                    'nik' => $request->nik,
+                    'no_hp' => $request->no_hp,
+                    'alamat' => $request->alamat,
+                    'tahun_masuk' => $request->tahun_masuk,
+                    'ipk' => $request->ipk,
+                ]);
+            });
+            
+            return redirect()->route('admin.alumni.kategori')->with('success', 'Data alumni berhasil diperbarui.');
         }
 
         /**
