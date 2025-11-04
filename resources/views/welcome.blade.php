@@ -48,8 +48,8 @@
         }
 
         .navbar-sticky.scrolled span {
-            font-size: 1.25rem /* 20px */;
-            line-height: 1.75rem /* 28px */;
+            font-size: 1.25rem ;
+            line-height: 1.75rem;
         }
 
         .gradient-text {
@@ -149,24 +149,6 @@
                     <a href="#testimonials" class="text-gray-600 hover:text-indigo-600 transition">Testimoni</a>
                     <a href="#faq" class="text-gray-600 hover:text-indigo-600 transition">FAQ</a>
                 </div>
-
-                <!-- <div class="hidden md:block">
-                    <div class="relative inline-block text-left">
-                        <button type="button" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none" id="menu-button" aria-expanded="true" aria-haspopup="true" onclick="toggleDropdown()">
-                            <i class="fas fa-sign-in-alt mr-2"></i>
-                            Portal Login
-                            <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                            </svg>
-                        </button>
-                        <div id="dropdown-menu" class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
-                            <div class="py-1" role="none">
-                                <a href="{{ route('login') }}" class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100" role="menuitem" tabindex="-1">Admin / BAAK</a>
-                                <a href="{{ route('instansi.login.show') }}" class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100" role="menuitem" tabindex="-1">Perusahaan / Instansi</a>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
                 
                 <div class="md:hidden">
                     <button id="mobile-menu-button" class="text-gray-800 focus:outline-none">
@@ -176,15 +158,14 @@
             </div>
         </div>
         
-        <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 w-full bg-white shadow-md">
+        <div id="mobile-menu" class="hidden md:hidden absolute -mt-4 -z-10 top-full left-0 w-full bg-white shadow-md">
             <a href="#hero" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100">Beranda</a>
             <a href="#manfaat" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100">Manfaat</a>
             <a href="#testimonials" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100">Testimoni</a>
             <a href="#alur" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100">Alur</a>
             <a href="#faq" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100">FAQ</a>
             <hr class="my-2">
-            <!-- <a href="{{ route('login') }}" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100">Login Admin / BAAK</a>
-            <a href="{{ route('instansi.login.show') }}" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100">Login Instansi</a> -->
+            
         </div>
     </nav>
 
@@ -199,9 +180,6 @@
         <div class="container mx-auto px-4 relative z-10">
             <div class="max-w-3xl mx-auto text-center">
                 <h1 id="typing-animation" class="text-4xl md:text-6xl font-extrabold leading-tight mb-5 h-32 md:h-24"></h1>
-                <!-- <p class="text-lg md:text-xl text-gray-300 mb-8">
-                    Partisipasi Anda dalam Tracer Study membentuk almamater yang lebih baik dan relevan dengan dunia kerja.
-                </p> -->
             </div>
             
             <div class="max-w-2xl mx-auto">
@@ -218,7 +196,7 @@
                         <div class="flex items-center border-2 border-gray-200 rounded-lg focus-within:border-indigo-500 p-2">
                             
                             <i class="fas fa-id-card text-gray-400 mx-3 "></i>
-                            <input type="text" name="npm" class="w-full bg-transparent border-none focus:outline-none focus:ring-0  text-gray-800 placeholder-gray-500" placeholder="Masukkan NPM Anda..." required>
+                            <input type="number" name="npm" class="w-full bg-transparent border-none focus:outline-none focus:ring-0  text-gray-800 placeholder-gray-500" placeholder="Masukkan NPM Anda..." required>
                             <button type="submit" class="ml-2 bg-indigo-600 text-white font-semibold py-2 px-6 rounded-lg hover:bg-indigo-700 transition">Lanjutkan</button>
                         </div>
                     </form>
@@ -249,7 +227,7 @@
     @endif
 
 
-    <section id="manfaat" class="py-20 bg-white">
+    <section id="manfaat" class=" py-60 md:py-20 bg-white">
         <div class="container mx-auto px-4" data-aos="slide-up">
             <div class="text-center mb-12"  data-aos="slide-up">
                 <h2 class="text-3xl md:text-4xl font-extrabold text-gray-800">Mengapa Tracer Study Penting?</h2>
@@ -390,7 +368,7 @@
                     <h2 class="text-3xl md:text-4xl font-extrabold text-gray-800">Apa Kata Mereka?</h2>
                     <p class="mt-4 text-lg text-gray-600">Kisah sukses dan pengalaman berharga dari para alumni Unirow.</p>
                 </div>
-                {{-- Tombol Navigasi Slider --}}
+               
                 <div class="hidden md:flex space-x-2">
                     <button @click="prev()" class="h-12 w-12 rounded-full bg-white shadow-md text-gray-600 hover:bg-indigo-600 hover:text-white transition flex items-center justify-center">
                         <i class="fas fa-arrow-left"></i>
@@ -401,7 +379,7 @@
                 </div>
             </div>
 
-            {{-- Kontainer Slider --}}
+            
             <div class="overflow-hidden relative" @mouseenter="pauseSlider()" @mouseleave="resumeSlider()">
                 <div x-ref="slider" class="flex space-x-8 overflow-x-auto scrollbar-hide" data-aos="fade-up">
                     @php
@@ -419,14 +397,14 @@
                         <div class="h-80" x-data="{ flipped: false }" @click="flipped = !flipped">
                             <div class="flip-card h-full" :class="{ 'flipped': flipped }">
                                 <div class="flip-card-inner">
-                                    {{-- Sisi Depan --}}
+                                    
                                     <div class="flip-card-front bg-white items-center text-center">
                                         <img class="h-24 w-24 rounded-full object-cover mb-4" src="https://ui-avatars.com/api/?name={{ urlencode($testi['name']) }}&background=4F46E5&color=fff&size=128" alt="Foto {{ $testi['name'] }}">
                                         <h3 class="font-bold text-xl text-gray-800">{{ $testi['name'] }}</h3>
                                         <p class="text-sm text-gray-500">{{ $testi['job'] }}</p>
                                         <span class="mt-4 inline-block bg-indigo-100 text-indigo-700 text-xs font-semibold px-3 py-1 rounded-full">Klik untuk melihat</span>
                                     </div>
-                                    {{-- Sisi Belakang --}}
+                                    
                                     <div class="flip-card-back {{ $testi['color'] }} text-white">
                                         <i class="fas fa-quote-left text-white/50 text-3xl mb-4"></i>
                                         <blockquote class="italic">{{ $testi['quote'] }}</blockquote>
@@ -441,14 +419,14 @@
         </div>
     </section>
 
-    <section class="bg-zinc-50 overflow-hidden">
+    <section class="bg-slate-200 transition-colors duration-300 md:bg-zinc-50 overflow-hidden " data-aos="fade-up">
         <div class="flex justify-start mx-auto my-1 ">
             <div class="relative group w-1/2 mx-10" data-aos="zoom-in-right" >
                 <a href="#_"> 
                     <img src="https://images.unsplash.com/photo-1530035415911-95194de4ebcc?    q=80&amp;w=2670&amp;auto=format&amp;fit=crop&amp;ixlib=rb-4.0.3&amp;      ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="rounded-xl rotate-6 group-hover:rotate-0 transition-all duration-700 ease-out hover:-translate-y-12 object-cover transform origin-bottom" alt="#_" > 
                 </a>
 
-                <p class=" top-1/2 left-full transform -translate-y-1/2 -translate-x-[200%] group-hover:translate-x-28 group-hover:opacity-100 transition-all duration-700 ease-out text-lg font-semibold text-white max-w-md bg-blue-900 p-4 rounded-xl ">temporarily using Google images, because we are still waiting for documentation from former student</p > 
+                <p class=" top-1/2 left-full transform -translate-y-1/2 -translate-x-[200%] group-hover:-translate-x-0 md:group-hover:translate-x-28 group-hover:opacity-100 transition-all duration-700 ease-out text-lg font-semibold text-white max-w-md bg-blue-900 p-4 rounded-xl ">temporarily using Google images, because we are still waiting for documentation from former student</p > 
             </div>
         </div>
 
@@ -458,7 +436,7 @@
                     <img src="https://images.unsplash.com/photo-1487180144351-b8472da7d491?q=80&amp;w=2672&amp;   auto=format&amp;fit=crop&amp;ixlib=rb-4.0.3&amp;ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="rounded-xl -rotate-6 group-hover:rotate-0 transition-all duration-700 ease-out hover:-translate-y-12 object-cover transform origin-bottom" alt="#_"> 
                 </a>
 
-                <p class=" top-1/2 left-full transform -translate-y-1/2 translate-x-[200%] group-hover:translate-x-28 group-hover:opacity-100 transition-all duration-700 ease-out text-lg font-semibold text-white max-w-md bg-blue-900 backdrop-blur-md p-4 rounded-xl ">temporarily using Google images, because we are still waiting for documentation from former student</p > 
+                <p class=" top-1/2 left-full transform -translate-y-1/2 translate-x-[200%] group-hover:-translate-x-0 md:group-hover:translate-x-28 group-hover:opacity-100 transition-all duration-700 ease-out text-lg font-semibold text-white max-w-md bg-blue-900 backdrop-blur-md p-4 rounded-xl ">temporarily using Google images, because we are still waiting for documentation from former student</p > 
             </div>
         </div>
 
@@ -468,7 +446,7 @@
                     <img src="https://images.unsplash.com/photo-1586996292898-71f4036c4e07?    q=80&amp;w=2670&amp;auto=format&amp;fit=crop&amp;ixlib=rb-4.0.3&amp;     ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"  class="rounded-xl rotate-6 group-hover:rotate-0 transition-all duration-700 ease-out hover:-translate-y-12     object-cover transform origin-bottom" alt="#_"> 
                 </a>
 
-                <p class=" top-1/2 left-full transform -translate-y-1/2 -translate-x-[200%] group-hover:translate-x-28 group-hover:opacity-100 transition-all duration-700 ease-out text-lg font-semibold text-white max-w-md bg-blue-900 backdrop-blur-md p-4 rounded-xl ">temporarily using Google images, because we are still waiting for documentation from former student</p > 
+                <p class=" top-1/2 left-full transform -translate-y-1/2 -translate-x-[200%] group-hover:-translate-x-0 md:group-hover:translate-x-28 group-hover:opacity-100 transition-all duration-700 ease-out text-lg font-semibold text-white max-w-md bg-blue-900 backdrop-blur-md p-4 rounded-xl ">temporarily using Google images, because we are still waiting for documentation from former student</p > 
             </div>
         </div>
 
@@ -478,7 +456,7 @@
                     <img src="https://images.unsplash.com/photo-1522775417749-29284fb89f43?q=80&amp;w=2574&amp;auto=format&  amp;fit=crop&amp;ixlib=rb-4.0.3&amp;ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"  class="rounded-xl -rotate-6 group-hover:rotate-0 transition-all duration-700 ease-out hover:-translate-y-12     object-cover transform origin-bottom" alt="#_"> 
                 </a>
                 
-                <p class=" top-1/2 left-full transform -translate-y-1/2 translate-x-[200%] group-hover:translate-x-28 group-hover:opacity-100 transition-all duration-700 ease-out text-lg font-semibold text-white max-w-md bg-blue-900 backdrop-blur-md p-4 rounded-xl ">temporarily using Google images, because we are still waiting for documentation from former student</p > 
+                <p class=" top-1/2 left-full transform -translate-y-1/2 translate-x-[200%] group-hover:-translate-x-0 md:group-hover:translate-x-28 group-hover:opacity-100 transition-all duration-700 ease-out text-lg font-semibold text-white max-w-md bg-blue-900 backdrop-blur-md p-4 rounded-xl ">temporarily using Google images, because we are still waiting for documentation from former student</p > 
             </div>
         </div>
     </section>
@@ -661,7 +639,7 @@
                         slider.scrollBy({ left: scrollAmount, behavior: 'smooth' });
                         this.currentIndex++;
                     }
-                    console.log("ffdfgdfughfuhgruit");
+                    // console.log("ffdfgdfughfuhgruit");
                 },
 
                 prev() {
@@ -760,8 +738,8 @@
                 breakLines: false,
                 cursor: false,   
             })
-            .type("Jejaki Karir, ", { delay: 100 })
-            .type('<span class="gradient-text">Bangun Masa Depan.</span>', { delay: 400 })
+            .type("Tracer Study Bergerak, ", { delay: 100 })
+            .type('<span class="gradient-text">Alumni Terlacak.</span>', { delay: 400 })
             .pause(3000)
             .delete(null, { delay: 200, speed: 50 })
             .go();

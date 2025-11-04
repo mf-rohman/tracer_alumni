@@ -20,7 +20,7 @@
                                 <select name="prodi_id" id="prodi_id" class="form-control">
                                     <option value="">Semua Prodi</option>
                                     @foreach($prodiList as $prodi)
-                                        <option value="{{ $prodi->id }}" {{ request('prodi_id') == $prodi->id ? 'selected' : '' }}>
+                                        <option value="{{ $prodi->kode_prodi }}" {{ request('prodi_id') == $prodi->kode_prodi ? 'selected' : '' }}>
                                             {{ $prodi->nama_prodi }}
                                         </option>
                                     @endforeach
@@ -114,6 +114,13 @@
                                         <span class="badge badge-sm bg-gradient-success">Sudah Mengisi</span>
                                     @else
                                         <span class="badge badge-sm bg-gradient-secondary">Belum Mengisi</span>
+                                    @endif
+                                </td>
+                                <td class="align-middle text-center text-sm">
+                                    @if($alumnus->penilaianInstansi->isNotEmpty())
+                                        <span class="badge badge-sm bg-gradient-success">{{$alumnus->skor_penilaian}}</span>
+                                    @else
+                                        <span class="badge badge-sm bg-gradient-secondary">Belum Dinilai</span>
                                     @endif
                                 </td>
                                 <td class="align-middle">

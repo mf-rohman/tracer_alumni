@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\InstansiSearchController;
 use App\Http\Controllers\Api\WilayahController;
+use App\Http\Controllers\KuesionerImportController;
 use App\Http\Controllers\LandingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -26,3 +27,5 @@ Route::get('/landing-page-data', [LandingController::class, 'getPageData']);
 Route::get('/regencies', [WilayahController::class, 'getRegencies']);
 
 Route::get('/instansi/search', [InstansiSearchController::class, 'search']);
+
+Route::get('/kuesioner-import-status/{batchId}', [KuesionerImportController::class, 'getImportStatus']);

@@ -43,6 +43,10 @@
                                                 <i class="fas fa-check-circle me-1"></i>
                                                 Dinilai oleh: {{ $penilaian->nama_penilai }}
                                             </span>
+
+                                            <a href="{{ route('instansi.penilaian.edit', $penilaian) }}" class="btn btn-link text-dark px-2 mb-0 ms-2" title="Edit Penilaian">
+                                                <i class="fas fa-pen text-xs"></i>
+                                            </a>
                                         </li>
                                     @endforeach
                                 </ul>

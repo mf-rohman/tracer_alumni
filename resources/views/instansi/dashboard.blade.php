@@ -71,19 +71,29 @@
 </div>
 @endsection
 
+
+
 @push('scripts')
 {{-- Memuat library Chart.js --}}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    var ctx = document.getElementById("kinerja-chart").getContext("2d");
+document.addEventListener("DOMContentLoaded", function () {
+    const ctx = document.getElementById("kinerja-chart").getContext("2d");
+
+    const labels = @json($chartLabels);
+    const data = @json($chartData);
+
+    console.log("Labels:", labels);
+    console.log("Data:", data);
+
     new Chart(ctx, {
         type: "bar",
         data: {
-            labels: @json($chartLabels),
+            labels: labels,
             datasets: [{
                 label: "Jumlah Penilaian",
+                data: data,
                 backgroundColor: "#4B49AC",
-                data: @json($chartData),
                 borderRadius: 5,
                 maxBarThickness: 40,
             }],
@@ -91,22 +101,18 @@
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            plugins: { 
-                legend: { 
-                    display: false // Sembunyikan legenda
-                } 
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { precision: 0 }
+                }
             },
-            scales: { 
-                y: { 
-                    ticks: { 
-                        beginAtZero: true,
-                        // Pastikan hanya angka bulat yang ditampilkan di sumbu Y
-                        callback: function(value) {if (value % 1 === 0) {return value;}}
-                    } 
-                } 
-            }
-        }
+            plugins: {
+                legend: { display: false },
+            },
+        },
     });
+});
 </script>
 @endpush
 

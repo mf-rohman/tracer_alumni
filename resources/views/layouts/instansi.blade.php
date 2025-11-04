@@ -181,6 +181,7 @@
     <script src="{{ asset('assets/admin/js/plugins/perfect-scrollbar.min.js') }}"></script>
     <script src="{{ asset('assets/admin/js/plugins/smooth-scrollbar.min.js') }}"></script>
     <script src="{{ asset('assets/admin/js/material-dashboard.min.js?v=3.1.0') }}"></script>
+    @stack('scripts')
 </body>
 </html>
 

@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\RespondenController;
 use App\Http\Controllers\Auth\InstansiLoginController;
 use App\Http\Controllers\Instansi\InstansiDashboardController;
 use App\Http\Controllers\Instansi\ProfileController as InstansiProfileController;
+use App\Http\Controllers\KuesionerImportController;
 use Illuminate\Support\Facades\Log;
 use App\Models\Instansi;
 use Illuminate\Support\Facades\Bus;
@@ -69,6 +70,12 @@ Route::middleware(['auth', 'role:superadmin,bak,admin_prodi'])->prefix(env('ADMI
     Route::get('alumni-template-download', [AlumniController::class, 'downloadTemplate'])->name('alumni.template.download');
 
     Route::get('kategori-alumni', [AlumniCategoryController::class, 'index'])->name('alumni.kategori');
+
+    Route::get('kuesioner-import', [KuesionerImportController::class, 'showImportForm'])->name('kuesioner.import.show');
+    Route::post('kuesioner-import', [KuesionerImportController::class, 'handleImport'])->name('kuesioner.import.handle');
+    Route::get('kuesioner-import/status/{batchId}', [KuesionerImportController::class, 'showImportStatus'])->name('kuesioner.import.status');
+    Route::get('kuesioner-template-download', [KuesionerImportController::class, 'downloadKuesionerTemplate'])->name('kuesioner.template.download');
+
 });
 
 // Grup KHUSUS untuk Super Admin
@@ -109,6 +116,9 @@ Route::middleware(['auth', 'role:instansi'])->prefix(env('INSTASI_PATH', 'instan
     Route::get('/alumni/{alumnus}/nilai', [InstansiDashboardController::class, 'showPenilaianForm'])->name('penilaian.show');
     Route::post('/alumni/{alumnus}/nilai', [InstansiDashboardController::class, 'storePenilaian'])->name('penilaian.store');
     
+    Route::get('/penilaian/{penilaian}/edit', [InstansiDashboardController::class, 'editPenilaianForm'])->name('penilaian.edit');
+    Route::put('/penilaian/{penilaian}', [InstansiDashboardController::class, 'updatePenilaian'])->name('penilaian.update');
+
     // RUTE BARU UNTUK PENGATURAN AKUN
     Route::get('/instansi-profile', [InstansiProfileController::class, 'edit'])->name('profile.edit');
     // Rute untuk memperbarui profil (nama & foto)
@@ -137,6 +147,8 @@ Route::get('/admin/alumni/import/progress', function () {
         'progress' => $batch->progress(), // dalam persen (0–100)
     ]);
 });
+
+
 
 // Route::get('/test-log', function() {
 //     Log::info('Log test berjalan!');

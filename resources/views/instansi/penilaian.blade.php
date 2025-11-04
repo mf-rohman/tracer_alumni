@@ -1,6 +1,7 @@
-@extends('layouts.admin')
+@extends('layouts.instansi')
 
-@section('title', 'Form Penilaian Alumni')
+{{-- Judul halaman akan dinamis, "Form Penilaian" atau "Edit Penilaian" --}}
+@section('title', $penilaian->exists ? 'Edit Penilaian' : 'Form Penilaian Alumni')
 
 @section('content')
 <div class="card" x-data="{
@@ -8,18 +9,25 @@
     kesesuaian_ilmu: '{{ old('kesesuaian_ilmu', $penilaian->kesesuaian_ilmu ?? '') }}'
 }">
     <div class="card-header">
-        <h5 class="mb-0">Formulir Penilaian Kinerja Alumni</h5>
-        <p class="text-sm">Anda sedang menilai: <strong>{{ $alumnus->nama_lengkap }} ({{ $alumnus->npm }})</strong></p>
+        <h5 class="mb-0">{{ $penilaian->exists ? 'Edit Formulir Penilaian' : 'Formulir Penilaian Kinerja' }}</h5>
+        <p class="text-sm">Untuk Alumni: <strong>{{ $alumnus->nama_lengkap }} ({{ $alumnus->npm }})</strong></p>
     </div>
     <div class="card-body">
-         <form action="{{ route('instansi.penilaian.store', $alumnus) }}" method="POST">
+         
+         {{-- PERUBAHAN: Form action dan method akan berubah secara dinamis --}}
+         <form action="{{ $penilaian->exists ? route('instansi.penilaian.update', $penilaian) : route('instansi.penilaian.store', $alumnus) }}" method="POST">
             @csrf
+            {{-- Jika ini adalah mode edit, tambahkan method PUT --}}
+            @if($penilaian->exists)
+                @method('PUT')
+            @endif
 
             {{-- SECTION 1: IDENTITAS PENILAI --}}
             <h6 class="font-weight-bolder text-primary">Bagian 1: Informasi Penilai</h6>
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label>Nama Bapak/Ibu</label>
+                    {{-- PERUBAHAN: value diisi dengan data lama jika ada --}}
                     <input type="text" name="nama_penilai" class="form-control" value="{{ old('nama_penilai', $penilaian->nama_penilai ?? '') }}" required>
                 </div>
                 <div class="col-md-6 mb-3">
@@ -79,6 +87,7 @@
                     <div class="d-flex justify-content-around">
                         @for($i = 1; $i <= 4; $i++)
                         <div class="form-check form-check-inline">
+                            {{-- PERUBAHAN: Logika 'checked' dinamis --}}
                             <input class="form-check-input" type="radio" name="{{ $key }}" id="{{ $key }}{{ $i }}" value="{{ $i }}" {{ (old($key, $penilaian ? $penilaian->$key : '') == $i) ? 'checked' : '' }} required>
                             <label class="form-check-label" for="{{ $key }}{{ $i }}">{{ $i }}</label>
                         </div>
@@ -116,11 +125,11 @@
                 <label>Apakah bekal ilmu yang dimiliki lulusan sudah sesuai dengan kebutuhan?</label>
                 <div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="kesesuaian_ilmu" id="ilmu_sesuai" value="Sudah" x-model="kesesuaian_ilmu" required>
+                        <input class="form-check-input" type="radio" name="kesesuaian_ilmu" id="ilmu_sesuai" value="Sudah" x-model="kesesuaian_ilmu" {{ (old('kesesuaian_ilmu', $penilaian->kesesuaian_ilmu ?? '') == 'Sudah') ? 'checked' : '' }} required>
                         <label class="form-check-label" for="ilmu_sesuai">Sudah</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="kesesuaian_ilmu" id="ilmu_belum" value="Belum" x-model="kesesuaian_ilmu" required>
+                        <input class="form-check-input" type="radio" name="kesesuaian_ilmu" id="ilmu_belum" value="Belum" x-model="kesesuaian_ilmu" {{ (old('kesesuaian_ilmu', $penilaian->kesesuaian_ilmu ?? '') == 'Belum') ? 'checked' : '' }} required>
                         <label class="form-check-label" for="ilmu_belum">Belum</label>
                     </div>
                 </div>
@@ -135,8 +144,11 @@
             </div>
 
             <div class="d-flex justify-content-end mt-4">
-                <a href="{{ route('instansi.dashboard') }}" class="btn btn-link me-2">Batal</a>
-                <button type="submit" class="btn bg-gradient-primary">Simpan Penilaian</button>
+                <a href="{{ route('instansi.data_alumni') }}" class="btn btn-link me-2">Batal</a>
+                {{-- PERUBAHAN: Teks tombol dinamis --}}
+                <button type="submit" class="btn bg-gradient-primary">
+                    {{ $penilaian->exists ? 'Update Penilaian' : 'Simpan Penilaian' }}
+                </button>
             </div>
         </form>
     </div>

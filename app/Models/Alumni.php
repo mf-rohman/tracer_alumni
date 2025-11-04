@@ -47,9 +47,8 @@ class Alumni extends Model
 
     public function penilaianInstansi()
     {
-        return $this->hasMany(PenilaianInstansi::class);
+        return $this->hasMany(PenilaianInstansi::class, 'alumni_id');
     }
-
 
     protected static function boot()
     {

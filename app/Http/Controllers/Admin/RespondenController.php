@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Alumni;
 use App\Models\KuesionerAnswer;
+use App\Models\PenilaianInstans;
 use App\Models\Prodi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,7 +19,7 @@ class RespondenController extends Controller
     public function index(Request $request)
     {
         $user = Auth::user();
-        $query = Alumni::query()->with(['user', 'prodi', 'kuesionerAnswers']);
+        $query = Alumni::query()->with(['user', 'prodi', 'kuesionerAnswers', 'penilaianInstansi']);
 
         // Menerapkan filter berdasarkan input
         if ($request->filled('prodi_id')) {
@@ -52,8 +53,8 @@ class RespondenController extends Controller
         $alumni = $query->latest()->paginate(15)->withQueryString();
 
         // Data untuk dropdown filter
-        $prodiList = ($user->role == 'admin_prodi')
-            ? Prodi::where('id', $user->prodi_id)->get()
+        $prodiList = ($user->role == 'admin_prodi' && 'superadmin')
+            ? Prodi::where('kode_prodi', $user->prodi_id)->get()
             : Prodi::orderBy('nama_prodi')->get();
             
         $tahunLulusList = Alumni::select('tahun_lulus')->distinct()->orderBy('tahun_lulus', 'desc')->get();

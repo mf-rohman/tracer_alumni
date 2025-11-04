@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="container-fluid py-4 px-0">
-    <!-- KARTU STATISTIK ATAS -->
+
     <div class="row">
         {{-- Chart 1: Responden --}}
         <div class="col-xl-2 col-md-4 col-sm-6 mb-4">
@@ -85,7 +85,6 @@
     </div>
     @endif
 
-    <!-- FILTER TAHUN (DROPDOWN) -->
     <div class="row mt-4">
         <div class="col-12">
             <div class="card">
@@ -95,7 +94,7 @@
                         <input type="hidden" name="prodi_id" value="{{ $selectedProdiId }}">
 
                         <div class="row align-items-end">
-                            <div class="col-md-5">
+                            <div class="col-md-3">
                                 <label for="tahun_lulus">Filter Tahun Lulus</label>
                                 <select name="tahun_lulus" id="tahun_lulus" class="form-control">
                                     <option value="">-- Semua Tahun Lulus --</option>
@@ -104,7 +103,7 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-md-5">
+                            <div class="col-md-3">
                                 <label for="tahun_respon">Filter Tahun Respon</label>
                                 <select name="tahun_respon" id="tahun_respon" class="form-control">
                                     <option value="">-- Semua Tahun Respon --</option>
@@ -113,9 +112,13 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <button type="submit" class="btn bg-gradient-primary w-100 mb-0">Terapkan</button>
-                                <a href="{{ route('admin.dashboard', ['prodi_id' => $selectedProdiId]) }}" class="btn btn-link text-secondary w-100 mt-1">Reset Tahun</a>
+                            </div>
+                            <div class="col-md-3">
+                                <button type="button" class="btn bg-gradient-primary w-100 mb-0">
+                                    <a href="{{ route('admin.dashboard', ['prodi_id' => $selectedProdiId]) }}" class="text-white">Reset Tahun</a>
+                                </button>
                             </div>
                         </div>
                     </form>
@@ -124,7 +127,6 @@
         </div>
     </div>
 
-    <!-- GRAFIK BARIS PERTAMA -->
     <div class="row mt-4">
         <div class="col-lg-7 mb-lg-0 mb-4">
             <div class="card z-index-2 h-100">
@@ -180,7 +182,6 @@
         </div>
     </div>
 
-     <!-- GRAFIK BARIS KEDUA -->
      <div class="row mt-4">
         <div class="col-12">
             <div class="card">
@@ -204,7 +205,7 @@
 
     function createDoughnutChart(elementId, data, color) {
         var ctx = document.getElementById(elementId);
-        if (!ctx) return; // Penjaga jika elemen tidak ditemukan
+        if (!ctx) return; 
         new Chart(ctx.getContext("2d"), {
             type: "doughnut",
             data: {
@@ -223,14 +224,14 @@
     }
 
     // Inisialisasi semua chart statistik
-    createDoughnutChart('chart-responden', @json($chartDataResponden), '#5e72e4');
+    createDoughnutChart('chart-responden', @json($chartDataResponden), '#fb6340');
     
     @foreach($statusData as $status => $data)
         @php
             $chartData = $data ['chartData'] ?? [0,0];
             $color = $statusColors [$status] ?? '#5e72e4'
         @endphp
-        createDoughnutChart('chart-{{ Str::slug($status) }}', @json(['chartData']), '{{ $color }}');
+        createDoughnutChart('chart-{{ Str::slug($status) }}', @json($chartData), '{{ $color }}');
     @endforeach
 
     // Inisialisasi chart lulusan (donat besar)

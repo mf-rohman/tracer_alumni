@@ -40,7 +40,7 @@
                 <select class="form-control" id="prodi_id" name="prodi_id">
                     <option value="">-- Pilih Prodi --</option>
                     @foreach($prodi as $p)
-                        <option value="{{ $p->id }}">{{ $p->nama_prodi }}</option>
+                        <option value="{{ $p->kode_prodi }}">{{ $p->nama_prodi }}</option>
                     @endforeach
                 </select>
             </div>

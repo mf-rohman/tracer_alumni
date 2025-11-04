@@ -30,7 +30,7 @@ class UserController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'role' => ['required', 'in:superadmin,bak,admin_prodi'],
-            'prodi_id' => ['nullable', 'required_if:role,admin_prodi', 'exists:prodi,id'], // <-- VALIDASI BARU
+            'prodi_id' => ['nullable', 'required_if:role,admin_prodi', 'exists:prodi,kode_prodi'], // <-- VALIDASI BARU
         ]);
 
         User::create([

@@ -161,7 +161,7 @@
                             <div>
                                 @include('alumni.partials.kuesioner-testimoni')
 
-                                <div class="d-flex justify-content-between align-items-center mt-5 pt-3 border-top">
+                                <div class="d-flex justify-content-between align-items-center mt-7 pt-3 mx-2 border-top">
                                     <button type="button" class="btn btn-outline-primary" @click="activeTab = 'opsional'">
                                         <i class="fas fa-arrow-left me-1"></i> Kembali
                                     </button>
