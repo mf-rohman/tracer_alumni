@@ -30,9 +30,13 @@ class DashboardController extends Controller
         if ($selectedProdiId) {
             $alumniQuery->where('prodi_id', $selectedProdiId);
         }
+
+        $graphBaseQuery = (clone $alumniQuery);
+
         if ($selectedTahunLulus) {
             $alumniQuery->where('tahun_lulus', $selectedTahunLulus);
         }
+
         $totalAlumni = $alumniQuery->count();
 
         // --- MENGHITUNG RESPONDEN (NUMERATOR) ---
@@ -116,23 +120,56 @@ class DashboardController extends Controller
 
 
         // --- DATA GRAFIK LULUSAN 5 TAHUN TERAKHIR ---
-        $tahunSekarang = date('Y');
-        $tahunMulai = $tahunSekarang - 4;
-        $tahunRange = range($tahunMulai, $tahunSekarang);
 
-        $lulusanPerTahun = Alumni::query()
-            ->select(DB::raw('tahun_lulus as tahun'), DB::raw('count(*) as jumlah'))
-            ->where('tahun_lulus', '>=', $tahunMulai)
-            ->groupBy('tahun')->orderBy('tahun', 'asc')->get()->pluck('jumlah', 'tahun');
+        if ($selectedTahunLulus) {
+            $tahunRange = [(int) $selectedTahunLulus];
+
+            $lulusanPerTahun = $graphBaseQuery
+                ->select(DB::raw('tahun_lulus as tahun'), DB::raw('count(*) as jumlah'))
+                ->where('tahun_lulus', $selectedTahunLulus)
+                ->groupBy('tahun')
+                ->pluck('jumlah', 'tahun');
+        } else {
+            $tahunSekarang = date('Y');
+            $tahunMulai = $tahunSekarang - 4;
+            $tahunRange = range($tahunMulai, $tahunSekarang);
+
+            $lulusanPerTahun = $graphBaseQuery
+                ->select(DB::raw('tahun_lulus as tahun'), DB::raw('count(*) as jumlah'))
+                ->whereBetween('tahun_lulus', [$tahunMulai, $tahunSekarang])
+                ->groupBy('tahun')->orderBy('tahun', 'asc')->get()->pluck('jumlah', 'tahun');
+        }
+
 
         $dataLulusanChart = [];
         foreach ($tahunRange as $tahun) {
             $dataLulusanChart[] = $lulusanPerTahun->get($tahun, 0);
         }
 
-        $respondenPerProdi = Prodi::withCount(['alumni as responden_count' => function ($query) {
-                $query->whereHas('kuesionerAnswers');
-            }])->get();
+        // $respondenPerProdi = Prodi::withCount(['alumni as responden_count' => function ($query) {
+        //         $query->whereHas('kuesionerAnswers');
+        //     }])->get();
+
+        $chartLabels = [];
+        $chartDataTotalAlumni = [];
+        $chartDataTotalResponden = [];
+
+        if($user->role !== 'admin_prodi') {
+            $prodiData = Prodi::withCount ([
+                'alumni',
+                'alumni as responden_count' => function ($query) {
+                    $query->whereHas('kuesionerAnswers');
+                }
+            ])
+                ->orderBy('nama_prodi')
+                ->get();
+
+            $chartLabels = $prodiData->pluck('singkatan');
+            $chartDataTotalAlumni = $prodiData->pluck('alumni_count');
+            $chartDataTotalResponden = $prodiData->pluck('responden_count');
+
+        }
+
 
         // --- DATA WAKTU TUNGGU ---
         $waktuTungguData = (clone $kuesionerQuery)->whereNotNull('f502')->pluck('f502');
@@ -156,7 +193,7 @@ class DashboardController extends Controller
             'tahunLulusList', 'selectedTahunLulus',
             'tahunResponList', 'selectedTahunRespon',
             'tahunRange', 'dataLulusanChart',
-            'respondenPerProdi',
+            'chartLabels', 'chartDataTotalAlumni', 'chartDataTotalResponden',
             'rataRataWaktuTunggu', 'waktuTungguChartData', 'persentaseResponden', 'chartDataResponden','statusData',
         ));
     }

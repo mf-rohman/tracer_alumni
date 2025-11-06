@@ -131,7 +131,7 @@
         <div class="col-lg-7 mb-lg-0 mb-4">
             <div class="card z-index-2 h-100">
                 <div class="card-header pb-0">
-                    <h6>Data Lulusan (5 Tahun Terakhir)</h6>
+                    <h6>Data Lulusan</h6>
                 </div>
                 <div class="card-body p-3">
                     <div class="chart">
@@ -182,20 +182,23 @@
         </div>
     </div>
 
+    @if(auth()->user()->role !== 'admin_prodi')
      <div class="row mt-4">
         <div class="col-12">
-            <div class="card">
+            <div class="card h-100">
                 <div class="card-header pb-0">
-                    <h6>Data Responden per Prodi</h6>
+                    <h6>Perbandingan Alumni vs. Responden per Prodi</h6>
                 </div>
                 <div class="card-body p-3">
                     <div class="chart">
-                        <canvas id="responden-prodi-chart" class="chart-canvas" height="300"></canvas>
+                        <canvas id="perbandingan-prodi-chart" class="chart-canvas" height="300"></canvas>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    @endif
+
 </div>
 @endsection
 
@@ -330,35 +333,43 @@
     });
 
      // Grafik Responden per Prodi
-    var ctxRespondenProdi = document.getElementById("responden-prodi-chart").getContext("2d");
-    new Chart(ctxRespondenProdi, {
-        type: "bar",
-        data: {
-            labels: @json($respondenPerProdi->pluck('singkatan')),
-            datasets: [{
-                label: "Jumlah Responden",
-                backgroundColor: "#5e72e4",
-                data: @json($respondenPerProdi->pluck('responden_count')),
-                maxBarThickness: 30
-            }],
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-             plugins: {
-                legend: {
-                    display: false,
-                }
-            },
-            scales: {
-                y: {
-                    ticks: {
-                        beginAtZero: true
+     const ctxPerbandinganProdi = document.getElementById('perbandingan-prodi-chart');
+        if (ctxPerbandinganProdi) {
+            new Chart(ctxPerbandinganProdi.getContext("2d"), {
+                type: 'bar',
+                data: {
+                    labels: @json($chartLabels),
+                    datasets: [
+                        {
+                            label: "Total Alumni",
+                            data: @json($chartDataTotalAlumni),
+                            backgroundColor: '#5e72e4', // Warna primer (Biru)
+                            maxBarThickness: 30
+                        },
+                        {
+                            label: "Total Responden (Mengisi)",
+                            data: @json($chartDataTotalResponden),
+                            backgroundColor: '#2dce89', // Warna sukses (Hijau)
+                            maxBarThickness: 30
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true, // Tampilkan legenda untuk perbandingan
+                            position: 'top',
+                        }
+                    },
+                    scales: { 
+                        y: { ticks: { beginAtZero: true, stepSize: 1 } },
+                        x: { grid: { display: false } }
                     }
                 }
-            }
+            });
         }
-    });
 </script>
 @endpush
 

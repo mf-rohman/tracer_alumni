@@ -14,7 +14,7 @@
                 <form action="{{ route('admin.responden.index') }}" method="GET">
                     <div class="row">
                         @if(auth()->user()->role !== 'admin_prodi')
-                        <div class="col-md-3">
+                        <div class="{{ auth()->user()->role == 'admin_prodi' ? 'col-md-2' : 'col-md-3'}}">
                             <div class="form-group">
                                 <label for="prodi_id">Program Studi</label>
                                 <select name="prodi_id" id="prodi_id" class="form-control">
@@ -28,7 +28,7 @@
                             </div>
                         </div>
                         @endif
-                        <div class="col-md-3">
+                        <div class="{{ auth()->user()->role == 'admin_prodi' ? 'col-md-2' : 'col-md-3'}}">
                             <div class="form-group">
                                 <label for="tahun_lulus">Tahun Lulus</label>
                                 <select name="tahun_lulus" id="tahun_lulus" class="form-control">
@@ -41,7 +41,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="{{ auth()->user()->role == 'admin_prodi' ? 'col-md-2' : 'col-md-3'}}">
                             <div class="form-group">
                                 <label for="tahun_respon">Tahun Pengisian</label>
                                 <select name="tahun_respon" id="tahun_respon" class="form-control">
@@ -54,7 +54,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="{{ auth()->user()->role == 'admin_prodi' ? 'col-md-2' : 'col-md-3'}}">
                             <div class="form-group">
                                 <label for="status_pengisian">Status Kuesioner</label>
                                 <select name="status_pengisian" id="status_pengisian" class="form-control">
@@ -64,11 +64,12 @@
                                 </select>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12 text-end">
+                        <div class="col-md-2 pt-4">
                             <button type="submit" class="btn bg-gradient-primary">Terapkan Filter</button>
+                        </div>
+                        <div class="col-md-2  pt-4" >
                             <a href="{{ route('admin.responden.index') }}" class="btn btn-link text-secondary">Reset</a>
+
                         </div>
                     </div>
                 </form>
