@@ -82,14 +82,15 @@
                 <h6>Hasil Filter</h6>
             </div>
             <div class="card-body px-0 pt-0 pb-2">
-                <div class="table-responsive p-0">
+                <div class="table-responsive p-0 overflow-hidden">
                     <table class="table align-items-center mb-0">
                         <thead>
                             <tr>
                                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Alumni</th>
                                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Prodi</th>
                                 <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status Kuesioner</th>
-                                <th class="text-secondary opacity-7"></th>
+                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Skor</th>
+                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -124,25 +125,45 @@
                                         <span class="badge badge-sm bg-gradient-secondary">Belum Dinilai</span>
                                     @endif
                                 </td>
-                                <td class="align-middle">
-                                    <a href="{{ route('admin.alumni.show', $alumnus) }}" class="text-secondary font-weight-bold text-xs me-2">
-                                        Detail
-                                    </a>
-                                    <a href="{{ route('admin.alumni.edit', $alumnus) }}" class="text-secondary font-weight-bold text-xs me-2">
-                                        Edit
-                                    </a>
-                                    <form action="{{ route('admin.alumni.destroy', $alumnus) }}" method="POST" class="d-inline">
-                                        @method('DELETE')
-                                        @csrf
-                                        <button type="submit" class="text-danger font-weight-bold text-xs border-0 bg-transparent" onclick="return confirm('Apakah Anda yakin ingin menghapus data alumni ini?')">
-                                            Hapus
+                                <td class="align-middle text-center">
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-light dropdown-toggle" type="button" id="aksiDropdown{{ $alumnus->id }}" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <!-- <i class="fas fa-ellipsis-v"></i> {{-- ikon 3 titik vertikal --}}   -->
                                         </button>
-                                    </form>
+                                        <ul class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="aksiDropdown{{ $alumnus->id }}">
+                                            <li>
+                                                <a class="dropdown-item d-flex align-items-center" href="{{ route('admin.alumni.show', $alumnus) }}">
+                                                    <i class="fas fa-eye text-primary me-2"></i> Detail
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item d-flex align-items-center" href="{{ route('admin.alumni.edit', $alumnus) }}">
+                                                    <i class="fas fa-pen text-warning me-2"></i> Edit
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item d-flex align-items-center" href="{{ route('admin.users.login_as', $alumnus->uuid) }}" target="_blank">
+                                                    <i class="fas fa-sign-in-alt text-success me-2"></i> Isi Kuesioner
+                                                </a>
+                                            </li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li>
+                                                <form action="{{ route('admin.alumni.destroy', $alumnus) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data alumni ini?')">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="dropdown-item d-flex align-items-center text-danger">
+                                                        <i class="fas fa-trash-alt me-2"></i> Hapus
+                                                    </button>
+                                                </form>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </td>
+
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="4" class="text-center py-4">
+                                <td colspan="5" class="text-center py-4">
                                     <p class="text-secondary mb-0">Tidak ada data yang cocok dengan filter Anda.</p>
                                 </td>
                             </tr>

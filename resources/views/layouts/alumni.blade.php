@@ -201,11 +201,49 @@
             color: #27272a;
             margin-left: 0.25rem;
         }
+        .impersonate-banner {
+            background: linear-gradient(90deg, #2563eb, #3b82f6);
+            color: #fff;
+            padding: 0.6rem 1rem;
+            font-size: 0.875rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1050;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+        }
+        
+        .impersonate-banner a {
+            color: #fff;
+            background-color: rgba(255, 255, 255, 0.15);
+            border-radius: 0.375rem;
+            padding: 0.35rem 0.75rem;
+            text-decoration: none;
+            transition: background 0.2s ease;
+        }
+        
+        .impersonate-banner a:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+}
+
     </style>
 </head>
 
-<body class="g-sidenav-show bg-gray-100">
-    {{-- Pastikan nama parsial ini sesuai dengan proyek Anda --}}
+<body class="g-sidenav-show bg-gray-100 {{ session('admin_impersonator_id') ? 'impersonating' : '' }}">
+    @if(session('admin_impersonator_id'))
+        <div class="impersonate-banner">
+            <div class="container-fluid d-flex justify-content-between align-items-center">
+                <div>
+                    <i class="fas fa-user-secret me-2"></i>
+                    <span>Anda sedang login sebagai <strong>{{ Auth::user()->name }}</strong>.</span>
+                </div>
+                <a href="{{ route('users.logout_as') }}" class="btn btn-sm btn-light fw-semibold text-danger">
+                    <i class="fas fa-sign-out-alt me-1"></i> Kembali ke Akun Admin Anda
+                </a>
+            </div>
+        </div>
+    @endif
     @include('layouts.partials.alumni_sidebar')
 
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg"    
@@ -241,7 +279,6 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    {{-- Pesan notifikasi akan ditampilkan di sini oleh JavaScript --}}
                     <p id="modalLockMessage">Pesan notifikasi akan muncul di sini.</p>
                 </div>
                 <div class="modal-footer">

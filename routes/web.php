@@ -61,6 +61,9 @@ Route::middleware(['auth', 'role:superadmin,bak,admin_prodi'])->prefix(env('ADMI
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/responden', [RespondenController::class, 'index'])->name('responden.index');
 
+    Route::get('/login-as/{alumnus:uuid}', [UserController::class, 'loginAs'])->name('users.login_as');
+    // Route::get('/users/logout-as', [UserController::class, 'logoutAs'])->name('users.logout_as');
+    
     // Mengelola data alumni (CRUD)
     Route::resource('alumni', AlumniController::class);
 
@@ -77,6 +80,10 @@ Route::middleware(['auth', 'role:superadmin,bak,admin_prodi'])->prefix(env('ADMI
     Route::get('kuesioner-template-download', [KuesionerImportController::class, 'downloadKuesionerTemplate'])->name('kuesioner.template.download');
 
 });
+
+Route::get('/users/logout-as', [UserController::class, 'logoutAsAdmin'])
+    ->middleware('auth')
+    ->name('users.logout_as');
 
 // Grup KHUSUS untuk Super Admin
 // Middleware 'role:superadmin' memastikan hanya superadmin yang bisa akses

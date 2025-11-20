@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Alumni;
+use App\Models\Instansi;
 use App\Models\User;
 use App\Models\Prodi; 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 
@@ -81,5 +84,55 @@ class UserController extends Controller
         }
         $user->delete();
         return redirect()->route('admin.users.index')->with('success', 'User berhasil dihapus.');
+    }
+
+    public function loginAs(Alumni $alumnus)
+    {
+        $admin = Auth::user();
+
+        // Keamanan: Admin Prodi hanya bisa login sebagai alumni dari prodinya
+        if ($admin->role === 'admin_prodi' && $admin->prodi_id !== $alumnus->prodi_id) {
+            abort(403, 'Aksi tidak diizinkan. Anda hanya bisa mengakses alumni dari prodi Anda.');
+        }
+
+        // Simpan ID admin asli di sesi
+        session(['admin_impersonator_id' => $admin->id]);
+
+        // Login sebagai user alumni
+        Auth::login($alumnus->user);
+
+        // Arahkan ke dasbor alumni
+        return redirect()->route('dashboard', ['tahun' => $alumnus->tahun_lulus]);
+    }
+
+    /**
+     * Mengembalikan admin ke akun aslinya.
+     */
+    public function logoutAsAdmin()
+    {
+        $adminId = session('admin_impersonator_id');
+
+        if (!$adminId) {
+            return redirect('/');
+        }
+
+        // Logout dari akun alumni
+        Auth::logout();
+
+        // Hapus penanda sesi
+        session()->forget('admin_impersonator_id');
+
+        // Login kembali sebagai admin asli
+        Auth::loginUsingId($adminId);
+
+        // Kembalikan ke halaman data responden
+        return redirect()->route('admin.responden.index');
+    }
+
+    public function loginAsInstansi (Instansi $instansi) {
+        $admin = Auth::user();
+
+        if ($admin->role === 'admin_prodi' && )
+
     }
 }

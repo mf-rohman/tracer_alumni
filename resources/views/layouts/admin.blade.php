@@ -24,6 +24,10 @@
   <!-- Soft UI CSS -->
   <link id="pagestyle" href="{{ asset('assets/css/soft-ui-dashboard.css?v=1.0.7') }}" rel="stylesheet" />
 
+  <!-- @vite(['resources/css/app.css', 'resources/js/app.js']) -->
+
+  <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+
   <!-- Custom Style -->
   <style>
     :root {
@@ -33,6 +37,7 @@
         --skydash-bg: #f4f5f7;
         --dark: #333;
     }
+    
 
     body, p, span, a, button {
       font-family: 'Poppins', sans-serif !important;
