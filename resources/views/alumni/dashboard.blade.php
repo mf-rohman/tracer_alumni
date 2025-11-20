@@ -165,7 +165,7 @@
                                     <button type="button" class="btn btn-outline-primary" @click="activeTab = 'opsional'">
                                         <i class="fas fa-arrow-left me-1"></i> Kembali
                                     </button>
-                                    <button type="submit" class="btn bg-gradient-primary px-4 py-2">
+                                    <<button type="submit" class="btn bg-gradient-primary px-4 py-2" @click="formEnabled = true">
                                         <i class="fas fa-save me-2"></i>Simpan Kuesioner
                                     </button>
                                 </div>
@@ -175,6 +175,19 @@
                     </div>
                 </fieldset>
             </form>
+            @if(session('success'))
+                <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                    let el = document.querySelector('[x-data]');
+                    if (!el?.__x) return;
+                    
+                    el.__x.update(() => {
+                        el.__x.$data.success = true;
+                        el.__x.$data.successMessage = "{{ session('success') }}";
+                    });
+                });
+                </script>
+            @endif
         </div>
     </div>
 
@@ -235,7 +248,26 @@
             </div>
         </div>
     </div> -->
-</div>
+    <div 
+    x-show="success"
+    x-transition
+    class="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+    >
+        <div class="bg-white rounded-lg shadow-lg p-6 w-96">
+            <h2 class="text-xl font-semibold mb-3 text-green-600">Berhasil!</h2>
+
+            <p x-text="successMessage"></p>
+
+            <div class="text-end mt-5">
+                <button 
+                    class="btn bg-gradient-primary px-4 py-2"
+                    @click="success = false"
+                >
+                    OK
+                </button>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('scripts')
@@ -285,6 +317,9 @@
             isScrolled: false,
 
             instansiTidakDitemukan: false,
+
+            success: false,
+            successMessage: '',
 
             handleScroll() {
                 const el = document.querySelector('#card-body');
