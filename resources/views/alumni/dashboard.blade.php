@@ -175,19 +175,6 @@
                     </div>
                 </fieldset>
             </form>
-            @if(session('success'))
-                <script>
-                document.addEventListener('DOMContentLoaded', () => {
-                    let el = document.querySelector('[x-data]');
-                    if (!el?.__x) return;
-                    
-                    el.__x.update(() => {
-                        el.__x.$data.success = true;
-                        el.__x.$data.successMessage = "{{ session('success') }}";
-                    });
-                });
-                </script>
-            @endif
         </div>
     </div>
 
