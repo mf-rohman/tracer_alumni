@@ -374,10 +374,11 @@
                     var copyModal = new bootstrap.Modal(document.getElementById('copyAnswerModal'));
                     copyModal.show();
                 }
-                const params = new URLSearchParams(window.location.search);
-                if (!params.has('tahun') && !{{ $answer->exists ? 'true' : 'false' }}) {
-                    var myModal = new bootstrap.Modal(document.getElementById('tahunKuesionerModal'));
-                    myModal.show();
+                const hasTahunParam = {{ request()->route('tahun') ? 'true' : 'false' }};
+                const hasAnswer = {{ $answer->exists ? 'true' : 'false' }};
+
+                if (!hasTahunParam && !hasAnswer) {
+                    new bootstrap.Modal(document.getElementById('tahunKuesionerModal')).show();
                 }
                 this.hitungProgress();
                 document.querySelectorAll('form input, form select, form textarea').forEach(el => {
