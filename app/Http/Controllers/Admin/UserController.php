@@ -95,13 +95,10 @@ class UserController extends Controller
             abort(403, 'Aksi tidak diizinkan. Anda hanya bisa mengakses alumni dari prodi Anda.');
         }
 
-        // Simpan ID admin asli di sesi
         session(['admin_impersonator_id' => $admin->id]);
 
-        // Login sebagai user alumni
         Auth::login($alumnus->user);
 
-        // Arahkan ke dasbor alumni
         return redirect()->route('dashboard', ['tahun' => $alumnus->tahun_lulus]);
     }
 
@@ -116,23 +113,19 @@ class UserController extends Controller
             return redirect('/');
         }
 
-        // Logout dari akun alumni
         Auth::logout();
 
-        // Hapus penanda sesi
         session()->forget('admin_impersonator_id');
 
-        // Login kembali sebagai admin asli
         Auth::loginUsingId($adminId);
 
-        // Kembalikan ke halaman data responden
         return redirect()->route('admin.responden.index');
     }
 
-    public function loginAsInstansi (Instansi $instansi) {
-        $admin = Auth::user();
+    // public function loginAsInstansi (Instansi $instansi) {
+    //     $admin = Auth::user();
 
-        if ($admin->role === 'admin_prodi' && )
+    //     if ($admin->role === 'admin_prodi' && )
 
-    }
+    // }
 }
