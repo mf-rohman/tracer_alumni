@@ -36,11 +36,11 @@ class KuesionerImportController extends Controller
                 ->name("Import Data Kuesioner Alumni")
                 ->dispatch();
             
-            return redirect()->route('admin.kuesioner.import.status', ['batch_id' => $batch->id]);
+            return redirect()->route('admin.kuesioner.import.status', ['batchId' => $batch->id]);
 
         } catch(\Exception $e) {
             Log::error('Failed to start import batch kuesioner ' . $e->getMessage());
-            return back()->with('error' . 'There was problem when read file: ' . $e->getMessage());
+            return back()->with('error',  'There was problem when read file: ' . $e->getMessage());
         }
     }
 
