@@ -36,7 +36,7 @@ class KuesionerImportController extends Controller
                 ->name("Import Data Kuesioner Alumni")
                 ->dispatch();
             
-            return redirect()-route('admin.kuesioner.import.status', ['batch_id' => $batch->id]);
+            return redirect()->route('admin.kuesioner.import.status', ['batch_id' => $batch->id]);
 
         } catch(\Exception $e) {
             Log::error('Failed to start import batch kuesioner ' . $e->getMessage());

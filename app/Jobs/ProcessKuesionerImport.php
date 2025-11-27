@@ -26,6 +26,13 @@ class ProcessKuesionerImport implements ShouldQueue
         $this->row = $row;
     }
 
+
+    private function toIntOrNull($value)
+    {
+        return ($value === "" || $value === null) ? null : (int) $value;
+    }
+
+
     /**
      * Execute the job.
      */
@@ -48,6 +55,19 @@ class ProcessKuesionerImport implements ShouldQueue
 
             $data = Arr::except($row, ['npm']); 
             $data['alumni_id'] = $alumni->id;
+
+            $intColumns = [
+                'f301','f302','f303','f502','f505','f14','f15',
+                'f6','f7','f7a','f1001','f1003','f1004','f1006',
+                'f1007','f1008','f1009','f1101','f1101a','f1101b',
+                'f1201','f1202'
+            ];
+            
+            foreach ($intColumns as $col) {
+                if (isset($data[$col])) {
+                    $data[$col] = $this->toIntOrNull($data[$col]);
+                }
+            }
             
             KuesionerAnswer::updateOrCreate(
                 [
@@ -66,4 +86,6 @@ class ProcessKuesionerImport implements ShouldQueue
             Log::error("Failed Import rows kuesioner: " . $e->getMessage(), ['row' => $this->row]);
         }
     }
+
+
 }

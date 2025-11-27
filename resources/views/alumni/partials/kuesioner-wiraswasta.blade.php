@@ -5,7 +5,14 @@
 </div>
 <div class="form-group mb-4">
     <label for="f5c_wiraswasta" class="form-label">Apa posisi/jabatan Anda saat ini?</label>
-    <input type="text" id="f5c_wiraswasta" name="f5c_wiraswasta" value="{{ old('f5c_wiraswasta', $answer->f5c_wiraswasta ?? '') }}" class="form-control">
+    <select name="f5c_wiraswasta" id="f5c_wiraswasta" x-model="f5c_wiraswasta" class="form-control">
+        <option value="">-- Pilih Jabatan --</option>
+        <option value="1">Founder</option>
+        <option value="2">Co-Founder</option>
+        <option value="3">Staff</option>
+        <option value="4">Freelance/Kerja Lepas</option>
+    </select>
+    <!-- <input type="text" id="f5c_wiraswasta" name="f5c_wiraswasta" value="{{ old('f5c_wiraswasta', $answer->f5c_wiraswasta ?? '') }}" class="form-control"> -->
 </div>
 
 <div class="form-group mb-4" x-data="{ f301: '{{ old('f301', $answer->f301 ?? '') }}' }">
