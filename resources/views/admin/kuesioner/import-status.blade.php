@@ -3,6 +3,32 @@
 @section('title', 'Status Impor Kuesioner')
 
 @section('content')
+
+@push('styles')
+    <style>
+        .progress {
+            height: 20px !important;
+            border-radius: 10px !important;
+            overflow: hidden;
+        }
+        .progress-bar {
+            padding: 0 !important;
+            margin: 0 !important;
+            border-radius: 0 !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .progress .progress-bar {
+            height: 100%;
+        }
+    </style>
+@endpush
+
 <div class="card" x-data="importStatus('{{ $batch->id }}')" x-init="startPolling()">
     <div class="card-header">
         <h6 class="mb-0">Status Proses Impor Kuesioner</h6>
@@ -15,8 +41,15 @@
                 <span class="text-sm">Progress</span>
                 <span class="text-sm font-weight-bold" x-text="progress + '%'"></span>
             </div>
+
             <div class="progress" style="height: 20px;">
-                <div class="progress-bar bg-gradient-success" role="progressbar" :style="'width: ' + progress + '%'" x-text="progress > 10 ? progress + '%' : ''"></div>
+                <div class="progress-bar bg-gradient-success"
+                     role="progressbar"
+                     :style="'width: ' + progress + '%'">
+
+                     <span class="label" x-text="progress > 10 ? progress + '%' : ''"></span>
+
+                </div>
             </div>
         </div>
 
