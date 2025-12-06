@@ -30,6 +30,11 @@ class RespondenController extends Controller
             $query->where('tahun_lulus', $request->tahun_lulus);
         }
 
+        if ($request->filled('npm')) {
+            $searchNpm = $request->npm;
+            $query->where('npm', 'like', "%{$searchNpm}%");
+        }
+
         if ($request->filled('tahun_respon')) {
             $query->whereHas('kuesionerAnswers', function ($q) use ($request) {
                 $q->whereYear('created_at', $request->tahun_respon);
@@ -60,7 +65,8 @@ class RespondenController extends Controller
         $tahunLulusList = Alumni::select('tahun_lulus')->distinct()->orderBy('tahun_lulus', 'desc')->get();
         $tahunResponList = KuesionerAnswer::select(DB::raw('YEAR(created_at) as tahun_respon'))
             ->distinct()->orderBy('tahun_respon', 'desc')->get();
+        $npmList = Alumni::select('npm')->distinct()->orderBy('npm', 'desc')->get();
 
-        return view('admin.responden.index', compact('alumni', 'prodiList', 'tahunLulusList', 'tahunResponList'));
+        return view('admin.responden.index', compact('alumni', 'prodiList', 'tahunLulusList', 'tahunResponList', 'npmList'));
     }
 }

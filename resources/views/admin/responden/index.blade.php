@@ -10,27 +10,32 @@
             <div class="card-header pb-0">
                 <h6><i class="fa fa-filter text-dark me-2"></i> Filter Data Responden</h6>
             </div>
+        
             <div class="card-body">
                 <form action="{{ route('admin.responden.index') }}" method="GET">
                     <div class="row">
+        
+                        {{-- Filter Prodi (hilang jika admin_prodi) --}}
                         @if(auth()->user()->role !== 'admin_prodi')
-                        <div class="{{ auth()->user()->role == 'admin_prodi' ? 'col-md-2' : 'col-md-3'}}">
-                            <div class="form-group">
-                                <label for="prodi_id">Program Studi</label>
-                                <select name="prodi_id" id="prodi_id" class="form-control">
-                                    <option value="">Semua Prodi</option>
-                                    @foreach($prodiList as $prodi)
-                                        <option value="{{ $prodi->kode_prodi }}" {{ request('prodi_id') == $prodi->kode_prodi ? 'selected' : '' }}>
-                                            {{ $prodi->nama_prodi }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="prodi_id" class="font-weight-bold">Program Studi</label>
+                                    <select name="prodi_id" id="prodi_id" class="form-control">
+                                        <option value="">Semua Prodi</option>
+                                        @foreach($prodiList as $prodi)
+                                            <option value="{{ $prodi->kode_prodi }}" {{ request('prodi_id') == $prodi->kode_prodi ? 'selected' : '' }}>
+                                                {{ $prodi->nama_prodi }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
-                        </div>
                         @endif
-                        <div class="{{ auth()->user()->role == 'admin_prodi' ? 'col-md-2' : 'col-md-3'}}">
+        
+                        {{-- Tahun Lulus --}}
+                        <div class="col-md-3">
                             <div class="form-group">
-                                <label for="tahun_lulus">Tahun Lulus</label>
+                                <label for="tahun_lulus" class="font-weight-bold">Tahun Lulus</label>
                                 <select name="tahun_lulus" id="tahun_lulus" class="form-control">
                                     <option value="">Semua Tahun</option>
                                     @foreach($tahunLulusList as $tahun)
@@ -41,22 +46,31 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="{{ auth()->user()->role == 'admin_prodi' ? 'col-md-2' : 'col-md-3'}}">
+        
+                        {{-- NPM --}}
+                        <div class="col-md-3">
                             <div class="form-group">
-                                <label for="tahun_respon">Tahun Pengisian</label>
-                                <select name="tahun_respon" id="tahun_respon" class="form-control">
-                                    <option value="">Semua Tahun</option>
-                                    @foreach($tahunResponList as $tahun)
-                                        <option value="{{ $tahun->tahun_respon }}" {{ request('tahun_respon') == $tahun->tahun_respon ? 'selected' : '' }}>
-                                            {{ $tahun->tahun_respon }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                                <label for="npm" class="font-weight-bold">Cari NPM Alumni</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-search"></i>
+                                    </span>
+                                    <input 
+                                        type="text" 
+                                        name="npm" 
+                                        id="npm" 
+                                        class="form-control" 
+                                        value="{{ request('npm') }}" 
+                                        placeholder="Masukkan NPM..."
+                                    >
+                                </div>
                             </div>
                         </div>
-                        <div class="{{ auth()->user()->role == 'admin_prodi' ? 'col-md-2' : 'col-md-3'}}">
+        
+                        {{-- Status Kuesioner --}}
+                        <div class="col-md-3">
                             <div class="form-group">
-                                <label for="status_pengisian">Status Kuesioner</label>
+                                <label for="status_pengisian" class="font-weight-bold">Status Kuesioner</label>
                                 <select name="status_pengisian" id="status_pengisian" class="form-control">
                                     <option value="">Semua Status</option>
                                     <option value="sudah" {{ request('status_pengisian') == 'sudah' ? 'selected' : '' }}>Sudah Mengisi</option>
@@ -64,17 +78,25 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-2 pt-4">
-                            <button type="submit" class="btn bg-gradient-primary">Terapkan Filter</button>
+        
+                    </div> {{-- end .row --}}
+        
+                    <div class="row mt-3">
+                        <div class="col-md-3">
+                            <button type="submit" class="btn bg-gradient-primary w-100">Terapkan Filter</button>
                         </div>
-                        <div class="col-md-2  pt-4" >
-                            <a href="{{ route('admin.responden.index') }}" class="btn btn-link text-secondary">Reset</a>
-
+        
+                        <div class="col-md-2">
+                            <a href="{{ route('admin.responden.index') }}" class="btn btn-link text-secondary w-100">
+                                Reset
+                            </a>
                         </div>
                     </div>
+        
                 </form>
             </div>
         </div>
+
 
         <!-- TABEL DATA ALUMNI -->
         <div class="card mb-4">
@@ -82,7 +104,7 @@
                 <h6>Hasil Filter</h6>
             </div>
             <div class="card-body px-0 pt-0 pb-2">
-                <div class="table-responsive p-0 overflow-hidden">
+                <div class="table-responsive p-0 overflow-visible">
                     <table class="table align-items-center mb-0">
                         <thead>
                             <tr>
