@@ -34,8 +34,32 @@
 @endpush
 
 @section('content')
+
+@php
+    // Default tab aktif
+    $initialTab = 'utama'; 
+    $errorSectionName = '';
+
+    if ($errors->any()) {
+        // Daftar field untuk setiap tab
+        $fieldsUtama = ['f8', 'nik', 'npwp', 'no_hp', 'email'];
+        $fieldsWajib = ['f502', 'f505', 'f5a1', 'f5a2', 'f5b', 'f5c', 'f18a', 'f18b', 'f18c'];
+        
+        // Cek tab mana yang punya error
+        if ($errors->hasAny($fieldsUtama)) {
+            $initialTab = 'utama';
+            $errorSectionName = 'Bagian 1: Status Utama';
+        } elseif ($errors->hasAny($fieldsWajib)) {
+            $initialTab = 'wajib';
+            $errorSectionName = 'Bagian 2: Kuesioner Wajib';
+        } else {
+            $initialTab = 'opsional';
+            $errorSectionName = 'Bagian 3: Kuesioner Opsional';
+        }
+    }
+@endphp
 {{-- Kontainer utama Alpine.js untuk mengelola semua state halaman --}}
-<div  x-data="kuesionerForm()" x-init="
+<div  x-data="kuesionerForm('{{ $initialTab }}')" x-init="
     const el = document.querySelector('#card-body');
     if (el) el.addEventListener('scroll', () => handleScroll());">
 
@@ -259,6 +283,22 @@
 
 @push('scripts')
 <script>
+
+    @if($errors->any())
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Data Belum Lengkap!',
+                html: `
+                    <p>Mohon periksa kembali isian Anda di <strong>{{ $errorSectionName }}</strong>.</p>
+                    <p class="text-sm text-muted">Beberapa kolom wajib belum diisi atau formatnya salah.</p>
+                `,
+                confirmButtonText: 'Periksa Sekarang',
+                confirmButtonColor: '#4B49AC',
+            });
+        });
+    @endif
+
     function kuesionerForm() {
         // Data untuk combobox
         const options = [
