@@ -1,6 +1,5 @@
 <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 bg-white" id="sidenav-main">
     <div class="sidenav-header">
-        {{-- PERBAIKAN: Menambahkan parameter tahun ke route dashboard --}}
         <a class="navbar-brand m-0" href="{{ route('dashboard', ['tahun' => Auth::user()->alumni->tahun_lulus]) }}">
             <span class="ms-1 font-weight-bolder">Tracer Study</span>
         </a>
@@ -9,7 +8,6 @@
     <div class="collapse navbar-collapse w-auto" id="sidenav-collapse-main">
         <ul class="navbar-nav">
             <li class="nav-item">
-                {{-- PERBAIKAN: Menambahkan parameter tahun ke route dashboard --}}
                 <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard', ['tahun' => Auth::user()->alumni->tahun_lulus]) }}">
                     <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="fas fa-desktop text-dark"></i>
@@ -17,7 +15,7 @@
                     <span class="nav-link-text ms-1">Dashboard</span>
                 </a>
             </li>
-            @if(request()->routeIs('dashboard'))
+
             <li class="nav-item">
                 <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#tahunKuesionerModal">
                     <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -26,7 +24,7 @@
                     <span class="nav-link-text ms-1">Kuesioner</span>
                 </a>
             </li>
-            @endif
+
             <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('profile.edit') ? 'active' : '' }}" href="{{ route('profile.edit') }}">
                     <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">

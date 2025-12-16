@@ -38,6 +38,11 @@ class ProcessKuesionerImport implements ShouldQueue
      */
     public function handle(): void
     {
+
+        if ($this->batch() && $this->batch()->cancelled()) {
+            return;
+        }
+
         try {
             $row = $this->row;
 
@@ -54,18 +59,26 @@ class ProcessKuesionerImport implements ShouldQueue
             }
 
             $data = Arr::except($row, ['npm']); 
-            $data['alumni_id'] = $alumni->id;
+            $cleanData = [];
+            // $data['alumni_id'] = $alumni->id;
 
-            $intColumns = [
-                'f301','f302','f303','f502','f505','f14','f15',
-                'f6','f7','f7a','f1001','f1003','f1004','f1006',
-                'f1007','f1008','f1009','f1101','f1101a','f1101b',
-                'f1201','f1202'
-            ];
+            // $intColumns = [
+            //     'f301','f302','f303','f502','f505','f14','f15',
+            //     'f6','f7','f7a','f1001','f1003','f1004','f1006',
+            //     'f1007','f1008','f1009','f1101','f1101a','f1101b',
+            //     'f1201','f1202'
+            // ];
             
-            foreach ($intColumns as $col) {
-                if (isset($data[$col])) {
-                    $data[$col] = $this->toIntOrNull($data[$col]);
+            foreach ($data as $key) {
+
+                if (is_string($value)) {
+                    $value = trim($value);
+                }
+
+                if ($value === "" || $value === null || $value === "-") {
+                    $cleanData[$key] = null;
+                } else {
+                    $cleanData[$key] = $value;
                 }
             }
             
@@ -74,7 +87,7 @@ class ProcessKuesionerImport implements ShouldQueue
                     'alumni_id' => $alumni->id,
                     'tahun_kuesioner' => $row['tahun_kuesioner']
                 ],
-                $data
+                $cleanData
             );
 
             Log::info("Kuesioner with npm: {$alumni->npm} has been successfully imported", [
@@ -83,7 +96,9 @@ class ProcessKuesionerImport implements ShouldQueue
             ]);
 
         } catch(\Exception $e) {
-            Log::error("Failed Import rows kuesioner: " . $e->getMessage(), ['row' => $this->row]);
+           Log::error("Gagal Import Kuesioner NPM " . ($this->row['npm'] ?? '?') . ": " . $e->getMessage());
+
+           $this->fail($e);
         }
     }
 
