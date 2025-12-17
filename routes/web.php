@@ -55,7 +55,7 @@ Route::middleware('auth')->group(function () {
 
 // Grup untuk semua role admin (Superadmin, BAK, Admin Prodi)
 // Menggunakan prefix 'admin' dan nama 'admin.'
-Route::middleware(['auth', 'role:superadmin,bak,admin_prodi'])->prefix(env('ADMIN_PATH', 'admin'))->name('admin.')->group(function () {
+Route::middleware(['auth', 'role:superadmin,bak,admin_prodi,dekan'])->prefix(env('ADMIN_PATH', 'admin'))->name('admin.')->group(function () {
 
     // Dashboard Utama Admin
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');

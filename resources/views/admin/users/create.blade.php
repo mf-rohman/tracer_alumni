@@ -27,11 +27,14 @@
             </div>
             <div class="form-group">
                 <label for="role">Role</label>
-                <select class="form-control" id="role" name="role" required onchange="toggleProdiSelect()">
+                {{-- PERUBAHAN: Nama fungsi JS diganti agar lebih umum --}}
+                <select class="form-control" id="role" name="role" required onchange="toggleInputs()">
                     <option value="">-- Pilih Role --</option>
                     <option value="superadmin" {{ old('role') == 'superadmin' ? 'selected' : '' }}>Super Admin</option>
                     <option value="bak" {{ old('role') == 'bak' ? 'selected' : '' }}>BAK</option>
                     <option value="admin_prodi" {{ old('role') == 'admin_prodi' ? 'selected' : '' }}>Admin Prodi</option>
+                    {{-- TAMBAHAN: Opsi Role Dekan --}}
+                    <option value="dekan" {{ old('role') == 'dekan' ? 'selected' : '' }}>Dekan Fakultas</option>
                 </select>
             </div>
             {{-- Dropdown Prodi, awalnya disembunyikan --}}
@@ -41,6 +44,16 @@
                     <option value="">-- Pilih Prodi --</option>
                     @foreach($prodi as $p)
                         <option value="{{ $p->kode_prodi }}">{{ $p->nama_prodi }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="form-group" id="fakultas-select-div" style="display:none;">
+                <label for="fakultas_id">Fakultas</label>
+                <select class="form-control" id="fakultas_id" name="fakultas_id">
+                    <option value="">-- Pilih Fakultas --</option>
+                    @foreach($fakultas as $f)
+                        <option value="{{ $f->id }}">{{ $f->nama_fakultas }}</option>
                     @endforeach
                 </select>
             </div>
@@ -59,16 +72,23 @@
 </div>
 
 <script>
-    function toggleProdiSelect() {
+    function toggleInputs() {
         var roleSelect = document.getElementById('role');
         var prodiSelectDiv = document.getElementById('prodi-select-div');
+        var fakultasSelectDiv = document.getElementById('fakultas-select-div');
+        
+        // Sembunyikan semua terlebih dahulu
+        prodiSelectDiv.style.display = 'none';
+        fakultasSelectDiv.style.display = 'none';
+
+        // Tampilkan sesuai role yang dipilih
         if (roleSelect.value === 'admin_prodi') {
             prodiSelectDiv.style.display = 'block';
-        } else {
-            prodiSelectDiv.style.display = 'none';
+        } else if (roleSelect.value === 'dekan') {
+            fakultasSelectDiv.style.display = 'block';
         }
     }
     // Panggil fungsi saat halaman dimuat untuk memeriksa nilai awal
-    document.addEventListener('DOMContentLoaded', toggleProdiSelect);
+    document.addEventListener('DOMContentLoaded', toggleInputs);
 </script>
 @endsection

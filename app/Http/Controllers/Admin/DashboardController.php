@@ -20,9 +20,24 @@ class DashboardController extends Controller
         $selectedTahunLulus = $request->input('tahun_lulus');
         $selectedTahunRespon = $request->input('tahun_respon');
 
+        $allowedProdiIds = null;
+
+
         if ($user->role === 'admin_prodi') {
-            // Paksa filter untuk hanya menggunakan prodi dari admin yang login
+            // Admin Prodi: Hanya boleh melihat prodinya sendiri
             $selectedProdiId = $user->prodi_id;
+            $allowedProdiIds = [$user->prodi_id];
+        } 
+        elseif ($user->role === 'dekan') {
+            // Dekan: Ambil semua ID prodi yang ada di fakultasnya
+            $allowedProdiIds = Prodi::where('fakultas_id', $user->fakultas_id)
+                                    ->pluck('kode_prodi')
+                                    ->toArray();
+            
+            // Validasi: Jika Dekan memilih filter prodi, pastikan prodi itu milik fakultasnya
+            if ($selectedProdiId && !in_array($selectedProdiId, $allowedProdiIds)) {
+                $selectedProdiId = null; // Reset jika mencoba akses prodi luar
+            }
         }
 
         // --- MENGHITUNG TOTAL ALUMNI (DENOMINATOR) ---
@@ -41,7 +56,11 @@ class DashboardController extends Controller
 
         // --- MENGHITUNG RESPONDEN (NUMERATOR) ---
         $kuesionerQuery = KuesionerAnswer::query()
-            ->whereHas('alumni', function ($q) use ($selectedProdiId, $selectedTahunLulus) {
+            ->whereHas('alumni', function ($q) use ($selectedProdiId, $selectedTahunLulus, $allowedProdiIds) {
+                if ($allowedProdiIds !== null) {
+                    $q->whereIn('prodi_id', $allowedProdiIds);
+                }
+                
                 if ($selectedProdiId) {
                     $q->where('prodi_id', $selectedProdiId);
                 }
@@ -86,28 +105,6 @@ class DashboardController extends Controller
         $persentaseResponden = $totalAlumni > 0 ? round(($totalResponden / $totalAlumni) * 100) : 0;
         $chartDataResponden = [$totalResponden, max(0, $totalAlumni - $totalResponden)];
 
-        // --- PERBAIKAN: DATA UNTUK KARTU STATISTIK DONAT ---
-        // $statusBekerjaCount = (clone $kuesionerQuery)->where('f8', 1)->count();
-        // $statusStudiLanjutCount = (clone $kuesionerQuery)->where('f8', 4)->count();
-        // $statusWiraswastaCount = (clone $kuesionerQuery)->where('f8', 3)->count();
-        // // Anda bisa menambahkan count untuk status lain di sini jika perlu
-
-        // // Data untuk Chart 1: Responden
-        // $persentaseResponden = $totalAlumni > 0 ? round(($totalResponden / $totalAlumni) * 100) : 0;
-        // $chartDataResponden = [$totalResponden, max(0, $totalAlumni - $totalResponden)];
-        
-        // // Data untuk Chart 2: Bekerja
-        // $persentaseBekerja = $totalResponden > 0 ? round(($statusBekerjaCount / $totalResponden) * 100) : 0;
-        // $chartDataBekerja = [$statusBekerjaCount, max(0, $totalResponden - $statusBekerjaCount)];
-        
-        // // Data untuk Chart 3: Studi Lanjut
-        // $persentaseStudiLanjut = $totalResponden > 0 ? round(($statusStudiLanjutCount / $totalResponden) * 100) : 0;
-        // $chartDataStudiLanjut = [$statusStudiLanjutCount, max(0, $totalResponden - $statusStudiLanjutCount)];
-        
-        // // Data untuk Chart 3: Wiraswasta
-        // $persentaseWiraswasta = $totalResponden > 0 ? round(($statusWiraswastaCount / $totalResponden) * 100) : 0;
-        // $chartDataWiraswasta  = [$statusWiraswastaCount, max(0, $totalResponden - $statusWiraswastaCount)];
-        // // --- SELESAI ---
         
 
         // Pencegahan Division by Zero
@@ -154,20 +151,26 @@ class DashboardController extends Controller
         $chartDataTotalAlumni = [];
         $chartDataTotalResponden = [];
 
-        if($user->role !== 'admin_prodi') {
-            $prodiData = Prodi::withCount ([
+        if ($user->role !== 'admin_prodi') {
+            $prodiQuery = Prodi::query();
+
+            // [DEKAN] Filter query Prodi hanya untuk fakultasnya
+            if ($user->role === 'dekan') {
+                $prodiQuery->where('fakultas_id', $user->fakultas_id);
+            }
+
+            $prodiData = $prodiQuery->withCount([
                 'alumni',
                 'alumni as responden_count' => function ($query) {
                     $query->whereHas('kuesionerAnswers');
                 }
             ])
-                ->orderBy('nama_prodi')
-                ->get();
+            ->orderBy('nama_prodi')
+            ->get();
 
             $chartLabels = $prodiData->pluck('singkatan');
             $chartDataTotalAlumni = $prodiData->pluck('alumni_count');
             $chartDataTotalResponden = $prodiData->pluck('responden_count');
-
         }
 
 
@@ -182,7 +185,13 @@ class DashboardController extends Controller
         ];
 
         // --- DATA UNTUK FILTER DROPDOWN ---
-        $prodiList = Prodi::orderBy('nama_prodi')->get();
+        if ($user->role === 'dekan') {
+            // Dekan hanya melihat prodi di fakultasnya
+            $prodiList = Prodi::where('fakultas_id', $user->fakultas_id)->orderBy('nama_prodi')->get();
+        } else {
+            // Superadmin melihat semua
+            $prodiList = Prodi::orderBy('nama_prodi')->get();
+        }
         $tahunLulusList = Alumni::select('tahun_lulus')->distinct()->orderBy('tahun_lulus', 'desc')->get();
         $tahunResponList = KuesionerAnswer::select(DB::raw('YEAR(created_at) as tahun_respon'))
             ->distinct()->orderBy('tahun_respon', 'desc')->get();

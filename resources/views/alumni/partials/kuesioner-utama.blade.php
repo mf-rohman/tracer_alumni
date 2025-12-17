@@ -3,7 +3,6 @@
     <label for="status_pekerjaan_button" class="form-label font-weight-bold">
         <h4>Jelaskan status Anda saat ini?</h4><span class="text-danger">*</span>
     </label>
-    {{-- Input tersembunyi yang akan menyimpan nilai f8 --}}
     <input type="hidden" name="f8" x-model="statusTerpilih">
     
     <div class="dropdown combobox-wrapper" @click.away="open = false">

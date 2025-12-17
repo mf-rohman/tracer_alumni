@@ -38,7 +38,7 @@ class AuthenticatedSessionController extends Controller
         $user = auth()->user();
 
         // Jika role user adalah salah satu dari admin, arahkan ke admin dashboard
-        if (in_array($user->role, ['superadmin', 'bak', 'admin_prodi'])) {
+        if (in_array($user->role, ['superadmin', 'bak', 'admin_prodi', 'dekan'])) {
             return redirect()->route('admin.dashboard');
         }
 

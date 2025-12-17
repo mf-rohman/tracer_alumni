@@ -17,7 +17,23 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#tahunKuesionerModal">
+                @php
+                    // Cek apakah user sedang berada di halaman dashboard
+                    $isDashboard = request()->routeIs('dashboard');
+                    
+                    // Jika di dashboard, link hanya '#' tapi memicu modal
+                    // Jika BUKAN di dashboard, link mengarah ke route dashboard dengan sinyal 'open_modal=true'
+                    $targetUrl = $isDashboard 
+                        ? '#' 
+                        : route('dashboard', ['tahun' => Auth::user()->alumni->tahun_lulus, 'open_modal' => 'true']);
+                        
+                    // Atribut data-bs hanya ditambahkan jika sedang di dashboard
+                    $modalAttributes = $isDashboard 
+                        ? 'data-bs-toggle="modal" data-bs-target="#tahunKuesionerModal"' 
+                        : '';
+                @endphp
+
+                <a class="nav-link" href="{{ $targetUrl }}" {!! $modalAttributes !!}>
                     <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="fas fa-clipboard-list text-dark"></i>
                     </div>

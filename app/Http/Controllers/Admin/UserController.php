@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Alumni;
+use App\Models\Fakultas;
 use App\Models\Instansi;
 use App\Models\User;
 use App\Models\Prodi; 
@@ -16,14 +17,22 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::where('role', '!=', 'alumni')->latest()->get();
-        return view('admin.users.index', compact('users'));
+        // $users = User::where('role', '!=', 'alumni')->latest()->get();
+        // return view('admin.users.index', compact('users'));
+
+        $users = User::whereIn('role', ['superadmin', 'bak', 'admin_prodi', 'dekan'])->latest()->get();
+
+        $prodiList = Prodi::all();
+        $fakultasList = Fakultas::all(); 
+
+        return view('admin.users.index', compact('users', 'prodiList', 'fakultasList'));
     }
 
     public function create()
     {
-        $prodi = Prodi::all(); 
-        return view('admin.users.create', compact('prodi')); 
+        $prodi = Prodi::all();
+        $fakultas = Fakultas::all(); 
+        return view('admin.users.create', compact('prodi','fakultas')); 
     }
 
     public function store(Request $request)
@@ -32,8 +41,9 @@ class UserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'role' => ['required', 'in:superadmin,bak,admin_prodi'],
-            'prodi_id' => ['nullable', 'required_if:role,admin_prodi', 'exists:prodi,kode_prodi'], // <-- VALIDASI BARU
+            'role' => ['required', 'in:superadmin,bak,admin_prodi,dekan'],
+            'prodi_id' => ['nullable', 'required_if:role,admin_prodi', 'exists:prodi,kode_prodi'],
+            'fakultas_id' => 'required_if:role,dekan|nullable|exists:fakultas,id', 
         ]);
 
         User::create([
@@ -41,7 +51,8 @@ class UserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role' => $request->role,
-            'prodi_id' => $request->role == 'admin_prodi' ? $request->prodi_id : null, // <-- SIMPAN PRODI ID
+            'prodi_id' => $request->role == 'admin_prodi' ? $request->prodi_id : null,
+            'fakultas_id' => $request->role == 'dekan' ? $request->fakultas_id : null,
         ]);
 
         return redirect()->route('admin.users.index')->with('success', 'User berhasil dibuat.');
@@ -49,8 +60,9 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
-        $prodi = Prodi::all(); 
-        return view('admin.users.edit', compact('user', 'prodi')); // <-- KIRIM DATA PRODI
+        $prodi = Prodi::all();
+        $fakultas = Fakultas::all(); 
+        return view('admin.users.edit', compact('user', 'prodi', 'fakultas')); 
     }
 
     public function update(Request $request, User $user)
@@ -58,8 +70,9 @@ class UserController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,'.$user->id],
-            'role' => ['required', 'in:superadmin,bak,admin_prodi'],
-            'prodi_id' => ['nullable', 'required_if:role,admin_prodi', 'exists:prodi,id'], // <-- VALIDASI BARU
+            'role' => ['required', 'in:superadmin,bak,admin_prodi,dekan'],
+            'prodi_id' => ['nullable', 'required_if:role,admin_prodi', 'exists:prodi,id'],
+            'fakultas_id' => 'required_if:role,dekan|nullable',
             'password' => ['nullable', 'confirmed', Rules\Password::defaults()],
         ]);
 
@@ -67,7 +80,8 @@ class UserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'role' => $request->role,
-            'prodi_id' => $request->role == 'admin_prodi' ? $request->prodi_id : null, // <-- UPDATE PRODI ID
+            'prodi_id' => $request->role == 'admin_prodi' ? $request->prodi_id : null,
+            'fakultas_id' => $request->role === 'dekan' ? $request->fakultas_id : null, 
         ]);
         
         if ($request->filled('password')) {

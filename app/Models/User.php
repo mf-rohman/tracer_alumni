@@ -24,6 +24,7 @@ class User extends Authenticatable
         'role',
         'prodi_id',
         'instansi_id',
+        'fakultas_id',
     ];
 
     /**
@@ -52,5 +53,11 @@ class User extends Authenticatable
     public function instansi()
     {
         return $this->belongsTo(Instansi::class);
+    }
+
+    public function fakultas()
+    {
+        // Sesuaikan 'id' atau 'kode_fakultas' dengan primary key tabel fakultas Anda
+        return $this->belongsTo(Fakultas::class, 'fakultas_id', 'id'); 
     }
 }
