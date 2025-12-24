@@ -113,10 +113,10 @@
                         <button class="nav-link" :class="{'active': activeTab === 'utama'}" @click="activeTab = 'utama'" type="button" :disabled="!formEnabled">1. Status Utama</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" :class="{'active': activeTab === 'wajib'}" @click="statusTerpilih && formEnabled ? activeTab = 'wajib' : null" :disabled="!statusTerpilih || !formEnabled" type="button">2. Kuesioner Wajib</button>
+                        <button class="nav-link" :class="{'active': activeTab === 'wajib'}" @click="statusTerpilih && formEnabled ? activeTab = 'wajib' : null" :disabled="!statusTerpilih || !formEnabled" type="button">2. Kuesioner Lanjutan</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" :class="{'active': activeTab === 'opsional'}" @click="activeTab = 'opsional'" type="button" :disabled="!formEnabled">3. Kuesioner Opsional</button>
+                        <button class="nav-link" :class="{'active': activeTab === 'opsional'}" @click="activeTab = 'opsional'" type="button" :disabled="!formEnabled">3. Kuesioner Responden</button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" :class="{'active': activeTab === 'testimoni'}" @click="activeTab = 'testimoni'" type="button" :disabled="!formEnabled">4. Testimoni</button>
@@ -131,7 +131,7 @@
             @endif
 
 
-            <form action="{{ route('dashboard.store', ['tahun' => $tahunKuesioner]) }}" method="POST">
+            <form action="{{ route('dashboard.store', ['tahun' => $tahunKuesioner]) }}" method="POST" novalidate>
                 @csrf
                 <input type="hidden" name="tahun_kuesioner" :value="tahunTerpilih">
 

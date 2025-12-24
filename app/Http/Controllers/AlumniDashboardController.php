@@ -89,52 +89,84 @@ class AlumniDashboardController extends Controller
         ]);
 
         try {
-
             $alumni = Auth::user()->alumni;
-            $data = $request->except('_token');
-    
-            // Logika checkbox f4 Anda yang sudah benar
-            $f4_choices = $request->input('f4', []);
-            for ($i = 1; $i <= 15; $i++) {
-                $data['f4' . str_pad($i, 2, '0', STR_PAD_LEFT)] = 0;
-            }
-            foreach ($f4_choices as $choice) {
-                if (array_key_exists($choice, $data)) {
-                    $data[$choice] = 1;
+            
+            // Ambil semua data kecuali token dan parameter route
+            $data = $request->except(['_token', 'tahun_kuesioner']);
+
+            // --- PERBAIKAN UTAMA: SANITASI DATA ---
+            // Ubah semua string kosong "" menjadi NULL
+            // Ini mencegah error "Incorrect integer value" di MySQL
+            foreach ($data as $key => $value) {
+                if ($value === '') {
+                    $data[$key] = null;
                 }
             }
-            unset($data['f4']);
-    
-            $f16_choices = $request->input('f16', []);
-            for ($i = 1; $i <= 13; $i++) {
-                $data['f16' . str_pad($i, 2, '0', STR_PAD_LEFT)] = 0;
-            }
-            foreach ($f16_choices as $choice) {
-                if (array_key_exists($choice, $data)) {
-                    $data[$choice] = 1;
+            // -------------------------------------
+
+            // Logika checkbox f4 (Kompetensi)
+            if ($request->has('f4')) {
+                $f4_choices = $request->input('f4', []);
+                for ($i = 1; $i <= 15; $i++) {
+                    $key = 'f4' . str_pad($i, 2, '0', STR_PAD_LEFT);
+                    $data[$key] = 0; // Reset
                 }
+                foreach ($f4_choices as $choice) {
+                    if (array_key_exists($choice, $data) || str_starts_with($choice, 'f4')) {
+                        $data[$choice] = 1;
+                    }
+                }
+                unset($data['f4']);
             }
-            unset($data['f16']);
-    
-            // PERUBAHAN: updateOrCreate sekarang menggunakan 'tahun_kuesioner'
+
+            // Logika checkbox f16 (Metode Pembelajaran)
+            if ($request->has('f16')) {
+                $f16_choices = $request->input('f16', []);
+                for ($i = 1; $i <= 13; $i++) {
+                    $key = 'f16' . str_pad($i, 2, '0', STR_PAD_LEFT);
+                    $data[$key] = 0; // Reset
+                }
+                foreach ($f16_choices as $choice) {
+                    if (array_key_exists($choice, $data) || str_starts_with($choice, 'f16')) {
+                        $data[$choice] = 1;
+                    }
+                }
+                unset($data['f16']);
+            }
+
+            // PEMBERSIHAN KHUSUS BERDASARKAN STATUS
+            // Jika status BUKAN bekerja/wiraswasta, kosongkan data pekerjaan
+            if (!in_array($data['f8'], ['1', '3'])) {
+                $data['f502'] = null; // Waktu tunggu
+                $data['f505'] = null; // Gaji
+                $data['f5b'] = null;  // Perusahaan
+            }
+
+            // Simpan ke database
             KuesionerAnswer::updateOrCreate(
                 ['alumni_id' => $alumni->id, 'tahun_kuesioner' => $tahun],
                 $data
             );
-
+            
+            // Simpan instansi baru jika ada
             if (!empty($data['f5b'])) {
-                Instansi::firstOrCreate(['nama' => $data['f5b']]); 
+                // Pastikan Anda sudah mengimport model Instansi
+                // \App\Models\Instansi::firstOrCreate(['nama' => $data['f5b']]);
             }
-    
+
             if ($alumni->status_kuesioner !== 'selesai') {
                 $alumni->status_kuesioner = 'selesai';
                 $alumni->save();
             }
-    
-            // PERUBAHAN: Redirect kembali ke halaman kuesioner tahun yang sama
-            return redirect()->route('dashboard', ['tahun' => $tahun])->with('success', 'Terima kasih, kuesioner Anda berhasil disimpan!');
+
+            return redirect()->route('dashboard', ['tahun' => $tahun])
+                             ->with('success', "Kuesioner tahun $tahun berhasil disimpan!");
+
         } catch (\Exception $e) {
-            return back()->with('error', 'Terjadi kesalahan sistem. Data gagal disimpan.')->withInput();
+            // Log error agar bisa dicek di storage/logs/laravel.log
+            \Illuminate\Support\Facades\Log::error('Gagal simpan kuesioner: ' . $e->getMessage());
+            
+            return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage())->withInput();
         }
 
     }
