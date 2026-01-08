@@ -347,6 +347,7 @@
 
             success: false,
             successMessage: '',
+            isMobile: window.innerWidth < 768, 
 
             handleScroll() {
                 const el = document.querySelector('#card-body');
@@ -456,6 +457,10 @@
                     } else {
                         tomSelectInstance.enable();
                     }
+                });
+
+                window.addEventListener('resize', () => {
+                    this.isMobile = window.innerWidth < 768;
                 });
             },
         
