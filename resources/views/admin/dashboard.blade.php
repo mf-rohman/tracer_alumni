@@ -7,20 +7,20 @@
 
     <div class="row">
         {{-- Chart 1: Responden --}}
-        <div class="col-xl-2 col-md-4 col-sm-6 mb-4">
-            <div class="card h-100">
-                <div class="card-body p-3">
-                    <div class="row">
-                        <div class="col-8 pe-0">
+        <div class="col-xl-2 col-md-4 col-sm-6 mb-3">
+            <div class="card">
+                <div class="card-body px-3 py-2">
+                    <div class="row align-items-center">
+                        <div class="col-7 pe-0">
                             <div class="numbers">
-                                <p class="text-sm mb-0 text-capitalize font-weight-bold">Responden</p>
-                                <h6 class="font-normal-bolder mb-0">{{ $totalResponden }} / {{ $totalAlumni }}</h5>
+                                <p class="text-xxs mb-0 text-capitalize text-muted" style="font-size: 0.65rem;  ">Responden</p>
+                                <h6 class="font-weight-bold mb-0 mt-1" style="font-size: 0.8rem; line-height: 1.2;">{{  $totalResponden }} / {{ $totalAlumni }}</h6>
                             </div>
                         </div>
-                        <div class="col-4 text-end">
-                            <div class="position-relative" style="height: 50px; width: 50px; margin-left:-15px;" >
+                        <div class="col-5 text-end ps-0">
+                            <div class="position-relative d-inline-block" style="height: 40px; width: 40px;">
                                 <canvas id="chart-responden"></canvas>
-                                <small class="position-absolute top-50 start-50 translate-middle font-weight-bolder" style="display: block;">{{ $persentaseResponden }}%</small>
+                                <small class="position-absolute top-50 start-50 translate-middle font-weight-bold" style="font-size: 0.65rem; display:block;">{{ $persentaseResponden }}%</small>
                             </div>
                         </div>
                     </div>
@@ -40,20 +40,20 @@
             ];
         @endphp
         @foreach($statusData as $status => $data)
-        <div class="col-xl-2 col-md-4 col-sm-6 mb-4">
-            <div class="card h-100">
-                <div class="card-body p-3">
-                    <div class="row">
-                        <div class="col-8 pe-0">
+        <div class="col-xl-2 col-md-4 col-sm-6 mb-3">
+            <div class="card">
+                <div class="card-body px-3 py-2">
+                    <div class="row align-items-center">
+                        <div class="col-7 pe-0">
                             <div class="numbers">
-                                <p class="text-sm mb-0 text-capitalize font-weight-bold">{{ $status }}</p>
-                                <h5 class="font-weight-bolder mb-0">{{ $data['count'] ?? 0 }} / {{ $totalResponden ?? 0 }}</h5>
+                                <p class="text-xxs mb-0 text-capitalize text-muted" style="font-size: 0.65rem;">{{      $status }}</p>
+                                <h6 class="font-weight-bold mb-0 mt-1" style="font-size: 0.8rem; line-height: 1.2;">{{      $data['count'] ?? 0 }} / {{ $totalResponden ?? 0 }}</h6>
                             </div>
                         </div>
-                        <div class="col-4 text-end">
-                            <div class="position-relative" style="height: 50px; width: 50px; margin-left:-15px;">
+                        <div class="col-5 text-end ps-0">
+                            <div class="position-relative d-inline-block" style="height: 40px; width: 40px;">
                                 <canvas id="chart-{{ Str::slug($status) }}"></canvas>
-                                <small class="position-absolute top-50 start-50 translate-middle font-weight-bolder" style="display: block;">{{ $data['percentage'] ?? 0 }}%</small>
+                                <small class="position-absolute top-50 start-50 translate-middle font-weight-bold"      style="font-size: 0.65rem; display:block;">{{ $data['percentage'] ?? 0 }}%</small>
                             </div>
                         </div>
                     </div>
@@ -65,16 +65,18 @@
 
     {{-- PERBAIKAN: Filter Prodi dibuat scrollable horizontal --}}
     @if(auth()->user()->role !== 'admin_prodi')
-    <div class="row mt-4">
+    <div class="row mt-3">
         <div class="col-12">
-            <div class="card">
-                <div class="card-body p-2">
-                    <div class="d-flex overflow-auto pb-2" style="white-space: nowrap;">
+            <div class="card mb-0">
+                <div class="card-body p-0">
+                    <div class="d-flex overflow-auto px-3 py-2" style="gap: 0.4rem; scrollbar-width: thin;">
                         <a href="{{ route('admin.dashboard', array_merge(request()->except('prodi_id'))) }}"
-                           class="btn {{ empty($selectedProdiId) ? 'bg-gradient-primary' : 'btn-outline-primary' }} btn-sm mb-0 me-2">Semua</a>
+                           class="btn {{ empty($selectedProdiId) ? 'bg-gradient-primary' : 'btn-outline-primary' }}     mb-0 flex-shrink-0"
+                           style="font-size: 0.65rem; padding: 0.25rem 0.5rem; min-width: auto; white-space: nowrap;    ">Semua</a>
                         @foreach($prodiList as $prodi)
-                            <a href="{{ route('admin.dashboard', array_merge(request()->all(), ['prodi_id' => $prodi->kode_prodi])) }}"
-                               class="btn {{ $selectedProdiId == $prodi->kode_prodi ? 'bg-gradient-primary' : 'btn-outline-primary' }} btn-sm mb-0 me-2">
+                            <a href="{{ route('admin.dashboard', array_merge(request()->all(), ['prodi_id' =>   $prodi->kode_prodi])) }}"
+                               class="btn {{ $selectedProdiId == $prodi->kode_prodi ? 'bg-gradient-primary' :   'btn-outline-primary' }} mb-0 flex-shrink-0"
+                               style="font-size: 0.65rem; padding: 0.25rem 0.5rem; min-width: auto; white-space:    nowrap;">
                                {{ $prodi->singkatan }}
                             </a>
                         @endforeach
@@ -85,40 +87,38 @@
     </div>
     @endif
 
-    <div class="row mt-4">
+    <div class="row mt-3">
         <div class="col-12">
             <div class="card">
-                <div class="card-body">
+                <div class="card-body px-3 py-2">
                     <form action="{{ route('admin.dashboard') }}" method="GET">
                         {{-- Input tersembunyi untuk menyimpan prodi_id yang sedang aktif --}}
                         <input type="hidden" name="prodi_id" value="{{ $selectedProdiId }}">
-
-                        <div class="row align-items-end">
+            
+                        <div class="row align-items-end g-2">
                             <div class="col-md-3">
-                                <label for="tahun_lulus">Filter Tahun Lulus</label>
-                                <select name="tahun_lulus" id="tahun_lulus" class="form-control">
+                                <label for="tahun_lulus" class="form-label mb-1" style="font-size: 0.75rem;">Filter     Tahun Lulus</label>
+                                <select name="tahun_lulus" id="tahun_lulus" class="form-control form-control-sm"    style="font-size: 0.75rem;">
                                     <option value="">-- Semua Tahun Lulus --</option>
                                     @foreach($tahunLulusList as $tahun)
-                                        <option value="{{ $tahun->tahun_lulus }}" {{ $selectedTahunLulus == $tahun->tahun_lulus ? 'selected' : '' }}>{{ $tahun->tahun_lulus }}</option>
+                                        <option value="{{ $tahun->tahun_lulus }}" {{ $selectedTahunLulus ==     $tahun->tahun_lulus ? 'selected' : '' }}>{{ $tahun->tahun_lulus }}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="col-md-3">
-                                <label for="tahun_respon">Filter Tahun Respon</label>
-                                <select name="tahun_respon" id="tahun_respon" class="form-control">
+                                <label for="tahun_respon" class="form-label mb-1" style="font-size: 0.75rem;    ">Filter Tahun Respon</label>
+                                <select name="tahun_respon" id="tahun_respon" class="form-control form-control-sm"  style="font-size: 0.75rem;">
                                     <option value="">-- Semua Tahun Respon --</option>
                                     @foreach($tahunResponList as $tahun)
-                                        <option value="{{ $tahun->tahun_respon }}" {{ $selectedTahunRespon == $tahun->tahun_respon ? 'selected' : '' }}>{{ $tahun->tahun_respon }}</option>
+                                        <option value="{{ $tahun->tahun_respon }}" {{ $selectedTahunRespon ==   $tahun->tahun_respon ? 'selected' : '' }}>{{ $tahun->tahun_respon }}</    option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="col-md-3">
-                                <button type="submit" class="btn bg-gradient-primary w-100 mb-0">Terapkan</button>
+                                <button type="submit" class="btn bg-gradient-primary w-100 mb-0 btn-sm"     style="font-size: 0.75rem; padding: 0.375rem 0.75rem;">Terapkan</button>
                             </div>
                             <div class="col-md-3">
-                                <button type="button" class="btn bg-gradient-primary w-100 mb-0">
-                                    <a href="{{ route('admin.dashboard', ['prodi_id' => $selectedProdiId]) }}" class="text-white">Reset Tahun</a>
-                                </button>
+                                <a href="{{ route('admin.dashboard', ['prodi_id' => $selectedProdiId]) }}"  class="btn bg-gradient-secondary w-100 mb-0 btn-sm text-white" style="font-size: 0.  75rem; padding: 0.375rem 0.75rem;">Reset Tahun</a>
                             </div>
                         </div>
                     </form>
