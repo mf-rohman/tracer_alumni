@@ -59,6 +59,15 @@
           <ul class="list-unstyled bg-white py-2 px-3 rounded shadow-sm">
             
             <li class="mb-1">
+              <a class="nav-link {{ request()->routeIs('admin.alumni.import.show') ? 'bg-gradient-primary text-white' : 'text-dark' }}" 
+                 href="{{ route('admin.alumni.import.show') }}">
+                 <div class="text-center me-2 d-flex align-items-center justify-content-center">
+                   <i class="fas fa-user-graduate me-2"></i>
+                 </div>
+                <span>Alumni</span>
+              </a>
+            </li>
+            <li class="mb-1">
               <a class="nav-link {{ request()->routeIs('admin.kuesioner.import.show') ? 'bg-gradient-primary text-white' : 'text-dark' }}" 
                  href="{{ route('admin.kuesioner.import.show') }}">
                  <div class= " text-center me-2 d-flex align-items-center justify-content-center">
@@ -68,15 +77,6 @@
               </a>
             </li>
         
-            <li class="mb-1">
-              <a class="nav-link {{ request()->routeIs('admin.alumni.import.show') ? 'bg-gradient-primary text-white' : 'text-dark' }}" 
-                 href="{{ route('admin.alumni.import.show') }}">
-                 <div class="text-center me-2 d-flex align-items-center justify-content-center">
-                   <i class="fas fa-user-graduate me-2"></i>
-                 </div>
-                <span>Alumni</span>
-              </a>
-            </li>
         
           </ul>
         </div>
