@@ -29,23 +29,43 @@ class AlumniDashboardController extends Controller
         $answer = $alumni->kuesionerAnswers()->where('tahun_kuesioner', $tahunKuesioner)->firstOrNew(['tahun_kuesioner' => $tahunKuesioner]);
 
         // Logika untuk menampilkan dialog konfirmasi salin jawaban
-        $showCopyModal = false;
-        $previousYear = $tahunKuesioner - 1;
-        if (!$answer->exists && $alumni->kuesionerAnswers()->where('tahun_kuesioner', $previousYear)->exists()) {
-            $showCopyModal = true;
+        $isAutoCopied = false;
+        if (!$answer->exists) { // Jika data tahun ini belum ada di database
+            $previousYear = $tahunKuesioner - 1;
+            
+            // Cari jawaban tahun lalu
+            $prevAnswer = $alumni->kuesionerAnswers()
+                ->where('tahun_kuesioner', $previousYear)
+                ->first();
+
+            if ($prevAnswer) {
+                // Replikasi data dari tahun lalu ke objek tahun ini (di memori saja, belum save ke DB)
+                $answer = $prevAnswer->replicate();
+                $answer->tahun_kuesioner = $tahunKuesioner;
+                $answer->alumni_id = $alumni->id;
+                
+                // Tandai bahwa ini adalah hasil copy otomatis (untuk notifikasi)
+                $isAutoCopied = true;
+            }
         }
+
+        $provinces = Province::orderBy('name')->get();
 
         // Logika untuk menonaktifkan form
         $kuesionerInfo = collect($listKuesioner)->firstWhere('tahun', $tahunKuesioner);
         $isFormDisabled = $kuesionerInfo['status'] === 'terkunci';
         $pesanError = null;
-        if($isFormDisabled && !$answer->exists) {
-            $pesanError = $kuesionerInfo['lock_message'] ?? "Formulir ini tidak dapat diisi saat ini.";
+        if ($isFormDisabled) {
+            $pesanError = $kuesionerInfo['lock_message'] ?? "Formulir ini terkunci.";
+        }
+        
+        // Kirim flash message jika terjadi auto-copy
+        if ($isAutoCopied) {
+            session()->now('info', 'Formulir telah diisi otomatis dengan data Anda dari tahun sebelumnya. Silakan periksa kembali perubahan sebelum menyimpan.');
         }
 
-        $provinces = Province::orderBy('name')->get();
 
-        return view('alumni.dashboard', compact('alumni', 'answer', 'listKuesioner', 'tahunKuesioner', 'isFormDisabled', 'pesanError', 'showCopyModal', 'previousYear', 'provinces'));
+        return view('alumni.dashboard', compact('alumni', 'answer', 'listKuesioner', 'tahunKuesioner', 'isFormDisabled', 'pesanError', 'provinces'));
     }
 
     /**

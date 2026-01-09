@@ -73,7 +73,7 @@
                  <div class= " text-center me-2 d-flex align-items-center justify-content-center">
                    <i class="fas fa-file-alt me-2"></i>
                  </div>
-                <span>Kuesioner</span>
+                <span>Responden</span>
               </a>
             </li>
         

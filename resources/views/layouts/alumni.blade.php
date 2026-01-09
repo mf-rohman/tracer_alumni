@@ -25,8 +25,8 @@
 
     <style>
         :root {
-            --bs-primary: #4B49AC; /* Menyesuaikan variabel Bootstrap */
-            --bs-primary-rgb: 75, 73, 172; /* Menyesuaikan variabel Bootstrap */
+            --bs-primary: #4B49AC; 
+            --bs-primary-rgb: 75, 73, 172; 
             --skydash-primary: #4B49AC;
             --skydash-secondary: #7DA0FA;
             --skydash-text-dark: #343a40;
@@ -34,6 +34,11 @@
         }
         body, p, span, a, button, input, select, textarea, label {
             font-family: 'Poppins', sans-serif !important;
+        }
+
+        body.modal-open {
+            position: fixed;
+            width: 100%;
         }
         h1, h2, h3, h4, h5, h6, .font-weight-bolder, .nav-link-text, .breadcrumb-item {
             font-family: 'Poppins', sans-serif !important;
@@ -58,18 +63,18 @@
         .bg-gradient-primary {
             background-image: linear-gradient(195deg, var(--skydash-secondary) 0%, var(--skydash-primary) 100%);
         }
-        /* Styling untuk Grid Kuesioner Kompetensi (Versi Tailwind-Compatible) */
+        
 
         .radio-group {
             display: flex;
-            flex-direction: row; /* INI KUNCI UTAMANYA: Memaksa tata letak menjadi horizontal */
-            flex-wrap: nowrap;   /* Mencegah angka turun ke baris baru jika tidak cukup tempat */
-            justify-content: center; /* Membuat grup angka berada di tengah sel */
-            align-items: center; /* Menjaga angka tetap sejajar secara vertikal */
-            gap: 1rem;           /* Jarak antar angka, setara 'space-x-4' di Tailwind */
+            flex-direction: row; 
+            flex-wrap: nowrap;   
+            justify-content: center; 
+            align-items: center; 
+            gap: 1rem;           
         }
 
-        /* Sembunyikan radio button asli secara visual tapi tetap fungsional */
+       
         .radio-group input[type="radio"] {
             position: absolute;
             opacity: 0;
@@ -77,83 +82,76 @@
             height: 0;
         }
 
-        /* Styling untuk label (yang kita jadikan tombol angka) */
+        
         .radio-group label {
             display: flex;
             align-items: center;
             justify-content: center;
             width: 36px;
             height: 36px;
-            border-radius: 9999px; /* class 'rounded-full' di Tailwind */
+            border-radius: 9999px; 
             cursor: pointer;
-            border: 1px solid #D1D5DB; /* class 'border-gray-300' */
-            color: #374151; /* class 'text-gray-700' */
+            border: 1px solid #D1D5DB; 
+            color: #374151; 
             font-size: 14px;
             /* font-weight: 600; */
             transition: all 0.2s ease-in-out;
         }
 
-        /* Efek saat kursor mouse diarahkan ke angka */
+        
         .radio-group label:hover {
-            background-color: #F3F4F6; /* class 'bg-gray-100' */
+            background-color: #F3F4F6;
             transform: translateY(-2px);
         }
 
-        /* Style untuk angka yang sedang DIPILIH/DICEKLIS */
         .radio-group input[type="radio"]:checked + label {
-            /* Anda bisa ganti warnanya agar sesuai dengan tema Anda */
-            background-color: #4B49AC; /* Warna primary dari tema Anda sebelumnya */
+           
+            background-color: #4B49AC; 
             border-color: #4B49AC;
             color: #ffffff;
             transform: scale(1.1);
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
         }
 
-        /* Fokus untuk aksesibilitas keyboard */
+
         .radio-group input[type="radio"]:focus-visible + label {
             outline: 2px solid #4B49AC;
             outline-offset: 2px;
         }
-        /* --- CSS Kustom untuk Form yang Rapi --- */
-
-        /* Menghilangkan style default dan menyembunyikan input asli */
+        
         .custom-radio,
         .custom-checkbox {
             -webkit-appearance: none;
             -moz-appearance: none;
             appearance: none;
-            flex-shrink: 0; /* Mencegah input menyusut */
+            flex-shrink: 0; 
             background-color: #fff;
-            border: 1px solid #D1D5DB; /* border-gray-300 */
+            border: 1px solid #D1D5DB; 
             display: inline-block;
             position: relative;
             cursor: pointer;
             transition: all 0.2s ease;
         }
 
-        /* Style untuk Radio Button (Bulat) */
+
         .custom-radio {
             width: 1.15em;
             height: 1.15em;
-            border-radius: 9999px; /* rounded-full */
+            border-radius: 9999px; 
         }
 
-        /* Style untuk Checkbox (Kotak) */
         .custom-checkbox {
             width: 1.15em;
             height: 1.15em;
-            border-radius: 0.25rem; /* rounded */
+            border-radius: 0.25rem; 
         }
 
-        /* Efek saat mouse hover */
         .custom-radio:hover,
         .custom-checkbox:hover {
-            border-color: #9CA3AF; /* border-gray-400 */
+            border-color: #9CA3AF; 
         }
 
-        /* --- Style saat DIPILIH --- */
 
-        /* Radio Button Terpilih */
         .custom-radio:checked {
             border-color: #4B49AC;
             background-color: #4B49AC;
@@ -170,7 +168,7 @@
             transform: translate(-50%, -50%);
         }
 
-        /* Checkbox Terpilih */
+
         .custom-checkbox:checked {
             border-color: #4B49AC;
             background-color: #4B49AC;
@@ -187,12 +185,11 @@
             line-height: 1;
         }
 
-        /* Fokus untuk aksesibilitas keyboard */
         .custom-radio:focus,
         .custom-checkbox:focus {
             outline: 2px solid transparent;
             outline-offset: 2px;
-            box-shadow: 0 0 0 2px #C7D2FE; /* ring-2 ring-indigo-200 */
+            box-shadow: 0 0 0 2px #C7D2FE; 
         }
         label, .form-label {
             font-size: 0.75rem;
@@ -225,7 +222,23 @@
         
         .impersonate-banner a:hover {
             background-color: rgba(255, 255, 255, 0.3);
-}
+        }
+
+        .cursor-pointer {
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent; 
+        }
+
+        .ts-control {
+            font-size: 16px !important; 
+            padding: 10px 12px !important; 
+        }
+
+        @media screen and (max-width: 768px) {
+            input, select, textarea, .form-control, .form-select {
+                font-size: 16px !important; 
+            }
+        }
 
     </style>
 </head>

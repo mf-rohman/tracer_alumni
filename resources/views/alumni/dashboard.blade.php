@@ -236,29 +236,7 @@
         </div>
     </div>
     
-    {{-- PERUBAHAN: MODAL BARU UNTUK KONFIRMASI SALIN JAWABAN --}}
-    <!-- <div class="modal fade" id="copyAnswerModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"     data-bs-keyboard="false">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Salin Jawaban dari Tahun Sebelumnya?</h5>
-                </div>
-                <div class="modal-body">
-                    <p>Kami mendeteksi Anda telah mengisi kuesioner pada tahun {{ $previousYear }}. Apakah data pekerjaan   Anda untuk tahun {{ $tahunKuesioner }} masih sama dengan tahun sebelumnya?</p>
-                    <p class="text-sm text-muted">Anda tetap dapat mengedit jawaban setelahnya jika ada perubahan kecil.</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-primary" @click="declineCopy">
-                        Tidak, Isi Manual
-                    </button>
-                    <button type="button" class="btn bg-gradient-primary" @click="confirmCopy" :disabled="isSaving">
-                        <span x-show="!isSaving">Ya, Salin Jawaban</span>
-                        
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div> -->
+    
     <div 
     x-show="success"
     x-transition
@@ -284,6 +262,17 @@
 @push('scripts')
 <script>
 
+    @if(session('info'))
+        Swal.fire({
+            icon: 'info',
+            title: 'Auto-Fill Berhasil',
+            text: '{{ session('info') }}',
+            confirmButtonColor: '#4B49AC',
+            timer: 4000,
+            timerProgressBar: true
+        });
+    @endif
+       
     @if($errors->any())
         document.addEventListener('DOMContentLoaded', function() {
             Swal.fire({
@@ -411,10 +400,7 @@
             },
         
             init() {
-                if ({{ $showCopyModal ? 'true' : 'false' }}) {
-                    var copyModal = new bootstrap.Modal(document.getElementById('copyAnswerModal'));
-                    copyModal.show();
-                }
+                
                 const hasTahunParam = {{ request()->route('tahun') ? 'true' : 'false' }};
                 const hasAnswer = {{ $answer->exists ? 'true' : 'false' }};
 
@@ -464,43 +450,7 @@
                 });
             },
         
-            async confirmCopy() {
-                this.isSaving = true;
-                const sourceYear = {{ $previousYear }};
-                const targetYear = {{ $tahunKuesioner }};
             
-                try {
-                    const response = await fetch('{{ route('dashboard.copy') }}', {
-                        method: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            source_year: sourceYear,
-                            target_year: targetYear
-                        })
-                    });
-                
-                    const result = await response.json();
-                    if (!response.ok) throw new Error(result.message || 'Terjadi kesalahan.');
-                
-                    window.location.reload();
-                
-                } catch (error) {
-                    this.notificationMessage = 'Gagal menyalin jawaban: ' + error.message;
-                    this.isError = true;
-                    this.showNotification = true;
-                } finally {
-                    this.isSaving = false; // 🔥 pastikan spinner berhenti
-                }
-            },
-        
-            declineCopy() {
-                var copyModal = bootstrap.Modal.getInstance(document.getElementById('copyAnswerModal'));
-                copyModal.hide();
-            }
         }
 
     }
