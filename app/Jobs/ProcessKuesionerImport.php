@@ -38,56 +38,82 @@ class ProcessKuesionerImport implements ShouldQueue
      */
     public function handle(): void
     {
-
+        // 1. Cek jika batch dibatalkan oleh user
         if ($this->batch() && $this->batch()->cancelled()) {
             return;
         }
+        
         try {
             $row = $this->row;
 
+            // ==========================================================
+            // ATURAN 1: HANYA NPM DAN TAHUN YANG WAJIB ADA
+            // ==========================================================
             if (empty($row['npm']) || empty($row['tahun_kuesioner'])) {
-                Log::warning("Rows Kuesioner Import Ignored: NPM or Kuesioner's Year Kosong.", $row);
-                return;
+                // Hanya beri peringatan di log, jangan bikin job 'Failed'
+                Log::warning("Baris dilewati: NPM atau Tahun Kuesioner Kosong.", ['row' => $row]);
+                return; 
             }
 
+            // Cari Alumni (Wajib ada di database master alumni)
             $alumni = Alumni::where('npm', $row['npm'])->first();
 
             if (!$alumni) {
-                Log::warning("Rows Kuesioner Import Ignored : Alumni with NPM" . $row['npm'] . "Not Found", $row);
+                Log::warning("Baris dilewati: Alumni dengan NPM " . $row['npm'] . " tidak ditemukan di database.", ['row' => $row]);
                 return;
             }
 
-            $data = Arr::except($row, ['npm']); 
-            $data['alumni_id'] = $alumni->id;
-
-            $intColumns = [
-                'f301','f302','f303','f502','f505','f14','f15',
-                'f6','f7','f7a','f1001','f1003','f1004','f1006',
-                'f1007','f1008','f1009','f1101','f1101a','f1101b',
-                'f1201','f1202'
-            ];
+            // ==========================================================
+            // ATURAN 2: KOLOM LAIN BOLEH KOSONG (DIUBAH JADI NULL)
+            // ==========================================================
             
-            foreach ($intColumns as $col) {
-                if (isset($data[$col])) {
-                    $data[$col] = $this->toIntOrNull($data[$col]);
+            // Pisahkan data NPM (karena tidak masuk tabel kuesioner)
+            $rawData = Arr::except($row, ['npm']);
+            $cleanData = [];
+
+            foreach ($rawData as $key => $val) {
+                
+                // Amankan nilai sementara
+                $processedValue = $val;
+
+                // Bersihkan spasi jika tipe datanya string
+                if (is_string($processedValue)) {
+                    $processedValue = trim($processedValue);
+                }
+
+                // Cek apakah data dianggap "Kosong"
+                if (
+                    $processedValue === "" ||       // String kosong
+                    $processedValue === null ||     // Null
+                    $processedValue === "-" ||      // Strip
+                    $processedValue === " "         // Spasi saja
+                ) {
+                    // JIKA KOSONG: Set jadi NULL. 
+                    // Database akan menerimanya (asalkan kolom di database 'nullable')
+                    $cleanData[$key] = null;
+                } else {
+                    // JIKA ADA ISI: Masukkan apa adanya
+                    $cleanData[$key] = $processedValue;
                 }
             }
-            
+
+            // ==========================================================
+            // 3. SIMPAN KE DATABASE
+            // ==========================================================
             KuesionerAnswer::updateOrCreate(
                 [
                     'alumni_id' => $alumni->id,
-                    'tahun_kuesioner' => $row['tahun_kuesioner']
+                    'tahun_kuesioner' => $cleanData['tahun_kuesioner'] // Tahun diambil dari data bersih
                 ],
-                $data
+                $cleanData
             );
 
-            Log::info("Kuesioner with npm: {$alumni->npm} has been successfully imported", [
-                'alumni_id' => $alumni->id,
-                'tahun_kuesioner' => $row['tahun_kuesioner']
-            ]);
-
         } catch(\Exception $e) {
-            Log::error("Failed Import rows kuesioner: " . $e->getMessage(), ['row' => $this->row]);
+            // Jika terjadi error teknis (misal koneksi putus), catat log
+            Log::error("Gagal Import Kuesioner NPM " . ($this->row['npm'] ?? '?') . ": " . $e->getMessage());
+            
+            // Tandai job sebagai GAGAL agar muncul di notifikasi error
+            $this->fail($e);
         }
     }
 
