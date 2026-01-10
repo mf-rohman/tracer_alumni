@@ -418,10 +418,11 @@
                 }
 
                 tomSelectInstance = new TomSelect('#f5b', {
+                    touchUI: true,
                     valueField: 'id',
                     labelField: 'text',
                     searchField: 'text',
-                    create: false, // Tidak izinkan alumni membuat opsi baru langsung dari sini
+                    create: false, 
                     load: function(query, callback) {
                         fetch(`/api/instansi/search?q=${encodeURIComponent(query)}`)
                             .then(response => response.json())
@@ -431,15 +432,15 @@
                                 callback();
                             });
                     },
-                    // Mengisi nilai awal jika ada (penting untuk edit)
+                   
                     items: ['{{ old('f5b', $answer->f5b ?? '') }}'],
                 });
                 
-                // Menonaktifkan/mengaktifkan select saat checkbox dicentang
+                
                 this.$watch('instansiTidakDitemukan', (value) => {
                     if (value) {
                         tomSelectInstance.disable();
-                        tomSelectInstance.clear(); // Hapus pilihan yang ada
+                        tomSelectInstance.clear(); 
                     } else {
                         tomSelectInstance.enable();
                     }
