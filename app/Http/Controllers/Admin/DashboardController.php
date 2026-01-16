@@ -72,7 +72,7 @@ class DashboardController extends Controller
         if ($selectedTahunRespon) {
             $kuesionerQuery->whereYear('created_at', $selectedTahunRespon);
         }
-        $totalResponden = $kuesionerQuery->count();
+        $totalResponden = $kuesionerQuery->distinct('alumni_id')->count('alumni_id');
 
         // --- DATA UNTUK KARTU STATISTIK ---
         $statusMapping = [
@@ -81,7 +81,10 @@ class DashboardController extends Controller
         ];
         $statusData = [];
         foreach ($statusMapping as $label => $value) {
-            $count = (clone $kuesionerQuery)->where('f8', $value)->count() ?? 0;
+            $count = (clone $kuesionerQuery)
+                ->where('f8', $value)
+                ->distinct('alumni_id')
+                ->count('alumni_id') ?? 0;
             $percentage = $totalResponden > 0 ? round(($count / $totalResponden) * 100) : 0;
             $chartData = [$count, max(0, $totalResponden - $count)];
             
