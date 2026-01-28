@@ -244,14 +244,35 @@ class DashboardController extends Controller
 
 
         // --- DATA WAKTU TUNGGU ---
-        $waktuTungguData = (clone $kuesionerQuery)->whereNotNull('f502')->pluck('f502');
-        $rataRataWaktuTunggu = $waktuTungguData->avg();
-        $waktuTungguChartData = [
-            $waktuTungguData->filter(fn($value) => $value < 3)->count(),
-            $waktuTungguData->filter(fn($value) => $value >= 3 && $value <= 6)->count(),
-            $waktuTungguData->filter(fn($value) => $value >= 7 && $value <= 12)->count(),
-            $waktuTungguData->filter(fn($value) => $value > 12)->count(),
-        ];
+        // Kita hitung jumlah orang per kategori dulu (ini sudah Anda punya sebelumnya)
+        // Ambil data mentah dulu untuk difilter
+        $rawWaktuTunggu = (clone $kuesionerQuery)->whereNotNull('f502')->pluck('f502');
+        
+        // Hitung jumlah orang di setiap kategori
+        $countKurang3 = $rawWaktuTunggu->filter(fn($v) => $v < 3)->count();
+        $count3sd6    = $rawWaktuTunggu->filter(fn($v) => $v >= 3 && $v <= 6)->count();
+        $count7sd12   = $rawWaktuTunggu->filter(fn($v) => $v >= 7 && $v <= 12)->count();
+        $countLebih12 = $rawWaktuTunggu->filter(fn($v) => $v > 12)->count();
+
+        // Array untuk Grafik Donat
+        $waktuTungguChartData = [$countKurang3, $count3sd6, $count7sd12, $countLebih12];
+
+        // --- HITUNG RATA-RATA TERBOBOT (GROUPED MEAN) ---
+        // Rumus: (JumlahOrang * NilaiTengah) / TotalOrang
+        // Ini mencegah angka 35.000 bulan muncul akibat satu data error.
+        
+        $totalOrang = array_sum($waktuTungguChartData);
+        $rataRataWaktuTunggu = 0;
+
+        if ($totalOrang > 0) {
+            $totalBobot = 
+                ($countKurang3 * 1.5) +  // Asumsi rata-rata 1.5 bulan
+                ($count3sd6    * 4.5) +  // Asumsi rata-rata 4.5 bulan
+                ($count7sd12   * 9.5) +  // Asumsi rata-rata 9.5 bulan
+                ($countLebih12 * 18);    // Asumsi rata-rata 18 bulan (1.5 tahun)
+            
+            $rataRataWaktuTunggu = $totalBobot / $totalOrang;
+        }
 
         // --- DATA UNTUK FILTER DROPDOWN ---
         if ($user->role === 'dekan') {
