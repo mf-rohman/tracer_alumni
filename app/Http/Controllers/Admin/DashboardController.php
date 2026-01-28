@@ -246,32 +246,45 @@ class DashboardController extends Controller
         // --- DATA WAKTU TUNGGU ---
         // Kita hitung jumlah orang per kategori dulu (ini sudah Anda punya sebelumnya)
         // Ambil data mentah dulu untuk difilter
-        $rawWaktuTunggu = (clone $kuesionerQuery)->whereNotNull('f502')->pluck('f502');
-        
-        // Hitung jumlah orang di setiap kategori
-        $countKurang3 = $rawWaktuTunggu->filter(fn($v) => $v < 3)->count();
-        $count3sd6    = $rawWaktuTunggu->filter(fn($v) => $v >= 3 && $v <= 6)->count();
-        $count7sd12   = $rawWaktuTunggu->filter(fn($v) => $v >= 7 && $v <= 12)->count();
-        $countLebih12 = $rawWaktuTunggu->filter(fn($v) => $v > 12)->count();
+        $rawWaktuTungguCollection = (clone $kuesionerQuery)
+            ->whereIn('f8', [1, 3]) // Hanya ambil status Bekerja (1) / Wiraswasta (3)
+            ->whereNotNull('f502')  // Pastikan kolom waktu tunggu ada isinya
+            ->select('alumni_id', 'f502') // Ambil kolom penting saja untuk efisiensi
+            ->get(); 
 
-        // Array untuk Grafik Donat
+        // 2. Filter Unik per Alumni & Bersihkan Angka Aneh (Sanitasi)
+        $cleanWaktuTunggu = $rawWaktuTungguCollection
+            ->unique('alumni_id') // Pastikan 1 alumni hanya dihitung 1 kali (jika ada duplikat data)
+            ->pluck('f502') // Ambil nilai bulannya
+            ->map(function($val) { return (float) $val; }) // Pastikan tipe data angka
+            ->filter(function($val) {
+                // Hapus jika < 0 atau > 60 bulan (5 tahun).
+                // Angka > 60 bulan dianggap salah input (misal gaji masuk ke sini).
+                return $val >= 0 && $val <= 60; 
+            });
+
+        // 3. Kelompokkan Data sesuai Kategori Tracer Study
+        $countKurang3 = $cleanWaktuTunggu->filter(fn($v) => $v < 3)->count();
+        $count3sd6    = $cleanWaktuTunggu->filter(fn($v) => $v >= 3 && $v <= 6)->count();
+        $count7sd12   = $cleanWaktuTunggu->filter(fn($v) => $v >= 7 && $v <= 12)->count();
+        $countLebih12 = $cleanWaktuTunggu->filter(fn($v) => $v > 12)->count();
+
+        // Data untuk dikirim ke Chart.js
         $waktuTungguChartData = [$countKurang3, $count3sd6, $count7sd12, $countLebih12];
 
-        // --- HITUNG RATA-RATA TERBOBOT (GROUPED MEAN) ---
-        // Rumus: (JumlahOrang * NilaiTengah) / TotalOrang
-        // Ini mencegah angka 35.000 bulan muncul akibat satu data error.
-        
-        $totalOrang = array_sum($waktuTungguChartData);
+        // 4. Hitung Rata-rata Terbobot (Grouped Mean)
+        // Ini mencegah angka rata-rata meledak jika ada satu data outlier yang lolos
+        $totalOrangWT = array_sum($waktuTungguChartData);
         $rataRataWaktuTunggu = 0;
 
-        if ($totalOrang > 0) {
+        if ($totalOrangWT > 0) {
             $totalBobot = 
-                ($countKurang3 * 1.5) +  // Asumsi rata-rata 1.5 bulan
-                ($count3sd6    * 4.5) +  // Asumsi rata-rata 4.5 bulan
-                ($count7sd12   * 9.5) +  // Asumsi rata-rata 9.5 bulan
-                ($countLebih12 * 18);    // Asumsi rata-rata 18 bulan (1.5 tahun)
+                ($countKurang3 * 1.5) +  // Nilai tengah kategori < 3 bulan
+                ($count3sd6    * 4.5) +  // Nilai tengah kategori 3-6 bulan
+                ($count7sd12   * 9.5) +  // Nilai tengah kategori 7-12 bulan
+                ($countLebih12 * 18);    // Asumsi nilai tengah > 12 bulan (1.5 tahun)
             
-            $rataRataWaktuTunggu = $totalBobot / $totalOrang;
+            $rataRataWaktuTunggu = $totalBobot / $totalOrangWT;
         }
 
         // --- DATA UNTUK FILTER DROPDOWN ---
