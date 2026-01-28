@@ -18,9 +18,9 @@ class LandingController extends Controller
         $totalResponden = KuesionerAnswer::count();
         
         // Menghitung jumlah alumni yang sudah bekerja dari kuesioner yang terisi
-        $totalBekerja = KuesionerAnswer::where('f8', 1) // Asumsi '1' adalah status 'Bekerja'
-                                     ->orWhere('f8', 3) // Asumsi '3' adalah status 'Wiraswasta'
-                                     ->count();
+        $totalBekerja = KuesionerAnswer::whereIn('f8', [1, 3]) // Ambil Bekerja (1) & Wiraswasta (3)
+            ->distinct('alumni_id') // [PENTING] Hitung orang unik, bukan total formulir
+            ->count('alumni_id');
 
         // Kirim data statistik ke view
         return view('welcome', compact('totalAlumni', 'totalResponden', 'totalBekerja'));
