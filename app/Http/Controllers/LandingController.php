@@ -27,9 +27,9 @@ class LandingController extends Controller
             ->whereNotNull('testimoni_alumni')          // Hanya yang tidak NULL
             ->where('testimoni_alumni', '!=', '')       // Hanya yang tidak kosong
             ->where('testimoni_alumni', '!=', '-')      // Filter isian strip "-"
-            ->latest('tahun_kuesioner')                 // Ambil tahun terbaru
+            // ->latest('tahun_kuesioner')                 // Ambil tahun terbaru
             ->inRandomOrder()                           // Acak urutannya agar tidak bosan
-            ->limit(6)                                  // Batasi 6 testimoni saja
+            ->limit(12)                                  // Batasi 6 testimoni saja
             ->get();
 
         // Kirim data statistik ke view
