@@ -21,6 +21,7 @@ use App\Http\Controllers\Instansi\ProfileController as InstansiProfileController
 use App\Http\Controllers\KuesionerImportController;
 use Illuminate\Support\Facades\Log;
 use App\Models\Instansi;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Bus;
 
 /*
@@ -62,6 +63,19 @@ Route::middleware(['auth', 'role:superadmin,bak,admin_prodi,dekan'])->prefix(env
     Route::get('/responden', [RespondenController::class, 'index'])->name('responden.index');
 
     Route::get('/login-as/{alumnus:uuid}', [UserController::class, 'loginAs'])->name('users.login_as');
+
+    Route::post('/responden/{alumni}/login-as-instansi', [UserController::class, 'loginAsInstansi'])
+    ->name('responden.login.instansi');
+
+    Route::get('/admin/stop-impersonate', function () {
+        $adminId = session('admin_impersonator_id');
+        if ($adminId) {
+            Auth::loginUsingId($adminId); // Login balik jadi admin
+            session()->forget('admin_impersonator_id'); // Hapus jejak penyamaran
+            return redirect()->route('admin.dashboard');
+        }
+        return redirect('/');
+    })->name('admin.impersonate.stop');
     // Route::get('/users/logout-as', [UserController::class, 'logoutAs'])->name('users.logout_as');
     
     // Mengelola data alumni (CRUD)

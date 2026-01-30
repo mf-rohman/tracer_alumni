@@ -22,8 +22,18 @@ class LandingController extends Controller
             ->distinct('alumni_id') // [PENTING] Hitung orang unik, bukan total formulir
             ->count('alumni_id');
 
+        
+        $testimonials = KuesionerAnswer::with('alumni') // Eager load relasi alumni
+            ->whereNotNull('testimoni_alumni')          // Hanya yang tidak NULL
+            ->where('testimoni_alumni', '!=', '')       // Hanya yang tidak kosong
+            ->where('testimoni_alumni', '!=', '-')      // Filter isian strip "-"
+            ->latest('tahun_kuesioner')                 // Ambil tahun terbaru
+            ->inRandomOrder()                           // Acak urutannya agar tidak bosan
+            ->limit(6)                                  // Batasi 6 testimoni saja
+            ->get();
+
         // Kirim data statistik ke view
-        return view('welcome', compact('totalAlumni', 'totalResponden', 'totalBekerja'));
+        return view('welcome', compact('totalAlumni', 'totalResponden', 'totalBekerja', 'testimonials'));
     }
 
     public function getPageData()

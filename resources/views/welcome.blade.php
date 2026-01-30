@@ -74,7 +74,7 @@
         .slider-image:nth-child(4) { animation-delay: 18s; }
 
 
-        .flip-card { perspective: 1000px; cursor: pointer; }
+        /* .flip-card { perspective: 1000px; cursor: pointer; }
         .flip-card-inner {
             position: relative; width: 100%; height: 100%;
             transition: transform 0.7s; transform-style: preserve-3d;
@@ -87,7 +87,7 @@
             box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
             padding: 2rem; display: flex; flex-direction: column; justify-content: center;
         }
-        .flip-card-back { transform: rotateY(180deg); }
+        .flip-card-back { transform: rotateY(180deg); } */
 
         .scrollbar-hide {
             -ms-overflow-style: none;
@@ -118,6 +118,111 @@
         }
         #faq {
             scroll-margin-top: 80px; 
+        }
+
+        .flip-card {
+            background-color: transparent;
+            width: 100%;
+            height: 320px; 
+            perspective: 1000px; 
+            cursor: pointer;
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.1);
+            border-radius: 20px;
+        }
+
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+        }
+
+        .flip-card-front {
+            background-color: #ffffff;
+            color: #333;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .flip-card-back {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* Gradasi Ungu Keren */
+            color: white;
+            transform: rotateY(180deg);
+        }
+
+        .avatar-circle {
+            width: 80px;
+            height: 80px;
+            background-color: #5e72e4; 
+            color: white;
+            font-size: 1.8rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            box-shadow: 0 4px 10px rgba(94, 114, 228, 0.3);
+        }
+
+        .testimonial-control {
+            width: 3.5rem;
+            height: 3.5rem;
+            background-color: #ffffff;
+            border-radius: 50%;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 1; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border: 1px solid rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            position: absolute;
+        }
+
+        .testimonial-control:hover {
+            background-color: #5e72e4; 
+            box-shadow: 0 8px 25px rgba(94, 114, 228, 0.4);
+            transform: translateY(-50%) scale(1.1); 
+        }
+
+        .testimonial-control .carousel-control-prev-icon,
+        .testimonial-control .carousel-control-next-icon {
+            width: 1.2rem;
+            height: 1.2rem;
+            background-size: 100%, 100%;
+            filter: invert(30%) sepia(10%) saturate(500%) hue-rotate(180deg) brightness(90%) contrast(90%);
+            transition: all 0.3s ease;
+        }
+
+        .testimonial-control:hover .carousel-control-prev-icon,
+        .testimonial-control:hover .carousel-control-next-icon {
+            filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
+        }
+
+        .carousel-control-prev { left: -4%; }
+        .carousel-control-next { right: -4%; }
+
+        @media (max-width: 991px) {
+            .carousel-control-prev { left: 0; background-color: rgba(255,255,255,0.8); }
+            .carousel-control-next { right: 0; background-color: rgba(255,255,255,0.8); }
         }
 
         @keyframes fadeSlider {
@@ -361,67 +466,102 @@
       </div>
     </section>
 
-    <section id="testimonials" class="py-20 bg-slate-50">
-        <div class="container mx-auto px-4" x-data="testimonialSlider">
-            <div class="flex justify-between items-center mb-12" data-aos="fade-up">
-                <div class="text-center md:text-left">
-                    <h2 class="text-3xl md:text-4xl font-extrabold text-gray-800">Apa Kata Mereka?</h2>
-                    <p class="mt-4 text-lg text-gray-600">Kisah sukses dan pengalaman berharga dari para alumni Unirow.</p>
+    <section class="py-5 bg-light" id="testimoni">
+        <div class="container" data-aos="fade-up" data-aos-duration="1000">
+            <div class="text-center mb-5 pb-2" data-aos="fade-up" data-aos-delay="200">
+                
+                <div class="mb-2">
+                    <i class="fas fa-user-graduate fa-3x" style="background: -webkit-linear-gradient(#5e72e4,   #11cdef);         -webkit-background-clip: text; -webkit-text-fill-color: transparent;    opacity: 0.5;"></i>
                 </div>
-               
-                <div class="hidden md:flex space-x-2">
-                    <button @click="prev()" class="h-12 w-12 rounded-full bg-white shadow-md text-gray-600 hover:bg-indigo-600 hover:text-white transition flex items-center justify-center">
-                        <i class="fas fa-arrow-left"></i>
-                    </button>
-                    <button @click="next()" class="h-12 w-12 rounded-full bg-white shadow-md text-gray-600 hover:bg-indigo-600 hover:text-white transition flex items-center justify-center">
-                        <i class="fas fa-arrow-right"></i>
-                    </button>
-                </div>
+
+                <h2 class="font-weight-bold mb-3" style="font-size: 2.5rem;">
+                    Apa Kata <span style="background: linear-gradient(to right, #5e72e4, #11cdef);          -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Alumni?</span>
+                </h2>
+
+                <p class="text-muted h6 font-weight-normal text-sm mx-auto" style="max-width: 500px;    line-height: 1.8;">
+                    Jejak langkah mereka adalah inspirasi bagi kita. Temukan bagaimana pendidikan di sini   membentuk masa        depan mereka.
+                </p>
             </div>
 
-            
-            <div class="overflow-hidden relative" @mouseenter="pauseSlider()" @mouseleave="resumeSlider()">
-                <div x-ref="slider" class="flex space-x-8 overflow-x-auto scrollbar-hide" data-aos="fade-up">
-                    @php
-                        $testimonials = [
-                            ['name' => 'Ahmad Dahlan', 'job' => 'Software Engineer di TechCorp', 'quote' => 'Pendidikan di Unirow tidak hanya memberi saya ilmu, tetapi juga membentuk karakter dan jaringan yang sangat membantu saya di dunia kerja.', 'color' => 'bg-indigo-600'],
-                            ['name' => 'Siti Aisyah', 'job' => 'Founder & CEO, CreativeHub', 'quote' => 'Saya belajar banyak tentang kepemimpinan dan kerja tim selama di organisasi kemahasiswaan. Itu menjadi bekal utama saya saat merintis usaha.', 'color' => 'bg-purple-600'],
-                            ['name' => 'Budi Santoso', 'job' => 'Analis Kebijakan di Kementerian', 'quote' => 'Dosen-dosen sangat mendukung dan ilmunya relevan. Saya merasa siap bersaing di tingkat nasional berkat fondasi yang kuat dari almamater.', 'color' => 'bg-indigo-800'],
-                            ['name' => 'Dewi Lestari', 'job' => 'Manajer Pemasaran', 'quote' => 'Kurikulum yang up-to-date membuat saya mudah beradaptasi dengan tren industri. Terima kasih, Unirow!', 'color' => 'bg-purple-600'],
-                            ['name' => 'Eko Prasetyo', 'job' => 'Guru & Penggerak Pendidikan', 'quote' => 'Ilmu kependidikan yang saya dapatkan sangat aplikatif. Saya bangga menjadi bagian dari alumni yang berkontribusi di dunia pendidikan.', 'color' => 'bg-indigo-600'],
-                            ['name' => 'Rina Amelia', 'job' => 'Wirausahawan Kuliner', 'quote' => 'Selain ilmu formal, soft-skills yang saya asah di kampus menjadi kunci sukses saya dalam membangun bisnis dari nol.', 'color' => 'bg-purple-600'],
-                        ];
-                    @endphp
-                    @foreach($testimonials as $testi)
-                    <div class="w-full md:w-1/2 lg:w-1/3 flex-shrink-0">
-                        <div class="h-80" x-data="{ flipped: false }" @click="flipped = !flipped">
-                            <div class="flip-card h-full" :class="{ 'flipped': flipped }">
-                                <div class="flip-card-inner">
-                                    
-                                    <div class="flip-card-front bg-white items-center text-center">
-                                        <img class="h-24 w-24 rounded-full object-cover mb-4" src="https://ui-avatars.com/api/?name={{ urlencode($testi['name']) }}&background=4F46E5&color=fff&size=128" alt="Foto {{ $testi['name'] }}">
-                                        <h3 class="font-bold text-xl text-gray-800">{{ $testi['name'] }}</h3>
-                                        <p class="text-sm text-gray-500">{{ $testi['job'] }}</p>
-                                        <span class="mt-4 inline-block bg-indigo-100 text-indigo-700 text-xs font-semibold px-3 py-1 rounded-full">Klik untuk melihat</span>
+            <div id="testimonialCarousel" class="carousel carousel-dark slide" data-bs-ride="carousel">
+
+                <div class="carousel-inner pb-4"> 
+                    @forelse($testimonials->chunk(3) as $key => $chunk)
+                        {{-- Item Carousel: Aktif hanya untuk yang pertama --}}
+                        <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
+                            <div class="row justify-content-center">
+                                @foreach($chunk as $testi)
+                                    <div class="col-md-4 mb-4">
+                                        {{-- Container Flip Card --}}
+                                        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                                            <div class="flip-card-inner">
+
+                                                <div class="flip-card-front">
+                                                    <div class="avatar-circle mb-3">
+                                                        {{ substr($testi->alumni->nama_lengkap, 0, 1) }}{{ substr(strrchr   ($testi->alumni->nama_lengkap, " "), 1, 1) }}
+                                                    </div>
+
+                                                    <h5 class="font-weight-bold mb-1">{{ $testi->alumni->nama_lengkap }}    </h5>
+
+                                                    <p class="text-muted text-sm mb-4">
+                                                        @if(!empty($testi->f5c))
+                                                            {{ Str::limit($testi->f5c, 30) }}
+                                                        @else
+                                                            Alumni {{ $testi->alumni->tahun_lulus }}
+                                                        @endif
+                                                    </p>
+
+                                                    <span class="badge rounded-pill bg-light text-primary px-3  py-2 border shadow-sm">
+                                                        Klik untuk melihat
+                                                    </span>
+                                                </div>
+
+                                                <div class="flip-card-back">
+                                                    <div class="mb-3">
+                                                        <i class="fas fa-quote-left fa-2x opacity-50"></i>
+                                                    </div>
+                                                    <p class="fst-italic px-2">
+                                                        "{{ Str::limit($testi->testimoni_alumni, 200, '...') }}"
+                                                    </p>
+                                                    <div class="mt-auto">
+                                                        <small class="text-white-50">Klik untuk menutup</small>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
                                     </div>
-                                    
-                                    <div class="flip-card-back {{ $testi['color'] }} text-white">
-                                        <i class="fas fa-quote-left text-white/50 text-3xl mb-4"></i>
-                                        <blockquote class="italic">{{ $testi['quote'] }}</blockquote>
-                                    </div>
-                                </div>
+                                @endforeach
                             </div>
                         </div>
-                    </div>
-                    @endforeach
+                    @empty
+                        <div class="col-12 text-center py-5">
+                            <div class="alert alert-light border d-inline-block px-5">
+                                <i class="fas fa-info-circle me-2 text-primary"></i>
+                                Belum ada testimoni alumni yang ditampilkan.
+                            </div>
+                        </div>
+                    @endforelse
                 </div>
+
+               @if($testimonials->count() > 3)
+                    <button class="carousel-control-prev testimonial-control" type="button"     data-bs-target="#testimonialCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next testimonial-control" type="button"     data-bs-target="#testimonialCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                @endif
+
             </div>
         </div>
     </section>
 
     <section class="bg-slate-200 transition-colors duration-300 md:bg-zinc-50 overflow-hidden " data-aos="fade-up">
         <div class="flex justify-start mx-auto my-1 ">
-            <div class="relative group w-1/2 mx-10" data-aos="zoom-in-right" >
+            <div class="relative group w-full md:w-1/2 mx-4 md:mx-10" data-aos="zoom-in-right" >
                 <a href="#_"> 
                     <img src="https://images.unsplash.com/photo-1530035415911-95194de4ebcc?    q=80&amp;w=2670&amp;auto=format&amp;fit=crop&amp;ixlib=rb-4.0.3&amp;      ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="rounded-xl rotate-6 group-hover:rotate-0 transition-all duration-700 ease-out hover:-translate-y-12 object-cover transform origin-bottom" alt="#_" > 
                 </a>
@@ -431,7 +571,7 @@
         </div>
 
         <div class="flex justify-end mx-auto my-1">
-            <div class="relative group w-1/2 mx-10" data-aos="zoom-in-left">
+            <div class="relative group w-full md:w-1/2 mx-4 md:mx-10" data-aos="zoom-in-left">
                 <a href="#_"> 
                     <img src="https://images.unsplash.com/photo-1487180144351-b8472da7d491?q=80&amp;w=2672&amp;   auto=format&amp;fit=crop&amp;ixlib=rb-4.0.3&amp;ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="rounded-xl -rotate-6 group-hover:rotate-0 transition-all duration-700 ease-out hover:-translate-y-12 object-cover transform origin-bottom" alt="#_"> 
                 </a>
@@ -441,7 +581,7 @@
         </div>
 
         <div class="flex justify-start mx-auto my-1">
-            <div class="reltive group w-1/2 mx-10" data-aos="zoom-in-right">
+            <div class="relative group w-full md:w-1/2 mx-4 md:mx-10" data-aos="zoom-in-right">
                 <a href="#_"> 
                     <img src="https://images.unsplash.com/photo-1586996292898-71f4036c4e07?    q=80&amp;w=2670&amp;auto=format&amp;fit=crop&amp;ixlib=rb-4.0.3&amp;     ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"  class="rounded-xl rotate-6 group-hover:rotate-0 transition-all duration-700 ease-out hover:-translate-y-12     object-cover transform origin-bottom" alt="#_"> 
                 </a>
@@ -451,7 +591,7 @@
         </div>
 
         <div class="flex justify-end mx-auto my-1">
-            <div class="relative group w-1/2 mx-10" data-aos="zoom-in-left">
+            <div class="relative group w-full md:w-1/2 mx-4 md:mx-10" data-aos="zoom-in-left">
                 <a href="#_"> 
                     <img src="https://images.unsplash.com/photo-1522775417749-29284fb89f43?q=80&amp;w=2574&amp;auto=format&  amp;fit=crop&amp;ixlib=rb-4.0.3&amp;ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"  class="rounded-xl -rotate-6 group-hover:rotate-0 transition-all duration-700 ease-out hover:-translate-y-12     object-cover transform origin-bottom" alt="#_"> 
                 </a>

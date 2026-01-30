@@ -168,6 +168,30 @@
                                                     <i class="fas fa-sign-in-alt text-success me-2"></i> Isi Kuesioner
                                                 </a>
                                             </li>
+                                            <li>
+                                                @php
+                                                    // 1. Ambil kuesioner terakhir dari alumni ini
+                                                    // Menggunakan variabel $alumnus sesuai loop Anda
+                                                    $latestAnswer = $alumnus->kuesionerAnswers->sortByDesc('tahun_kuesioner')->first();
+
+                                                    // 2. Cek Status: Apakah ada jawaban DAN statusnya '1' (Bekerja)?
+                                                    $isBekerja = $latestAnswer && $latestAnswer->f8 == '1';
+                                                @endphp
+
+                                                @if($isBekerja)
+                                                 
+                                                    <form action="{{ route('admin.responden.login.instansi', $alumnus->id) }}" 
+                                                          method="POST" 
+                                                          class="d-inline-block" 
+                                                          onsubmit="return confirm('PERINGATAN:\nAnda akan keluar dari akun Admin dan masuk sebagai                                             Instansi.\n\nLanjutkan?');">
+                                                        @csrf
+
+                                                        <button type="submit" class="btn btn-link text-warning px-2 mb-0" title="Isi Penilaian Pengguna                                             Lulusan">
+                                                            <i class="fas fa-user-tie text-warning me-2"></i>As Instansi
+                                                        </button>
+                                                    </form>
+                                                @endif
+                                            </li>
                                             <li><hr class="dropdown-divider"></li>
                                             <li>
                                                 <form action="{{ route('admin.alumni.destroy', $alumnus) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data alumni ini?')">

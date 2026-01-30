@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -136,10 +137,67 @@ class UserController extends Controller
         return redirect()->route('admin.responden.index');
     }
 
-    // public function loginAsInstansi (Instansi $instansi) {
-    //     $admin = Auth::user();
+    public function loginAsInstansi($alumniId)
+    {
+        // 1. Simpan ID Admin saat ini sebelum switch user
+        $adminId = Auth::id();
 
-    //     if ($admin->role === 'admin_prodi' && )
+        // 2. Cari Data Alumni & Jawaban Terakhir
+        $alumni = Alumni::with('kuesionerAnswers')->findOrFail($alumniId);
+        $answer = $alumni->kuesionerAnswers()->latest('tahun_kuesioner')->first();
 
-    // }
+        // 3. Validasi Status Bekerja
+        if (!$answer || $answer->f8 != '1') {
+            return back()->with('error', 'Login Instansi hanya untuk alumni yang sudah bekerja.');
+        }
+
+        // 4. Siapkan Data Akun Instansi
+        $namaPerusahaan = $answer->f5b ?? 'Instansi Alumni';
+        $emailInstansi = $answer->f5a2; // Email atasan asli
+        
+        // Jika email kosong, buat email dummy unik
+        if (empty($emailInstansi)) {
+            $cleanName = Str::slug(substr($namaPerusahaan, 0, 20));
+            $emailInstansi = "instansi.{$alumni->npm}.{$cleanName}@tracer.local";
+        }
+
+        $namaAkun = $answer->f5a1 ?? $namaPerusahaan; 
+
+        // 5. Cari atau Buat User Instansi (Auto-Register)
+        $userInstansi = User::firstOrCreate(
+            ['email' => $emailInstansi],
+            [
+                'name' => $namaAkun,
+                'password' => bcrypt(Str::random(16)), 
+                'role' => 'instansi',
+                // [PERBAIKAN] Set verified agar tidak ditendang middleware 'verified'
+                'email_verified_at' => now(), 
+            ]
+        );
+
+        // Validasi Role
+        if ($userInstansi->role !== 'instansi') {
+             return back()->with('error', 'Email ini terdaftar sebagai akun Non-Instansi.');
+        }
+
+        // 6. PROSES IMPERSONATE YANG LEBIH BERSIH (Logout -> Login)
+        
+        // A. Logout Admin sepenuhnya untuk mencegah konflik sesi
+        Auth::guard('web')->logout();
+        
+        // B. Invalidate session lama (PENTING: membersihkan sisa data admin)
+        request()->session()->invalidate();
+        request()->session()->regenerateToken();
+
+        // C. Login User Baru (Instansi)
+        Auth::guard('web')->login($userInstansi);
+
+        // D. Set Session Penyamaran (Di sesi baru milik Instansi)
+        // Kita simpan ID admin agar nanti bisa kembali
+        session(['admin_impersonator_id' => $adminId]);
+
+        // 7. Redirect
+        return redirect()->route('instansi.dashboard')
+            ->with('success', "Mode Penyamaran Aktif: Anda login sebagai {$namaPerusahaan}");
+    }
 }
