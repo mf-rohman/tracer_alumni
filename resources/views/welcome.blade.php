@@ -251,7 +251,7 @@
                     <a href="#hero" class="text-gray-600 hover:text-indigo-600 transition">Beranda</a>
                     <a href="#manfaat" class="text-gray-600 hover:text-indigo-600 transition">Manfaat</a>
                     <a href="#alur" class="text-gray-600 hover:text-indigo-600 transition">Alur</a>
-                    <a href="#testimonials" class="text-gray-600 hover:text-indigo-600 transition">Testimoni</a>
+                    <a href="#testimoni" class="text-gray-600 hover:text-indigo-600 transition">Testimoni</a>
                     <a href="#faq" class="text-gray-600 hover:text-indigo-600 transition">FAQ</a>
                 </div>
                 
@@ -266,7 +266,7 @@
         <div id="mobile-menu" class="hidden md:hidden absolute -mt-4 -z-10 top-full left-0 w-full bg-white shadow-md">
             <a href="#hero" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100">Beranda</a>
             <a href="#manfaat" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100">Manfaat</a>
-            <a href="#testimonials" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100">Testimoni</a>
+            <a href="#testimoni" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100">Testimoni</a>
             <a href="#alur" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100">Alur</a>
             <a href="#faq" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100">FAQ</a>
             <hr class="my-2">
