@@ -11,6 +11,7 @@ use App\Models\Prodi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rules;
 use Illuminate\Support\Str;
 
@@ -139,65 +140,59 @@ class UserController extends Controller
 
     public function loginAsInstansi($alumniId)
     {
-        // 1. Simpan ID Admin saat ini sebelum switch user
+        // 1. Simpan ID Admin di variabel sementara
         $adminId = Auth::id();
 
-        // 2. Cari Data Alumni & Jawaban Terakhir
+        // 2. Cari Data
         $alumni = Alumni::with('kuesionerAnswers')->findOrFail($alumniId);
         $answer = $alumni->kuesionerAnswers()->latest('tahun_kuesioner')->first();
 
-        // 3. Validasi Status Bekerja
         if (!$answer || $answer->f8 != '1') {
             return back()->with('error', 'Login Instansi hanya untuk alumni yang sudah bekerja.');
         }
 
-        // 4. Siapkan Data Akun Instansi
+        // 3. Siapkan Akun Instansi
         $namaPerusahaan = $answer->f5b ?? 'Instansi Alumni';
-        $emailInstansi = $answer->f5a2; // Email atasan asli
+        $emailInstansi = $answer->f5a2;
         
-        // Jika email kosong, buat email dummy unik
         if (empty($emailInstansi)) {
             $cleanName = Str::slug(substr($namaPerusahaan, 0, 20));
             $emailInstansi = "instansi.{$alumni->npm}.{$cleanName}@tracer.local";
         }
 
-        $namaAkun = $answer->f5a1 ?? $namaPerusahaan; 
-
-        // 5. Cari atau Buat User Instansi (Auto-Register)
+        // 4. Pastikan User Instansi Ada
         $userInstansi = User::firstOrCreate(
             ['email' => $emailInstansi],
             [
-                'name' => $namaAkun,
+                'name' => $answer->f5a1 ?? $namaPerusahaan,
                 'password' => bcrypt(Str::random(16)), 
                 'role' => 'instansi',
-                // [PERBAIKAN] Set verified agar tidak ditendang middleware 'verified'
-                'email_verified_at' => now(), 
+                'email_verified_at' => now(), // Bypass verifikasi email
             ]
         );
 
-        // Validasi Role
+        // Pastikan role benar (jika user lama)
         if ($userInstansi->role !== 'instansi') {
-             return back()->with('error', 'Email ini terdaftar sebagai akun Non-Instansi.');
+            // Jika ternyata role-nya bukan instansi, update paksa jadi instansi
+            $userInstansi->update(['role' => 'instansi']);
         }
 
-        // 6. PROSES IMPERSONATE YANG LEBIH BERSIH (Logout -> Login)
+        // ======================================================
+        // LOGIKA LOGIN YANG DIPERBAIKI (FORCE SWITCH)
+        // ======================================================
+
+        // 1. Login menggunakan ID (Lebih stabil daripada login model object)
+        // Ini otomatis me-logout user lama (Admin)
+        Auth::loginUsingId($userInstansi->id);
+
+        // 2. Masukkan ID Admin ke session BARU milik Instansi
+        session()->put('admin_impersonator_id', $adminId);
         
-        // A. Logout Admin sepenuhnya untuk mencegah konflik sesi
-        Auth::guard('web')->logout();
-        
-        // B. Invalidate session lama (PENTING: membersihkan sisa data admin)
-        request()->session()->invalidate();
-        request()->session()->regenerateToken();
+        // 3. [PENTING] Paksa simpan session sebelum redirect
+        // Ini memastikan data tidak hilang saat browser pindah halaman
+        session()->save();
 
-        // C. Login User Baru (Instansi)
-        Auth::guard('web')->login($userInstansi);
-
-        // D. Set Session Penyamaran (Di sesi baru milik Instansi)
-        // Kita simpan ID admin agar nanti bisa kembali
-        session(['admin_impersonator_id' => $adminId]);
-
-        // 7. Redirect
-        return redirect()->route('instansi.dashboard')
-            ->with('success', "Mode Penyamaran Aktif: Anda login sebagai {$namaPerusahaan}");
+        // 4. Redirect ke Dashboard Instansi
+        return redirect()->route('instansi.dashboard');
     }
 }

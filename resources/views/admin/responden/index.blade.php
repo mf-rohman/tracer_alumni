@@ -7,9 +7,13 @@
     <div class="col-12">
         <!-- FORM FILTER -->
         <div class="card mb-4">
-            <div class="card-header pb-0">
+            <div class="card-header pb-0 d-flex justify-content-between align-items-center">
                 <h6><i class="fa fa-filter text-dark me-2"></i> Filter Data Responden</h6>
+                <a href="{{ route('admin.responden.export') }}" class="btn btn-success mb-3">
+                    <i class="fas fa-file-excel mr-1"></i> Export Excel
+                </a>
             </div>
+
         
             <div class="card-body">
                 <form action="{{ route('admin.responden.index') }}" method="GET">
@@ -91,6 +95,8 @@
                                 Reset
                             </a>
                         </div>
+
+                        
                     </div>
         
                 </form>

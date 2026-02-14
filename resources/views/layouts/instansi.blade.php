@@ -124,9 +124,12 @@
 </head>
 <body class="g-sidenav-show" style="background-color: var(--skydash-bg);">
     @if(session('admin_impersonator_id'))
-        <a href="{{ route('admin.impersonate.stop') }}" class="btn btn-danger btn-sm">
-            <i class="fas fa-sign-out-alt"></i> Stop & Kembali ke Admin
-        </a>
+        <div style="background-color: #343a40; color: #fff; text-align: center; padding: 10px; position: sticky; top: 0; z-index: 9999;">
+            <span>🕵️ Anda sedang mengakses akun ini sebagai <strong>Admin</strong>.</span>
+            <a href="{{ route('impersonate.stop') }}" style="background-color: #dc3545; color: white; padding: 5px 15px; text-decoration: none; border-radius: 4px; margin-left: 10px; font-weight: bold;">
+                Kembali ke Admin
+            </a>
+        </div>
     @endif
     
     {{-- Memuat sidebar khusus untuk instansi --}}

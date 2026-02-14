@@ -10,6 +10,8 @@ use App\Models\Prodi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Exports\RespondenExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class RespondenController extends Controller
 {
@@ -88,5 +90,11 @@ class RespondenController extends Controller
         $npmList = Alumni::select('npm')->distinct()->orderBy('npm', 'desc')->get();
 
         return view('admin.responden.index', compact('alumni', 'prodiList', 'tahunLulusList', 'tahunResponList', 'npmList'));
+    }
+
+    public function exportExcel()
+    {
+        // Menggunakan library Maatwebsite untuk mendownload
+        return Excel::download(new RespondenExport, 'Data_Responden_Tracer_Study.xlsx');
     }
 }

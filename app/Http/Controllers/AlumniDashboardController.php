@@ -162,6 +162,23 @@ class AlumniDashboardController extends Controller
                 $data['f5b'] = null;  // Perusahaan
             }
 
+            if ($data['f8'] == '1' && !empty($data['f5b'])) {
+                
+                $namaPerusahaan = trim($data['f5b']); // Bersihkan spasi
+
+                // Gunakan firstOrCreate: Cari nama, jika tidak ada -> Buat baru
+                // Pastikan kolom 'nama_instansi' sesuai dengan database Anda
+                Instansi::firstOrCreate(
+                    ['nama' => $namaPerusahaan], // Kondisi pencarian (Cek nama)
+                    [
+                        // Data tambahan jika baru dibuat (Opsional)
+                        'email' => null, // Email kosong dulu
+                        'alamat' => null
+                    ]
+                );
+            }
+
+
             // Simpan ke database
             KuesionerAnswer::updateOrCreate(
                 ['alumni_id' => $alumni->id, 'tahun_kuesioner' => $tahun],
